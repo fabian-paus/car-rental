@@ -74,4 +74,14 @@ rule "Daily price: free seventh"
 
 end
 
+rule "Sum daily prices"
+
+	when
+		$r : RentalRequest( )
+		$d : RentalDay( request == $r )
+	then
+		$r.addToBasePrice($d.getPrice());
+
+end
+
 
