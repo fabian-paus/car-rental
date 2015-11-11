@@ -1,0 +1,23 @@
+//created on: 11.11.2015
+package de.whs.bpm.car_rental_dsl
+
+import de.whs.bpm.car_rental_dsl.RentalDay;
+import de.whs.bpm.car_rental_dsl.CarClass;
+
+rule "Daily base price: Middle class car"
+
+    when
+        $d : RentalDay( carClass == CarClass.MIDDLE )
+    then
+        $d.setPrice(70.0f);
+
+end
+
+rule "Your Second Rule"
+    //include attributes such as "salience" here...
+    when
+        //conditions
+    then
+        //actions
+
+end

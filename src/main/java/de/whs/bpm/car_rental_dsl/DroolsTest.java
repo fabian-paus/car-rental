@@ -1,5 +1,7 @@
 package de.whs.bpm.car_rental_dsl;
 
+import java.util.Calendar;
+
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -22,6 +24,23 @@ public class DroolsTest {
             message.setStatus(Message.HELLO);
             kSession.insert(message);
             kSession.fireAllRules();
+            
+            Calendar rentalDate = Calendar.getInstance();
+            rentalDate.set(2016, 2, 21);
+            RentalRequest request = new RentalRequest(rentalDate, 5, CarClass.MIDDLE);
+            RentalDay[] days = new RentalDay[5];
+            for (int i = 0; i < 5; ++i)
+            {
+            	days[i] = new RentalDay(request, i);
+            	kSession.insert(days[i]);
+            }
+            
+            kSession.fireAllRules();
+            
+            for (int i = 0; i < 5; ++i)
+            {
+            	System.out.println(days[i]);
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
