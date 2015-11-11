@@ -1,8 +1,40 @@
 //created on: 11.11.2015
 package de.whs.bpm.car_rental_dsl
 
+import java.util.Calendar;
 import de.whs.bpm.car_rental_dsl.RentalDay;
 import de.whs.bpm.car_rental_dsl.CarClass;
+
+function boolean isWeekend(Calendar day) {
+	return day.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+			|| day.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+}
+
+function boolean isSpecialDay(Calendar day) {
+	return day.get(Calendar.DAY_OF_MONTH) == 1 && day.get(Calendar.MONTH) == 0
+		|| day.get(Calendar.DAY_OF_MONTH) == 24 && day.get(Calendar.MONTH) == 11
+		|| day.get(Calendar.DAY_OF_MONTH) == 31 && day.get(Calendar.MONTH) == 11
+	;
+}
+
+
+rule "Daily base price: Small class car"
+
+    when
+        $d : RentalDay( carClass == CarClass.SMALL )
+    then
+        $d.setPrice(40.0f);
+
+end
+
+rule "Daily base price: Compact class car"
+
+    when
+        $d : RentalDay( carClass == CarClass.COMPACT )
+    then
+        $d.setPrice(50.0f);
+
+end
 
 rule "Daily base price: Middle class car"
 
@@ -13,11 +45,33 @@ rule "Daily base price: Middle class car"
 
 end
 
-rule "Your Second Rule"
-    //include attributes such as "salience" here...
+rule "Daily base price: Upper class car"
+
     when
-        //conditions
+        $d : RentalDay( carClass == CarClass.UPPER )
     then
-        //actions
+        $d.setPrice(90.0f);
 
 end
+
+rule "Daily price: Weekend discount"
+
+    when
+        $d : RentalDay( isWeekend(day) || isSpecialDay(day) )
+    then
+        float price = $d.getPrice();
+        float discount = price * 0.25f;
+        $d.setPrice(price - discount);
+
+end
+
+rule "Daily price: free seventh"
+
+    when
+        $d : RentalDay( dayIndex == 7 || dayIndex == 14 || dayIndex == 21 || dayIndex == 28 )
+    then
+        $d.setPrice(0.0f);
+
+end
+
+
