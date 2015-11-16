@@ -8,7 +8,7 @@ public class RentalDay {
 	private RentalRequest request;
 	private int dayIndex;
 	private Calendar day;
-	private float price;
+	private int price;
 	
 	public RentalDay(RentalRequest request, int dayIndex) {
 		super();
@@ -30,10 +30,10 @@ public class RentalDay {
 	public void setDay(Calendar day) {
 		this.day = day;
 	}
-	public float getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	

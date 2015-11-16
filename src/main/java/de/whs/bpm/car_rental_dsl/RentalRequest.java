@@ -8,7 +8,10 @@ public class RentalRequest {
 	private Calendar startDate;
 	private int durationInDays;
 	private CarClass carClass;
-	private float basePrice;
+	private int basePrice;
+	private int discount;
+	private int finalPrice;
+	private int totalPrice;
 	
 	public RentalRequest(Calendar startDate, int durationInDays,
 			CarClass carClass) {
@@ -16,7 +19,11 @@ public class RentalRequest {
 		this.startDate = startDate;
 		this.durationInDays = durationInDays;
 		this.carClass = carClass;
-		this.basePrice = 0.0f;
+		this.basePrice = 0;
+	}
+	
+	public RentalRequest() {
+		
 	}
 	
 	public Calendar getStartDate() {
@@ -42,12 +49,37 @@ public class RentalRequest {
 		return basePrice;
 	}
 
-	public void setBasePrice(float basePrice) {
+	public void setBasePrice(int basePrice) {
 		this.basePrice = basePrice;
 	}
 	
-	public void addToBasePrice(float add) {
+	public void addToBasePrice(int add) {
 		this.basePrice += add;
+	}
+	
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
+	public int getFinalPrice() {
+		return finalPrice;
+	}
+
+	public void setFinalPrice(int finalPrice) {
+		this.finalPrice = finalPrice;
+	}
+
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	@Override

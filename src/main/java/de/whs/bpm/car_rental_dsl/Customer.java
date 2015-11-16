@@ -7,20 +7,11 @@ public class Customer {
 	private boolean isNew;
 	private boolean hasReclamation;
 	private boolean hasSecurityTraining;
-	private Calendar birthday;
-	private Calendar drivingLicense;
+	private int age;
+	private int drivingLicense;
 	
-	
-	
-	public Customer(boolean isNew, boolean hasReclamation,
-			boolean hasSecurityTraining, Calendar birthday,
-			Calendar drivingLicense) {
-		super();
-		this.isNew = isNew;
-		this.hasReclamation = hasReclamation;
-		this.hasSecurityTraining = hasSecurityTraining;
-		this.birthday = birthday;
-		this.drivingLicense = drivingLicense;
+	public Customer() {
+		
 	}
 	
 	public boolean isNew() {
@@ -41,16 +32,16 @@ public class Customer {
 	public void setHasSecurityTraining(boolean hasSecurityTraining) {
 		this.hasSecurityTraining = hasSecurityTraining;
 	}
-	public Calendar getBirthday() {
-		return birthday;
+	public int getAge() {
+		return age;
 	}
-	public void setBirthday(Calendar birthday) {
-		this.birthday = birthday;
+	public void setAge(int age) {
+		this.age = age;
 	}
-	public Calendar getDrivingLicense() {
+	public int getDrivingLicense() {
 		return drivingLicense;
 	}
-	public void setDrivingLicense(Calendar drivingLicense) {
+	public void setDrivingLicense(int drivingLicense) {
 		this.drivingLicense = drivingLicense;
 	}
 	

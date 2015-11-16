@@ -23,7 +23,7 @@ rule "Daily base price: Small class car"
     when
         $d : RentalDay( carClass == CarClass.SMALL )
     then
-        $d.setPrice(40.0f);
+        $d.setPrice(4000);
 
 end
 
@@ -32,7 +32,7 @@ rule "Daily base price: Compact class car"
     when
         $d : RentalDay( carClass == CarClass.COMPACT )
     then
-        $d.setPrice(50.0f);
+        $d.setPrice(5000);
 
 end
 
@@ -41,7 +41,7 @@ rule "Daily base price: Middle class car"
     when
         $d : RentalDay( carClass == CarClass.MIDDLE )
     then
-        $d.setPrice(70.0f);
+        $d.setPrice(7000);
 
 end
 
@@ -50,7 +50,7 @@ rule "Daily base price: Upper class car"
     when
         $d : RentalDay( carClass == CarClass.UPPER )
     then
-        $d.setPrice(90.0f);
+        $d.setPrice(9000);
 
 end
 
@@ -59,8 +59,8 @@ rule "Daily price: Weekend discount"
     when
         $d : RentalDay( isWeekend(day) || isSpecialDay(day) )
     then
-        float price = $d.getPrice();
-        float discount = price * 0.25f;
+        int price = $d.getPrice();
+        int discount = (int)(price * 0.25f);
         $d.setPrice(price - discount);
 
 end
@@ -70,7 +70,7 @@ rule "Daily price: free seventh"
     when
         $d : RentalDay( dayIndex == 7 || dayIndex == 14 || dayIndex == 21 || dayIndex == 28 )
     then
-        $d.setPrice(0.0f);
+        $d.setPrice(0);
 
 end
 
