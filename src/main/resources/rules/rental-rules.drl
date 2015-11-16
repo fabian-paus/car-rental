@@ -1,9 +1,9 @@
-//created on: 11.11.2015
 package de.whs.bpm.car_rental_dsl
 
 import java.util.Calendar;
 import de.whs.bpm.car_rental_dsl.RentalDay;
-import de.whs.bpm.car_rental_dsl.CarClass;
+import de.whs.bpm.car_rental_dsl.RentalRequest;
+import de.whs.bpm.car_rental_dsl.Customer;
 
 function boolean isWeekend(Calendar day) {
 	return day.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
@@ -17,11 +17,15 @@ function boolean isSpecialDay(Calendar day) {
 	;
 }
 
+declare IsNovice
+	customer: Customer
+end
+
 
 rule "Daily base price: Small class car"
 
     when
-        $d : RentalDay( carClass == CarClass.SMALL )
+        $d : RentalDay( carClass == "Small" )
     then
         $d.setPrice(4000);
 
@@ -30,7 +34,7 @@ end
 rule "Daily base price: Compact class car"
 
     when
-        $d : RentalDay( carClass == CarClass.COMPACT )
+        $d : RentalDay( carClass == "Compact" )
     then
         $d.setPrice(5000);
 
@@ -39,7 +43,7 @@ end
 rule "Daily base price: Middle class car"
 
     when
-        $d : RentalDay( carClass == CarClass.MIDDLE )
+        $d : RentalDay( carClass == "Middle" )
     then
         $d.setPrice(7000);
 
@@ -48,7 +52,7 @@ end
 rule "Daily base price: Upper class car"
 
     when
-        $d : RentalDay( carClass == CarClass.UPPER )
+        $d : RentalDay( carClass == "Upper" )
     then
         $d.setPrice(9000);
 
@@ -84,4 +88,51 @@ rule "Sum daily prices"
 
 end
 
+rule "Is driving novice"
+	
+	when
+		$c : Customer( age < 21 || drivingLicense < 2 )
+	then
+		insert( new IsNovice($c) );
+end
 
+rule "Novice: extra charge"
+
+	when
+		$r : RentalRequest( )
+		$c : Customer( )
+		IsNovice(customer == $c)
+	then
+		$r.setNovice(true);
+		$r.setExtraChargePercent(10);
+end
+
+rule "Novice: permission required"
+
+	when
+		$r : RentalRequest( carClass != "Small" || carClass != "Compact" )
+		$c : Customer( )
+		IsNovice(customer == $c)
+	then
+		$r.setRequiresNovicePermission(true);
+end
+
+rule "Novice: check passed 1"
+
+	when
+		$r : RentalRequest( )
+		$c : Customer( )
+		not IsNovice(customer == $c)
+	then
+		$r.setNoviceCheckPassed(true);
+end
+
+rule "Novice: check passed 2"
+
+	when
+		$r : RentalRequest( carClass == "Small" || carClass == "Compact" )
+		$c : Customer( )
+		IsNovice(customer == $c)
+	then
+		$r.setNoviceCheckPassed(true);
+end

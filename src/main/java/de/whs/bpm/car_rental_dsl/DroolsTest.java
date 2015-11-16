@@ -20,7 +20,7 @@ public class DroolsTest {
             
             Calendar rentalDate = Calendar.getInstance();
             rentalDate.set(2016, 2, 21);
-            RentalRequest request = new RentalRequest(rentalDate, 5, CarClass.MIDDLE);
+            RentalRequest request = new RentalRequest(rentalDate, 5, "Middle");
             kSession.insert(request);
             RentalDay[] days = new RentalDay[8];
             for (int i = 0; i < days.length; ++i)

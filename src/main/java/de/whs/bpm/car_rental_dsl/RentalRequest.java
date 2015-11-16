@@ -1,20 +1,34 @@
 package de.whs.bpm.car_rental_dsl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class RentalRequest {
 
+	// Input
 	private Calendar startDate;
 	private int durationInDays;
-	private CarClass carClass;
+	private String carClass;
+
+	
+	private List<Customer> customers = new ArrayList<Customer>();
+	private Garage garage = new Garage();
+	
+	// Output
+	private boolean isNovice;
+	private int extraChargePercent;
+	private boolean noviceCheckPassed;
+	private boolean requiresNovicePermission;
+	
 	private int basePrice;
 	private int discount;
 	private int finalPrice;
 	private int totalPrice;
 	
 	public RentalRequest(Calendar startDate, int durationInDays,
-			CarClass carClass) {
+			String carClass) {
 		super();
 		this.startDate = startDate;
 		this.durationInDays = durationInDays;
@@ -38,10 +52,10 @@ public class RentalRequest {
 	public void setDurationInDays(int durationInDays) {
 		this.durationInDays = durationInDays;
 	}
-	public CarClass getCarClass() {
+	public String getCarClass() {
 		return carClass;
 	}
-	public void setCarClass(CarClass carClass) {
+	public void setCarClass(String carClass) {
 		this.carClass = carClass;
 	}
 
@@ -80,6 +94,58 @@ public class RentalRequest {
 
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+	
+	
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void addCustomer(Customer customer) {
+		this.customers.add(customer);
+	}
+
+	public Garage getGarage() {
+		return garage;
+	}
+
+	public void setGarage(Garage garage) {
+		this.garage = garage;
+	}
+	
+	
+
+	public boolean isNovice() {
+		return isNovice;
+	}
+
+	public void setNovice(boolean isNovice) {
+		this.isNovice = isNovice;
+	}
+
+	public int getExtraChargePercent() {
+		return extraChargePercent;
+	}
+
+	public void setExtraChargePercent(int extraChargePercent) {
+		this.extraChargePercent = extraChargePercent;
+	}
+
+	public boolean isNoviceCheckPassed() {
+		return noviceCheckPassed;
+	}
+
+	public void setNoviceCheckPassed(boolean noviceCheckPassed) {
+		this.noviceCheckPassed = noviceCheckPassed;
+	}
+
+	public boolean isRequiresNovicePermission() {
+		return requiresNovicePermission;
+	}
+
+	public void setRequiresNovicePermission(boolean requiresNovicePermission) {
+		this.requiresNovicePermission = requiresNovicePermission;
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class RentalDay {
 		return dayIndex + 1;
 	}
 	
-	public CarClass getCarClass() {
+	public String getCarClass() {
 		return request.getCarClass();
 	}
 	
