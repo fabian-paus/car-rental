@@ -12,6 +12,7 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
+import org.kie.api.runtime.process.WorkItemHandler;
 
 import de.whs.bpm.car_rental_dsl.Customer;
 import de.whs.bpm.car_rental_dsl.Garage;
@@ -22,6 +23,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 	private RuntimeManager runtimeManager;
 	private RuntimeEngine runtimeEngine;
 	private KieSession kSession;
+	private WorkItemHandler workItemHandler;
 	
 	@Before
 	public void setupKieRuntime() {
@@ -33,6 +35,9 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		runtimeEngine = getRuntimeEngine(null);
 		kSession = runtimeEngine.getKieSession();
+		
+		workItemHandler = new ApprovalWorkItemHandler();
+		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
 	}
 	
 	@After
@@ -77,12 +82,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		request.addCustomer(customer);
 		request.setGarage(garage);
-    	
-    	kSession.insert(request);
-		
-		for (Customer c : request.getCustomers()) {
-			kSession.insert(c);
-		}
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
     	parameterMap.put("request", request);
@@ -93,13 +92,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertFalse(request.isNovice());
 		assertTrue(request.getExtraChargePercent() == 0);
 		assertTrue(request.isNoviceCheckPassed());
-		assertFalse(request.isRequiresNovicePermission());
-		
-		System.out.println("Unit Test");
-		System.out.println(request.isNovice());
-		System.out.println(request.getExtraChargePercent());
-		System.out.println(request.isNoviceCheckPassed());
-		System.out.println(request.isRequiresNovicePermission());
+		assertFalse(request.requiresNovicePermission());
 		
 		assertEquals(request.getCarClass(), "Middle");
 //		assertTrue(request.getBasePrice() == 33250);
@@ -143,13 +136,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		request.addCustomer(customer);
 		request.setGarage(garage);
-    	
-    	kSession.insert(request);
-		
-		for (Customer c : request.getCustomers()) {
-			kSession.insert(c);
-		}
-		
+    		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
     	parameterMap.put("request", request);
     	
@@ -159,7 +146,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertTrue(request.isNovice());
 		assertTrue(request.getExtraChargePercent() == 10);
 		assertFalse(request.isNoviceCheckPassed());
-		assertTrue(request.isRequiresNovicePermission());
+		assertTrue(request.requiresNovicePermission());
 		
 		assertEquals(request.getCarClass(), "Middle");
 //		assertTrue(request.getBasePrice() == 33250);

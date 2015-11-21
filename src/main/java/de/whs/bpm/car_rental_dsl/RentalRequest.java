@@ -22,6 +22,8 @@ public class RentalRequest {
 	private boolean noviceCheckPassed;
 	private boolean requiresNovicePermission;
 	
+	private boolean requiresUpdgradePermission;
+	
 	private int basePrice;
 	private int discount;
 	private int finalPrice;
@@ -140,12 +142,20 @@ public class RentalRequest {
 		this.noviceCheckPassed = noviceCheckPassed;
 	}
 
-	public boolean isRequiresNovicePermission() {
+	public boolean requiresNovicePermission() {
 		return requiresNovicePermission;
 	}
 
 	public void setRequiresNovicePermission(boolean requiresNovicePermission) {
 		this.requiresNovicePermission = requiresNovicePermission;
+	}
+	
+	public boolean requiresUpdgradePermission() {
+		return requiresUpdgradePermission;
+	}
+
+	public void setRequiresUpdgradePermission(boolean requiresUpdgradePermission) {
+		this.requiresUpdgradePermission = requiresUpdgradePermission;
 	}
 
 	@Override
