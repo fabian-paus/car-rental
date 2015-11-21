@@ -5,16 +5,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jbpm.test.JbpmJUnitBaseTestCase;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.kie.api.KieServices;
-import org.kie.api.runtime.KieContainer;
+import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.manager.RuntimeEngine;
+import org.kie.api.runtime.manager.RuntimeManager;
 
 import de.whs.bpm.car_rental_dsl.Customer;
 import de.whs.bpm.car_rental_dsl.Garage;
 import de.whs.bpm.car_rental_dsl.RentalRequest;
 
-public class SituationTest extends JbpmJUnitBaseTestCase{
+public class SituationTest extends JbpmJUnitBaseTestCase {
+	
+	private RuntimeManager runtimeManager;
+	private RuntimeEngine runtimeEngine;
+	private KieSession kSession;
+	
+	@Before
+	public void setupKieRuntime() {
+		
+		Map<String, ResourceType> resources = new HashMap<String, ResourceType>();
+		resources.put("process/rental-process.bpmn", ResourceType.BPMN2);
+		resources.put("process/rental-rules.drl", ResourceType.DRL);
+		runtimeManager = createRuntimeManager(resources);
+		
+		runtimeEngine = getRuntimeEngine(null);
+		kSession = runtimeEngine.getKieSession();
+	}
+	
+	@After
+	public void cleanupKieRuntime() {
+		
+		runtimeManager.disposeRuntimeEngine(runtimeEngine);
+		runtimeManager.close();
+	}
 
 	@Test
 	public void testCustomerA() {
@@ -51,11 +77,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase{
 		
 		request.addCustomer(customer);
 		request.setGarage(garage);
-		
-		// TODO: Objekt in Drools reinwerfen und Ergebnisse prüfen
-		KieServices ks = KieServices.Factory.get();
-	    KieContainer kContainer = ks.getKieClasspathContainer();
-    	KieSession kSession = kContainer.newKieSession("ksession-process");
     	
     	kSession.insert(request);
 		
@@ -85,8 +106,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase{
 //		assertTrue(request.getDiscount() == 1663); // Richtig runden!
 //		assertTrue(request.getFinalPrice() == 31587);
 //		assertTrue(request.getTotalPrice() == 31587);
-		
-		//fail("Not yet implemented");
 	}
 	
 	@Test
@@ -124,11 +143,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase{
 		
 		request.addCustomer(customer);
 		request.setGarage(garage);
-		
-		// TODO: Objekt in Drools reinwerfen und Ergebnisse prüfen
-		KieServices ks = KieServices.Factory.get();
-	    KieContainer kContainer = ks.getKieClasspathContainer();
-	    KieSession kSession = kContainer.newKieSession("ksession-process");
     	
     	kSession.insert(request);
 		
@@ -152,8 +166,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase{
 //		assertTrue(request.getDiscount() == 1663); // Richtig runden!
 //		assertTrue(request.getFinalPrice() == 31587);
 //		assertTrue(request.getTotalPrice() == 31587);
-		
-		//fail("Not yet implemented");
 	}
 
 }

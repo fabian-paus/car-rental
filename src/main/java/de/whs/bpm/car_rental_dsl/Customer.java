@@ -1,6 +1,5 @@
 package de.whs.bpm.car_rental_dsl;
 
-import java.util.Calendar;
 
 public class Customer {
 
