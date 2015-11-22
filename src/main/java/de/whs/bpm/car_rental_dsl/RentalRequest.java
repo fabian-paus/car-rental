@@ -23,7 +23,6 @@ public class RentalRequest {
 	private boolean requiresNovicePermission;
 	
 	private int extraDeductionPercent;
-	private boolean requiresUpdgradePermission;
 	private String upgradeClass;
 	private boolean carAvailable;
 	
@@ -169,14 +168,6 @@ public class RentalRequest {
 
 	public void setRequiresNovicePermission(boolean requiresNovicePermission) {
 		this.requiresNovicePermission = requiresNovicePermission;
-	}
-	
-	public boolean requiresUpdgradePermission() {
-		return requiresUpdgradePermission;
-	}
-
-	public void setRequiresUpdgradePermission(boolean requiresUpdgradePermission) {
-		this.requiresUpdgradePermission = requiresUpdgradePermission;
 	}
 
 	public int getExtraDeductionPercent() {

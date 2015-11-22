@@ -235,10 +235,10 @@ else {&#xD;
       <bpmn2:outgoing>SequenceFlow_22</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_17" tns:priority="1" name="No" sourceRef="ExclusiveGateway_4" targetRef="ExclusiveGateway_5">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_51" language="http://www.java.com/java">return !request.requiresUpdgradePermission();</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_51" language="http://www.java.com/java">return !request.hasFreeClassUpgrade();</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_18" tns:priority="1" name="Yes" sourceRef="ExclusiveGateway_4" targetRef="UserTask_2">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_50" language="http://www.java.com/java">return request.requiresUpdgradePermission();</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_50" language="http://www.java.com/java">return request.hasFreeClassUpgrade();</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_6" name="Upgrade Permission Granted?" gatewayDirection="Diverging">
       <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>

@@ -46,12 +46,12 @@ function String getUpgradeClass(Garage garage, String carClass) {
 			return "Upper";
 	}
 	
-	return "";
+	return null;
 }
 
 function boolean upgradeAvailable(Garage garage, String carClass) {
 	String upgradeClass = getUpgradeClass(garage, carClass);
-	return isAvailable(garage, carClass);
+	return upgradeClass != null;
 }
 
 declare Novice
@@ -98,14 +98,13 @@ rule "Avail: Downgrade for upper if not available" ruleflow-group "availibility-
 
 end
 
-rule "Avail: If update possible it requires permission" ruleflow-group "availibility-check"
+rule "Avail: If updgrade possible it requires permission" ruleflow-group "availibility-check"
 
 	when
 		$r : RentalRequest( !isAvailable(garage, carClass), upgradeAvailable(garage, carClass) )
 	then
 		$r.setUpgradeClass(getUpgradeClass($r.getGarage(), $r.getCarClass()));
 		$r.setCarAvailable(true);
-		$r.setRequiresUpdgradePermission(true);
 		
 end
 
@@ -190,7 +189,7 @@ rule "Discount: All customers are new customers" ruleflow-group "price-calculati
 		$r : RentalRequest( )
 		forall( Customer( newCustomer ) )
 	then
-		$r.addToDiscount(10);
+		$r.addToDiscount(1000);
 
 end
 

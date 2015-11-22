@@ -112,7 +112,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertEquals(request.getExtraDeductionPercent(), 0);
 		assertFalse(request.hasFreeClassUpgrade());
-		assertFalse(request.requiresUpdgradePermission());
 		assertTrue(request.isCarAvailable());
 		
 		assertFalse(request.isDeclined());
@@ -127,7 +126,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 	}
 	
 	@Test
-	public void testCustomerA_DeclinedTest() {
+	public void testCustomerA_NoviceDeclined() {
 		
 		// Create input data
 		Garage garage = makeGarage(2, 2, 2, 2);
@@ -155,6 +154,134 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertTrue(request.requiresNovicePermission());
 		
 		assertTrue(request.isDeclined());
+	}
+	
+	@Test
+	public void testCustomerB() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 1, 2);
+		
+		Customer customer = new Customer();
+		customer.setNew(true);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(20);
+		customer.setDrivingLicense(3);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(1);
+		request.setCarClass("Middle");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveNovice(true);
+		runProcess(request);
+		
+		// Test the output data
+		assertTrue(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 10);
+		assertTrue(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getBasePrice(), 7000);
+		assertEquals(request.getDiscount(), 1000);
+		assertEquals(request.getFinalPrice(), 6000);
+		assertEquals(request.getTotalPrice(), 6600);
+		
+		assertRemainingCars(garage, 2, 2, 0, 2);
+	}
+	
+	@Test
+	public void testCustomerC_UpgradeApproved() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 2);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(30);
+		customer.setDrivingLicense(12);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(7);
+		request.setCarClass("Middle");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveUpgrade(true);
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertTrue(request.hasFreeClassUpgrade());
+		assertEquals(request.getUpgradeClass(), "Upper");
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		// Price is still calculated for "Middle" class (free upgrade)
+		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getBasePrice(), 38500);
+		assertEquals(request.getDiscount(), 0);
+		assertEquals(request.getFinalPrice(), 38500);
+		assertEquals(request.getTotalPrice(), 38500);
+		
+		assertRemainingCars(garage, 2, 2, 0, 1);
+	}
+	
+	@Test
+	public void testCustomerC_UpgradeDeclined() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 2);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(30);
+		customer.setDrivingLicense(12);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(7);
+		request.setCarClass("Middle");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveUpgrade(false);
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertTrue(request.hasFreeClassUpgrade());
+		assertEquals(request.getUpgradeClass(), "Upper");
+		assertTrue(request.isCarAvailable());
+		
+		assertTrue(request.isDeclined());	
+		assertRemainingCars(garage, 2, 2, 0, 2);
 	}
 
 }
