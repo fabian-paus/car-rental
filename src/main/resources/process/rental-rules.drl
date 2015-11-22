@@ -14,6 +14,7 @@ function boolean isWeekend(Calendar day) {
 function boolean isSpecialDay(Calendar day) {
 	int dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
 	int month = day.get(Calendar.MONTH);
+	// Month is zero-based!
 	return dayOfMonth ==  1 && month ==  0
 		|| dayOfMonth == 25 && month ==  2
 		|| dayOfMonth == 28 && month ==  2
@@ -61,16 +62,17 @@ end
 rule "Is driving novice" ruleflow-group "novice-check"
 	
 	when
-		$c : Customer( age < 21 || drivingLicense < 2 )
+		$r : RentalRequest( $customers : customers )
+		$c : Customer( age < 21 || drivingLicense < 2 ) from $customers
 	then
 		insert( new Novice($c) );
 end
 
-rule "Novice: extra charge" ruleflow-group "novice-check"
+rule "Extra charge for novices" ruleflow-group "novice-check"
 
 	when
-		$r : RentalRequest( )
-		$c : Customer( )
+		$r : RentalRequest( $customers : customers )
+		$c : Customer( ) from $customers
 		Novice(customer == $c)
 	then
 		$r.setNovice(true);
@@ -80,8 +82,8 @@ end
 rule "Novice: permission required" ruleflow-group "novice-check"
 
 	when
-		$r : RentalRequest( carClass not in ("Small", "Compact") )
-		$c : Customer( )
+		$r : RentalRequest( carClass not in ("Small", "Compact"), $customers : customers )
+		$c : Customer( ) from $customers
 		Novice(customer == $c)
 	then
 		$r.setRequiresNovicePermission(true);
@@ -120,7 +122,8 @@ end
 rule "Daily base price: Small class car" ruleflow-group "price-calculation"
 
     when
-        $d : RentalDay( carClass == "Small" )
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Small" ) from $days
     then
         $d.setPrice(4000);
 
@@ -129,7 +132,8 @@ end
 rule "Daily base price: Compact class car" ruleflow-group "price-calculation"
 
     when
-        $d : RentalDay( carClass == "Compact" )
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Compact" ) from $days
     then
         $d.setPrice(5000);
 
@@ -138,7 +142,8 @@ end
 rule "Daily base price: Middle class car" ruleflow-group "price-calculation"
 
     when
-        $d : RentalDay( carClass == "Middle" )
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Middle" ) from $days
     then
         $d.setPrice(7000);
 
@@ -147,7 +152,8 @@ end
 rule "Daily base price: Upper class car" ruleflow-group "price-calculation"
 
     when
-        $d : RentalDay( carClass == "Upper" )
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Upper" ) from $days
     then
         $d.setPrice(9000);
 
@@ -156,7 +162,8 @@ end
 rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
 
     when
-        $d : RentalDay( isWeekend(day) || isSpecialDay(day) )
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( isWeekend(day) || isSpecialDay(day) ) from $days
     then
         int price = $d.getPrice();
         int discount = (int)(price * 0.25f);
@@ -167,7 +174,8 @@ end
 rule "Daily price: free seventh" ruleflow-group "price-calculation"
 
     when
-        $d : RentalDay( dayIndex in (7, 14, 21, 28) )
+    	$r : RentalRequest( $days : days )
+    	$d : RentalDay( dayIndex in (7, 14, 21, 28) ) from $days
     then
         $d.setPrice(0);
 
@@ -176,8 +184,8 @@ end
 rule "Base price: Sum daily prices" ruleflow-group "price-calculation"
 
 	when
-		$r : RentalRequest( )
-		$d : RentalDay( request == $r )
+		$r : RentalRequest( $days : days )
+		$d : RentalDay( ) from $days
 	then
 		$r.addToBasePrice($d.getPrice());
 
@@ -186,8 +194,8 @@ end
 rule "Discount: All customers are new customers" ruleflow-group "price-calculation"
 
 	when
-		$r : RentalRequest( )
-		forall( Customer( newCustomer ) )
+		$r : RentalRequest( $customers : customers )
+		forall( Customer( newCustomer ) from $customers )
 	then
 		$r.addToDiscount(1000);
 
@@ -196,8 +204,8 @@ end
 rule "Discount: All customers have an old reclamation" ruleflow-group "price-calculation"
 
 	when
-		$r : RentalRequest( )
-		forall ( Customer( hasReclamation ) )
+		$r : RentalRequest( $customers : customers )
+		forall ( Customer( hasReclamation ) from $customers )
 	then
 		int reclamationDiscount = Math.round(0.20f * $r.getBasePrice());
 		$r.addToDiscount(reclamationDiscount);
@@ -207,8 +215,8 @@ end
 rule "Discount: All customers have participated in security training" ruleflow-group "price-calculation"
 
 	when
-		$r : RentalRequest( )
-		forall( Customer( hasSecurityTraining ) )
+		$r : RentalRequest( $customers : customers )
+		forall( Customer( hasSecurityTraining ) from $customers )
 	then
 		int securityDiscount = Math.round(0.05f * $r.getBasePrice());
 		$r.addToDiscount(securityDiscount);

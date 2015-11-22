@@ -33,6 +33,8 @@ public class RentalRequest {
 	private int finalPrice;
 	private int totalPrice;
 	
+	RentalDay[] days;
+	
 	public RentalRequest(Calendar startDate, int durationInDays,
 			String carClass) {
 		super();
@@ -47,11 +49,6 @@ public class RentalRequest {
 	}
 	
 	public RentalDay[] getDays() {
-		RentalDay[] days = new RentalDay[durationInDays];
-        for (int i = 0; i < days.length; ++i)
-        {
-        	days[i] = new RentalDay(this, i);
-        }
         return days;
 	}
 	
@@ -78,6 +75,11 @@ public class RentalRequest {
 	}
 	public void setDurationInDays(int durationInDays) {
 		this.durationInDays = durationInDays;
+		days = new RentalDay[durationInDays];
+        for (int i = 0; i < days.length; ++i)
+        {
+        	days[i] = new RentalDay(this, i);
+        }
 	}
 	public String getCarClass() {
 		return carClass;

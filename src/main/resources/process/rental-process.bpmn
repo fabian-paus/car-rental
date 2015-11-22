@@ -18,10 +18,7 @@
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
       <bpmn2:script>KieRuntime kRuntime = kcontext.getKnowledgeRuntime();&#xD;
-kRuntime.insert(request);&#xD;
-for (Customer c : request.getCustomers()) {&#xD;
-	kRuntime.insert(c);&#xD;
-}</bpmn2:script>
+kRuntime.insert(request);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:startEvent id="_1">
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -252,10 +249,7 @@ else {&#xD;
     <bpmn2:businessRuleTask id="BusinessRuleTask_3" tns:ruleFlowGroup="price-calculation" name="Calculate Price">
       <bpmn2:extensionElements>
         <tns:onEntry-script scriptFormat="http://www.java.com/java">
-          <tns:script>KieRuntime kRuntime = kcontext.getKnowledgeRuntime();&#xD;
-for (RentalDay d : request.getDays()) {&#xD;
-	kRuntime.insert(d);&#xD;
-}</tns:script>
+          <tns:script>;</tns:script>
         </tns:onEntry-script>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
