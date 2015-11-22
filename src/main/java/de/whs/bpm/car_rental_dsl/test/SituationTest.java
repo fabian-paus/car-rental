@@ -126,38 +126,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 	}
 	
 	@Test
-	public void testCustomerA_NoviceDeclined() {
-		
-		// Create input data
-		Garage garage = makeGarage(2, 2, 2, 2);
-		
-		Customer customer = new Customer();
-		customer.setNew(false);
-		customer.setHasReclamation(false);
-		customer.setHasSecurityTraining(true);
-		customer.setAge(20);
-		customer.setDrivingLicense(3);
-		
-		RentalRequest request = new RentalRequest();
-		request.setStartDate(getStartDate());
-		request.setDurationInDays(5);
-		request.setCarClass("Middle");
-		
-		request.addCustomer(customer);
-		request.setGarage(garage);
-    	
-    	workItemHandler.setApproveNovice(false);
-		runProcess(request);
-		
-		assertTrue(request.isNovice());
-		assertTrue(request.getExtraChargePercent() == 10);
-		assertTrue(request.requiresNovicePermission());
-		
-		assertTrue(request.isDeclined());
-	}
-	
-	@Test
-	public void testCustomerB() {
+	public void testCustomerB_NoviceApproved() {
 		
 		// Create input data
 		Garage garage = makeGarage(2, 2, 1, 2);
@@ -198,6 +167,39 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertEquals(request.getTotalPrice(), 6600);
 		
 		assertRemainingCars(garage, 2, 2, 0, 2);
+	}
+	
+	@Test
+	public void testCustomerB_NoviceDeclined() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 1, 2);
+		
+		Customer customer = new Customer();
+		customer.setNew(true);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(20);
+		customer.setDrivingLicense(3);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(1);
+		request.setCarClass("Middle");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveNovice(false);
+		runProcess(request);
+		
+		// Test the output data
+		assertTrue(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 10);
+		assertTrue(request.requiresNovicePermission());
+		
+		assertTrue(request.isDeclined());
+		assertRemainingCars(garage, 2, 2, 1, 2);
 	}
 	
 	@Test
@@ -282,6 +284,90 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertTrue(request.isDeclined());	
 		assertRemainingCars(garage, 2, 2, 0, 2);
+	}
+	
+	@Test
+	public void testCustomerD_UpgradeApproved() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 1);
+		
+		Customer customer = new Customer();
+		customer.setNew(true);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(35);
+		customer.setDrivingLicense(10);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(1);
+		request.setCarClass("Middle");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveUpgrade(true);
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertTrue(request.hasFreeClassUpgrade());
+		assertEquals(request.getUpgradeClass(), "Upper");
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		// Price is still calculated for "Middle" class (free upgrade)
+		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getBasePrice(), 7000);
+		assertEquals(request.getDiscount(), 1000);
+		assertEquals(request.getFinalPrice(), 6000);
+		assertEquals(request.getTotalPrice(), 6000);
+		
+		assertRemainingCars(garage, 2, 2, 0, 0);
+	}
+	
+	@Test
+	public void testCustomerD_UpgradeDeclined() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 1);
+		
+		Customer customer = new Customer();
+		customer.setNew(true);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(35);
+		customer.setDrivingLicense(10);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(1);
+		request.setCarClass("Middle");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveUpgrade(false);
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertTrue(request.hasFreeClassUpgrade());
+		assertEquals(request.getUpgradeClass(), "Upper");
+		assertTrue(request.isCarAvailable());
+		
+		assertTrue(request.isDeclined());		
+		assertRemainingCars(garage, 2, 2, 0, 1);
 	}
 
 }
