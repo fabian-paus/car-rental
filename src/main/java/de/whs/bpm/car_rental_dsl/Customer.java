@@ -13,7 +13,7 @@ public class Customer {
 		
 	}
 	
-	public boolean isNew() {
+	public boolean isNewCustomer() {
 		return isNew;
 	}
 	public void setNew(boolean isNew) {

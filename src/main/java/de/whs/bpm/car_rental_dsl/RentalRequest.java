@@ -11,6 +11,7 @@ public class RentalRequest {
 	private Calendar startDate;
 	private int durationInDays;
 	private String carClass;
+	private boolean automatic;
 
 	
 	private List<Customer> customers = new ArrayList<Customer>();
@@ -19,10 +20,14 @@ public class RentalRequest {
 	// Output
 	private boolean isNovice;
 	private int extraChargePercent;
-	private boolean noviceCheckPassed;
 	private boolean requiresNovicePermission;
 	
+	private int extraDeductionPercent;
 	private boolean requiresUpdgradePermission;
+	private String upgradeClass;
+	private boolean carAvailable;
+	
+	private boolean declined;
 	
 	private int basePrice;
 	private int discount;
@@ -40,6 +45,27 @@ public class RentalRequest {
 	
 	public RentalRequest() {
 		
+	}
+	
+	public RentalDay[] getDays() {
+		RentalDay[] days = new RentalDay[durationInDays];
+        for (int i = 0; i < days.length; ++i)
+        {
+        	days[i] = new RentalDay(this, i);
+        }
+        return days;
+	}
+	
+	public void addToBasePrice(int add) {
+		this.basePrice += add;
+	}
+	
+	public void addToDiscount(int add) {
+		this.discount += add;
+	}
+	
+	public void addToFinalPrice(int add) {
+		this.finalPrice += add;
 	}
 	
 	public Calendar getStartDate() {
@@ -61,18 +87,21 @@ public class RentalRequest {
 		this.carClass = carClass;
 	}
 
-	public float getBasePrice() {
+	public boolean isAutomatic() {
+		return automatic;
+	}
+
+	public void setAutomatic(boolean automatic) {
+		this.automatic = automatic;
+	}
+
+	public int getBasePrice() {
 		return basePrice;
 	}
 
 	public void setBasePrice(int basePrice) {
 		this.basePrice = basePrice;
 	}
-	
-	public void addToBasePrice(int add) {
-		this.basePrice += add;
-	}
-	
 
 	public int getDiscount() {
 		return discount;
@@ -134,14 +163,6 @@ public class RentalRequest {
 		this.extraChargePercent = extraChargePercent;
 	}
 
-	public boolean isNoviceCheckPassed() {
-		return noviceCheckPassed;
-	}
-
-	public void setNoviceCheckPassed(boolean noviceCheckPassed) {
-		this.noviceCheckPassed = noviceCheckPassed;
-	}
-
 	public boolean requiresNovicePermission() {
 		return requiresNovicePermission;
 	}
@@ -156,6 +177,42 @@ public class RentalRequest {
 
 	public void setRequiresUpdgradePermission(boolean requiresUpdgradePermission) {
 		this.requiresUpdgradePermission = requiresUpdgradePermission;
+	}
+
+	public int getExtraDeductionPercent() {
+		return extraDeductionPercent;
+	}
+
+	public void setExtraDeductionPercent(int extraDeductionPercent) {
+		this.extraDeductionPercent = extraDeductionPercent;
+	}
+
+	public boolean hasFreeClassUpgrade() {
+		return upgradeClass != null;
+	}
+
+	public boolean isCarAvailable() {
+		return carAvailable;
+	}
+
+	public void setCarAvailable(boolean carAvailable) {
+		this.carAvailable = carAvailable;
+	}
+	
+	public String getUpgradeClass() {
+		return upgradeClass;
+	}
+
+	public void setUpgradeClass(String upgradeClass) {
+		this.upgradeClass = upgradeClass;
+	}
+
+	public boolean isDeclined() {
+		return declined;
+	}
+
+	public void setDeclined(boolean declined) {
+		this.declined = declined;
 	}
 
 	@Override

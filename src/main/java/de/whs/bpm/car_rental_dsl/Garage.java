@@ -7,14 +7,19 @@ public class Garage {
 	
 	private Map<String, Integer> garage = new HashMap<String, Integer>(); 
 	
-	public void setCount(String cartype, int value)
+	public void setCount(String carClass, int value)
 	{
-		garage.put(cartype, value);
+		garage.put(carClass, value);
 	}
 	
-	public boolean hasAny(String cartype)
+	public int getCount(String carClass) {
+		Integer count = garage.get(carClass);
+		return count == null ? 0 : count;
+	}
+	
+	public boolean hasAny(String carClass)
 	{
-		return garage.get(cartype) != null && garage.get(cartype) > 0;
+		return getCount(carClass) > 0;
 	}
 
 	

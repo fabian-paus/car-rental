@@ -12,7 +12,6 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
-import org.kie.api.runtime.process.WorkItemHandler;
 
 import de.whs.bpm.car_rental_dsl.Customer;
 import de.whs.bpm.car_rental_dsl.Garage;
@@ -23,7 +22,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 	private RuntimeManager runtimeManager;
 	private RuntimeEngine runtimeEngine;
 	private KieSession kSession;
-	private WorkItemHandler workItemHandler;
+	private ApprovalWorkItemHandler workItemHandler;
 	
 	@Before
 	public void setupKieRuntime() {
@@ -75,7 +74,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		RentalRequest request = new RentalRequest();
 		Calendar startDate = Calendar.getInstance();
-		startDate.set(2016, 3 - 1, 16);
+		startDate.set(2016, 3 - 1, 21);
 		request.setStartDate(startDate);
 		request.setDurationInDays(5);
 		request.setCarClass("Middle");
@@ -90,35 +89,31 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		kSession.fireAllRules();
 		
 		assertFalse(request.isNovice());
-		assertTrue(request.getExtraChargePercent() == 0);
-		assertTrue(request.isNoviceCheckPassed());
+		assertEquals(request.getExtraChargePercent(), 0);
 		assertFalse(request.requiresNovicePermission());
 		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertFalse(request.requiresUpdgradePermission());
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
 		assertEquals(request.getCarClass(), "Middle");
-//		assertTrue(request.getBasePrice() == 33250);
-//		assertTrue(request.getDiscount() == 1663); // Richtig runden!
-//		assertTrue(request.getFinalPrice() == 31587);
-//		assertTrue(request.getTotalPrice() == 31587);
+		assertEquals(request.getBasePrice(), 33250);
+		assertEquals(request.getDiscount(), 1663);
+		assertEquals(request.getFinalPrice(), 31587);
+		assertEquals(request.getTotalPrice(), 31587);
 	}
 	
 	@Test
-	public void testCustomerA_2() {
+	public void testCustomerA_DeclinedTest() {
 		
 		Garage garage = new Garage();
 		garage.setCount("Small", 2);
 		garage.setCount("Compact", 2);
 		garage.setCount("Middle", 2);
 		garage.setCount("Upper", 2);
-		
-//		\item Klasse: Mittel
-//		\item Dauer: 5 Tage
-//		\item Automatik: Nein
-//		\item Sicherheitstraining: Ja
-//		
-//		\item Alter: > 21 Jahre
-//		\item Neukunde: Nein
-//		\item Alte Reklamation: Nein
-//		\item Führerscheindauer: 20 Jahre
 		
 		Customer customer = new Customer();
 		customer.setNew(false);
@@ -140,19 +135,16 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
     	parameterMap.put("request", request);
     	
+    	workItemHandler.setApproveNovice(false);
+    	
 		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
 		kSession.fireAllRules();
 		
 		assertTrue(request.isNovice());
 		assertTrue(request.getExtraChargePercent() == 10);
-		assertFalse(request.isNoviceCheckPassed());
 		assertTrue(request.requiresNovicePermission());
 		
-		assertEquals(request.getCarClass(), "Middle");
-//		assertTrue(request.getBasePrice() == 33250);
-//		assertTrue(request.getDiscount() == 1663); // Richtig runden!
-//		assertTrue(request.getFinalPrice() == 31587);
-//		assertTrue(request.getTotalPrice() == 31587);
+		assertTrue(request.isDeclined());
 	}
 
 }
