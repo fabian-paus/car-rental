@@ -45,25 +45,48 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		runtimeManager.disposeRuntimeEngine(runtimeEngine);
 		runtimeManager.close();
 	}
+	
+	private void runProcess(RentalRequest request) {
+		
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+    	parameterMap.put("request", request);
+    	
+		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
+		kSession.fireAllRules();
+	}
+	
+	private void assertRemainingCars(Garage garage, int small, int compact, int middle, int upper) {
+		
+		assertEquals(garage.getCount(Garage.SMALL), small);
+		assertEquals(garage.getCount(Garage.COMPACT), compact);
+		assertEquals(garage.getCount(Garage.MIDDLE), middle);
+		assertEquals(garage.getCount(Garage.UPPER), upper);
+	}
+	
+	private Garage makeGarage(int small, int compact, int middle, int upper) {
+		
+		Garage garage = new Garage();
+		
+		garage.setCount(Garage.SMALL, small);
+		garage.setCount(Garage.COMPACT, compact);
+		garage.setCount(Garage.MIDDLE, middle);
+		garage.setCount(Garage.UPPER, upper);
+		
+		return garage;
+	}
+	
+	private Calendar getStartDate() {
+		
+		Calendar startDate = Calendar.getInstance();
+		startDate.set(2016, 3 - 1, 21);
+		return startDate;
+	}
 
 	@Test
 	public void testCustomerA() {
 		
-		Garage garage = new Garage();
-		garage.setCount("Small", 2);
-		garage.setCount("Compact", 2);
-		garage.setCount("Middle", 2);
-		garage.setCount("Upper", 2);
-		
-//		\item Klasse: Mittel
-//		\item Dauer: 5 Tage
-//		\item Automatik: Nein
-//		\item Sicherheitstraining: Ja
-//		
-//		\item Alter: > 21 Jahre
-//		\item Neukunde: Nein
-//		\item Alte Reklamation: Nein
-//		\item Führerscheindauer: 20 Jahre
+		// Create input data
+		Garage garage = makeGarage(2, 2, 2, 2);
 		
 		Customer customer = new Customer();
 		customer.setNew(false);
@@ -73,21 +96,16 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		customer.setDrivingLicense(20);
 		
 		RentalRequest request = new RentalRequest();
-		Calendar startDate = Calendar.getInstance();
-		startDate.set(2016, 3 - 1, 21);
-		request.setStartDate(startDate);
+		request.setStartDate(getStartDate());
 		request.setDurationInDays(5);
-		request.setCarClass("Middle");
-		
+		request.setCarClass("Middle");	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
-		Map<String, Object> parameterMap = new HashMap<String, Object>();
-    	parameterMap.put("request", request);
-    	
-		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
-		kSession.fireAllRules();
+		// Execute the process
+		runProcess(request);
 		
+		// Test the output data
 		assertFalse(request.isNovice());
 		assertEquals(request.getExtraChargePercent(), 0);
 		assertFalse(request.requiresNovicePermission());
@@ -104,16 +122,15 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertEquals(request.getDiscount(), 1663);
 		assertEquals(request.getFinalPrice(), 31587);
 		assertEquals(request.getTotalPrice(), 31587);
+		
+		assertRemainingCars(garage, 2, 2, 1, 2);
 	}
 	
 	@Test
 	public void testCustomerA_DeclinedTest() {
 		
-		Garage garage = new Garage();
-		garage.setCount("Small", 2);
-		garage.setCount("Compact", 2);
-		garage.setCount("Middle", 2);
-		garage.setCount("Upper", 2);
+		// Create input data
+		Garage garage = makeGarage(2, 2, 2, 2);
 		
 		Customer customer = new Customer();
 		customer.setNew(false);
@@ -123,22 +140,15 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		customer.setDrivingLicense(3);
 		
 		RentalRequest request = new RentalRequest();
-		Calendar startDate = Calendar.getInstance();
-		startDate.set(2016, 3 - 1, 16);
-		request.setStartDate(startDate);
+		request.setStartDate(getStartDate());
 		request.setDurationInDays(5);
 		request.setCarClass("Middle");
 		
 		request.addCustomer(customer);
 		request.setGarage(garage);
-    		
-		Map<String, Object> parameterMap = new HashMap<String, Object>();
-    	parameterMap.put("request", request);
     	
     	workItemHandler.setApproveNovice(false);
-    	
-		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
-		kSession.fireAllRules();
+		runProcess(request);
 		
 		assertTrue(request.isNovice());
 		assertTrue(request.getExtraChargePercent() == 10);
