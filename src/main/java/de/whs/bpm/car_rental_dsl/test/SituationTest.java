@@ -492,5 +492,128 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertTrue(request.isDeclined());
 		assertRemainingCars(garage, 2, 2, 0, 0);
 	}
+	
+	@Test
+	public void testCustomerF_UpperExists() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 1);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(true);
+		customer.setHasSecurityTraining(true);
+		customer.setAge(32);
+		customer.setDrivingLicense(10);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(4);
+		request.setCarClass("Upper");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		assertEquals(request.getCarClass(), "Upper");
+		assertEquals(request.getBasePrice(), 36000);
+		assertEquals(request.getDiscount(), 9000);
+		assertEquals(request.getFinalPrice(), 27000);
+		assertEquals(request.getTotalPrice(), 27000);
+		
+		assertRemainingCars(garage, 2, 2, 0, 0);
+	}
+	
+	@Test
+	public void testCustomerF_DowngradePossible() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 1, 0);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(true);
+		customer.setHasSecurityTraining(true);
+		customer.setAge(32);
+		customer.setDrivingLicense(10);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(4);
+		request.setCarClass("Upper");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 10);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		// Downgrade to "Middle" class and extra deduction
+		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getBasePrice(), 28000);
+		assertEquals(request.getDiscount(), 7000);
+		assertEquals(request.getFinalPrice(), 21000);
+		assertEquals(request.getTotalPrice(), 18900);
+		
+		assertRemainingCars(garage, 2, 2, 0, 0);
+	}
+	
+	@Test
+	public void testCustomerF_DowngradeDeclined() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 0);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(true);
+		customer.setHasSecurityTraining(true);
+		customer.setAge(32);
+		customer.setDrivingLicense(10);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(4);
+		request.setCarClass("Upper");	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		runProcess(request);
+		
+		// Test the output data
+		assertFalse(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 10);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertFalse(request.isCarAvailable());
+		
+		assertTrue(request.isDeclined());		
+		assertRemainingCars(garage, 2, 2, 0, 0);
+	}
 
 }
