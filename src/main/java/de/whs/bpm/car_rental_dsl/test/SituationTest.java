@@ -1,7 +1,10 @@
 package de.whs.bpm.car_rental_dsl.test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jbpm.test.JbpmJUnitBaseTestCase;
@@ -123,6 +126,11 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertEquals(request.getTotalPrice(), 31587);
 		
 		assertRemainingCars(garage, 2, 2, 1, 2);
+		
+		String[] classes = { "Small", "Compact", "Middle", "Upper" };
+		List<String> upgrades = new ArrayList<String>();
+		
+		Collections.addAll(upgrades, "Small", "Compact", "Middle", "Upper");
 	}
 	
 	@Test

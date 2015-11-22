@@ -27,37 +27,17 @@ function boolean isAvailable(Garage garage, String carClass) {
 	return garage.getCount(carClass) > 0;
 }
 
-function String getUpgradeClass(Garage garage, String carClass) {
-	if (carClass.equals("Small")) {
-		if (isAvailable(garage, "Compact"))
-			return "Compact";
-		else if (isAvailable(garage, "Middle"))
-			return "Middle";
-		else if (isAvailable(garage, "Upper"))
-			return "Upper";
-	}
-	else if (carClass.equals("Compact")) {
-		if (isAvailable(garage, "Middle"))
-			return "Middle";
-		else if (isAvailable(garage, "Upper"))
-			return "Upper";
-	}
-	else if (carClass.equals("Middle")) {
-		if (isAvailable(garage, "Upper"))
-			return "Upper";
-	}
-	
-	return null;
-}
-
-function boolean upgradeAvailable(Garage garage, String carClass) {
-	String upgradeClass = getUpgradeClass(garage, carClass);
-	return upgradeClass != null;
-}
-
+// Marks a customer as a driving novice
 declare Novice
 	customer: Customer
 end
+
+// Marks a car class as available upgrade
+declare Upgrade
+	carClass : String
+end
+
+// Novice check
 
 rule "Is driving novice" ruleflow-group "novice-check"
 	
@@ -68,28 +48,28 @@ rule "Is driving novice" ruleflow-group "novice-check"
 		insert( new Novice($c) );
 end
 
-rule "Extra charge for novices" ruleflow-group "novice-check"
+rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-check"
 
 	when
 		$r : RentalRequest( $customers : customers )
-		$c : Customer( ) from $customers
-		Novice(customer == $c)
+		exists( Novice( customer memberOf $customers ) )
 	then
 		$r.setNovice(true);
 		$r.setExtraChargePercent(10);
 end
 
-rule "Novice: permission required" ruleflow-group "novice-check"
+rule "Permission for higher classes required" ruleflow-group "novice-check"
 
 	when
 		$r : RentalRequest( carClass not in ("Small", "Compact"), $customers : customers )
-		$c : Customer( ) from $customers
-		Novice(customer == $c)
+		exists( Novice( customer memberOf $customers ) )
 	then
 		$r.setRequiresNovicePermission(true);
 end
 
-rule "Avail: Downgrade for upper if not available" ruleflow-group "availibility-check"
+// Availability check
+
+rule "Downgrade for upper class if not available" ruleflow-group "availibility-check"
 
 	when
 		$r : RentalRequest( carClass == "Upper", !isAvailable(garage, carClass) )
@@ -100,17 +80,78 @@ rule "Avail: Downgrade for upper if not available" ruleflow-group "availibility-
 
 end
 
-rule "Avail: If updgrade possible it requires permission" ruleflow-group "availibility-check"
+rule "Upgrade from Small to Compact" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Small", isAvailable(garage, "Compact") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Compact") );
+		
+end
+
+rule "Upgrade from Small to Middle" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Small", isAvailable(garage, "Middle") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Middle") );
+		
+end
+
+rule "Upgrade from Small to Upper" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Small", isAvailable(garage, "Upper") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Upper") );
+		
+end
+
+rule "Upgrade from Compact to Middle" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Compact", isAvailable(garage, "Middle") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Middle") );
+		
+end
+
+rule "Upgrade from Compact to Upper" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Compact", isAvailable(garage, "Upper") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Upper") );
+		
+end
+
+rule "Upgrade from Middle to Upper" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Middle", isAvailable(garage, "Upper") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Upper") );
+		
+end
+
+rule "If updgrade possible it requires permission" ruleflow-group "availibility-check"
 
 	when
-		$r : RentalRequest( !isAvailable(garage, carClass), upgradeAvailable(garage, carClass) )
+		$r : RentalRequest( !isAvailable(garage, carClass) )
+		$u : Upgrade( $upgradeClass : carClass )
 	then
-		$r.setUpgradeClass(getUpgradeClass($r.getGarage(), $r.getCarClass()));
+		$r.setUpgradeClass($upgradeClass);
 		$r.setCarAvailable(true);
 		
 end
 
-rule "Avail: A car is available" ruleflow-group "availibility-check"
+rule "A car is available" ruleflow-group "availibility-check"
 
 	when
 		$r: RentalRequest( isAvailable(garage, carClass) )
@@ -119,7 +160,9 @@ rule "Avail: A car is available" ruleflow-group "availibility-check"
 		
 end
 
-rule "Daily base price: Small class car" ruleflow-group "price-calculation"
+// Base price
+
+rule "Daily price: Small class car" ruleflow-group "price-calculation"
 
     when
     	$r : RentalRequest( $days : days )
@@ -129,7 +172,7 @@ rule "Daily base price: Small class car" ruleflow-group "price-calculation"
 
 end
 
-rule "Daily base price: Compact class car" ruleflow-group "price-calculation"
+rule "Daily price: Compact class car" ruleflow-group "price-calculation"
 
     when
     	$r : RentalRequest( $days : days )
@@ -139,7 +182,7 @@ rule "Daily base price: Compact class car" ruleflow-group "price-calculation"
 
 end
 
-rule "Daily base price: Middle class car" ruleflow-group "price-calculation"
+rule "Daily price: Middle class car" ruleflow-group "price-calculation"
 
     when
     	$r : RentalRequest( $days : days )
@@ -149,7 +192,7 @@ rule "Daily base price: Middle class car" ruleflow-group "price-calculation"
 
 end
 
-rule "Daily base price: Upper class car" ruleflow-group "price-calculation"
+rule "Daily price: Upper class car" ruleflow-group "price-calculation"
 
     when
     	$r : RentalRequest( $days : days )
@@ -171,7 +214,7 @@ rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
 
 end
 
-rule "Daily price: free seventh" ruleflow-group "price-calculation"
+rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
 
     when
     	$r : RentalRequest( $days : days )
@@ -181,7 +224,7 @@ rule "Daily price: free seventh" ruleflow-group "price-calculation"
 
 end
 
-rule "Base price: Sum daily prices" ruleflow-group "price-calculation"
+rule "Base price is the sum of daily prices" ruleflow-group "price-calculation"
 
 	when
 		$r : RentalRequest( $days : days )
@@ -190,6 +233,8 @@ rule "Base price: Sum daily prices" ruleflow-group "price-calculation"
 		$r.addToBasePrice($d.getPrice());
 
 end
+
+// Discount
 
 rule "Discount: All customers are new customers" ruleflow-group "price-calculation"
 
@@ -223,7 +268,7 @@ rule "Discount: All customers have participated in security training" ruleflow-g
 
 end
 
-rule "Discount: Limit to 100 €" ruleflow-group "price-calculation"
+rule "Discount is limited to 100 €" ruleflow-group "price-calculation"
 
 	when
 		$r : RentalRequest( discount > 10000 )
@@ -231,6 +276,8 @@ rule "Discount: Limit to 100 €" ruleflow-group "price-calculation"
 		$r.setDiscount(10000);
 
 end
+
+// Final price
 
 rule "Final Price: Calculation" ruleflow-group "price-calculation"
 
@@ -250,6 +297,8 @@ rule "Final Price: Automatic fee" ruleflow-group "price-calculation"
 
 end
 
+// Total price
+
 rule "Total Price" ruleflow-group "price-calculation"
 
 	when
@@ -260,6 +309,3 @@ rule "Total Price" ruleflow-group "price-calculation"
 		$r.setTotalPrice(totalPrice);
 	
 end
-
-
-
