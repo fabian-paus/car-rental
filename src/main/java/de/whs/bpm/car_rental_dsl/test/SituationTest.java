@@ -98,7 +98,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(5);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -116,7 +116,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertFalse(request.isDeclined());
 		
-		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getCarClass(), Garage.MIDDLE);
 		assertEquals(request.getBasePrice(), 33250);
 		assertEquals(request.getDiscount(), 1663);
 		assertEquals(request.getFinalPrice(), 31587);
@@ -141,7 +141,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(1);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -160,7 +160,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertFalse(request.isDeclined());
 		
-		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getCarClass(), Garage.MIDDLE);
 		assertEquals(request.getBasePrice(), 7000);
 		assertEquals(request.getDiscount(), 1000);
 		assertEquals(request.getFinalPrice(), 6000);
@@ -185,7 +185,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(1);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -218,7 +218,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(7);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -233,13 +233,13 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertEquals(request.getExtraDeductionPercent(), 0);
 		assertTrue(request.hasFreeClassUpgrade());
-		assertEquals(request.getUpgradeClass(), "Upper");
+		assertEquals(request.getUpgradeClass(), Garage.UPPER);
 		assertTrue(request.isCarAvailable());
 		
 		assertFalse(request.isDeclined());
 		
 		// Price is still calculated for "Middle" class (free upgrade)
-		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getCarClass(), Garage.MIDDLE);
 		assertEquals(request.getBasePrice(), 38500);
 		assertEquals(request.getDiscount(), 0);
 		assertEquals(request.getFinalPrice(), 38500);
@@ -264,7 +264,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(7);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -279,7 +279,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertEquals(request.getExtraDeductionPercent(), 0);
 		assertTrue(request.hasFreeClassUpgrade());
-		assertEquals(request.getUpgradeClass(), "Upper");
+		assertEquals(request.getUpgradeClass(), Garage.UPPER);
 		assertTrue(request.isCarAvailable());
 		
 		assertTrue(request.isDeclined());	
@@ -302,7 +302,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(1);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -317,13 +317,13 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertEquals(request.getExtraDeductionPercent(), 0);
 		assertTrue(request.hasFreeClassUpgrade());
-		assertEquals(request.getUpgradeClass(), "Upper");
+		assertEquals(request.getUpgradeClass(), Garage.UPPER);
 		assertTrue(request.isCarAvailable());
 		
 		assertFalse(request.isDeclined());
 		
 		// Price is still calculated for "Middle" class (free upgrade)
-		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getCarClass(), Garage.MIDDLE);
 		assertEquals(request.getBasePrice(), 7000);
 		assertEquals(request.getDiscount(), 1000);
 		assertEquals(request.getFinalPrice(), 6000);
@@ -348,7 +348,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(1);
-		request.setCarClass("Middle");	
+		request.setCarClass(Garage.MIDDLE);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -363,7 +363,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertEquals(request.getExtraDeductionPercent(), 0);
 		assertTrue(request.hasFreeClassUpgrade());
-		assertEquals(request.getUpgradeClass(), "Upper");
+		assertEquals(request.getUpgradeClass(), Garage.UPPER);
 		assertTrue(request.isCarAvailable());
 		
 		assertTrue(request.isDeclined());		
@@ -386,7 +386,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(6);
-		request.setCarClass("Upper");	
+		request.setCarClass(Garage.UPPER);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -404,7 +404,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertFalse(request.isDeclined());
 		
-		assertEquals(request.getCarClass(), "Upper");
+		assertEquals(request.getCarClass(), Garage.UPPER);
 		assertEquals(request.getBasePrice(), 49500);
 		assertEquals(request.getDiscount(), 1000);
 		assertEquals(request.getFinalPrice(), 48500);
@@ -429,7 +429,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(6);
-		request.setCarClass("Upper");	
+		request.setCarClass(Garage.UPPER);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -448,7 +448,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertFalse(request.isDeclined());
 		
 		// Downgrade to "Middle" class and extra deduction
-		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getCarClass(), Garage.MIDDLE);
 		assertEquals(request.getBasePrice(), 38500);
 		assertEquals(request.getDiscount(), 1000);
 		assertEquals(request.getFinalPrice(), 37500);
@@ -473,7 +473,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(6);
-		request.setCarClass("Upper");	
+		request.setCarClass(Garage.UPPER);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -509,7 +509,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(4);
-		request.setCarClass("Upper");	
+		request.setCarClass(Garage.UPPER);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -527,7 +527,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertFalse(request.isDeclined());
 		
-		assertEquals(request.getCarClass(), "Upper");
+		assertEquals(request.getCarClass(), Garage.UPPER);
 		assertEquals(request.getBasePrice(), 36000);
 		assertEquals(request.getDiscount(), 9000);
 		assertEquals(request.getFinalPrice(), 27000);
@@ -552,7 +552,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(4);
-		request.setCarClass("Upper");	
+		request.setCarClass(Garage.UPPER);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -571,7 +571,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertFalse(request.isDeclined());
 		
 		// Downgrade to "Middle" class and extra deduction
-		assertEquals(request.getCarClass(), "Middle");
+		assertEquals(request.getCarClass(), Garage.MIDDLE);
 		assertEquals(request.getBasePrice(), 28000);
 		assertEquals(request.getDiscount(), 7000);
 		assertEquals(request.getFinalPrice(), 21000);
@@ -596,7 +596,7 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		RentalRequest request = new RentalRequest();
 		request.setStartDate(getStartDate());
 		request.setDurationInDays(4);
-		request.setCarClass("Upper");	
+		request.setCarClass(Garage.UPPER);	
 		request.addCustomer(customer);
 		request.setGarage(garage);
 		
@@ -614,6 +614,59 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		
 		assertTrue(request.isDeclined());		
 		assertRemainingCars(garage, 2, 2, 0, 0);
+	}
+	
+	@Test
+	public void testCustomerG() {
+		
+		// Create input data
+		Garage garage = makeGarage(2, 2, 0, 0);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(true);
+		customer.setAge(25);
+		customer.setDrivingLicense(6);
+		
+		Customer wife = new Customer();
+		wife.setNew(true);
+		wife.setHasReclamation(false);
+		wife.setHasSecurityTraining(false);
+		wife.setAge(20);
+		wife.setDrivingLicense(2);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(1);
+		request.setCarClass(Garage.COMPACT);	
+		
+		request.addCustomer(customer);
+		request.addCustomer(wife);
+		
+		request.setGarage(garage);
+		
+		// Execute the process
+		runProcess(request);
+		
+		// Test the output data
+		assertTrue(request.isNovice());
+		assertEquals(request.getExtraChargePercent(), 10);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		assertEquals(request.getCarClass(), Garage.COMPACT);
+		assertEquals(request.getBasePrice(), 5000);
+		assertEquals(request.getDiscount(), 0);
+		assertEquals(request.getFinalPrice(), 5000);
+		assertEquals(request.getTotalPrice(), 5500);
+		
+		assertRemainingCars(garage, 2, 1, 0, 0);
 	}
 
 }

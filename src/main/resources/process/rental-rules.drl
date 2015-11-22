@@ -80,7 +80,7 @@ end
 rule "Novice: permission required" ruleflow-group "novice-check"
 
 	when
-		$r : RentalRequest( carClass != "Small" || carClass != "Compact" )
+		$r : RentalRequest( carClass not in ("Small", "Compact") )
 		$c : Customer( )
 		Novice(customer == $c)
 	then
