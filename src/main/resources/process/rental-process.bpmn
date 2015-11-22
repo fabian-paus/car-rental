@@ -21,9 +21,6 @@
 kRuntime.insert(request);&#xD;
 for (Customer c : request.getCustomers()) {&#xD;
 	kRuntime.insert(c);&#xD;
-}&#xD;
-for (RentalDay d : request.getDays()) {&#xD;
-	kRuntime.insert(d);&#xD;
 }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:startEvent id="_1">
@@ -253,6 +250,14 @@ else {&#xD;
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_53" language="http://www.java.com/java">return upgradeApproved;</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:businessRuleTask id="BusinessRuleTask_3" tns:ruleFlowGroup="price-calculation" name="Calculate Price">
+      <bpmn2:extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>KieRuntime kRuntime = kcontext.getKnowledgeRuntime();&#xD;
+for (RentalDay d : request.getDays()) {&#xD;
+	kRuntime.insert(d);&#xD;
+}</tns:script>
+        </tns:onEntry-script>
+      </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_23</bpmn2:outgoing>
     </bpmn2:businessRuleTask>
