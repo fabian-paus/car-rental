@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 
 public class EditgarageDialog extends JDialog {
 
+	private static final long serialVersionUID = -7670790502555107368L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField tfSmall;
 	private JTextField tfCompact;

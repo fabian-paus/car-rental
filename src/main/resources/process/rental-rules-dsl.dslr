@@ -149,6 +149,15 @@ rule "If updgrade possible it requires permission" ruleflow-group "availibility-
 		there is a possible upgrade
 	then
 		upgrade the car class
+		mark the car for that request as available
+end
+
+rule "A car is available" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car is available
+	then
+		mark the car for that request as available
 end
 
 // Base price
@@ -205,4 +214,73 @@ rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
     	- day index is in (7, 14, 21, 28)
     then
     	set the daily price to 0
+end
+
+rule "Base price is the sum of daily prices" ruleflow-group "price-calculation"
+	when
+		there is a request
+		there is a rental day from that request
+	then
+		add the daily price to the base price
+end
+
+// Discount
+
+rule "Discount: All customers are new customers" ruleflow-group "price-calculation"
+	when
+		there is a request
+		every customer from that request is a new customer
+	then
+		add 10.00 to the discount
+end
+
+rule "Discount: All customers have an old reclamation" ruleflow-group "price-calculation"
+	when
+		there is a request
+		every customer from that request had a valid reclamation
+	then
+		discount the base price by 20%
+end
+
+rule "Discount: All customers have participated in security training" ruleflow-group "price-calculation"
+	when
+		there is a request
+		every customer from that request had a security training
+	then
+		discount the base price by 5%;
+end
+
+rule "Discount is limited to 100 €" ruleflow-group "price-calculation"
+	when
+		there is a request
+		- discount is greater than 100.00
+	then
+		set the discount to 100.00
+end
+
+// Final price
+
+rule "Final Price: Calculation" ruleflow-group "price-calculation"
+	when
+		there is a request
+	then
+		set the final price to the base price
+		subtract the discount from the final price
+end
+
+rule "Final Price: Automatic fee" ruleflow-group "price-calculation"
+	when
+		there is a request
+		- for an automatic car
+	then
+		add a 5% fee of the base price to the final price
+end
+
+// Total price
+
+rule "Total Price" ruleflow-group "price-calculation"
+	when
+		there is a request
+	then
+		calculate the total price using extra charge and deduction percentages
 end

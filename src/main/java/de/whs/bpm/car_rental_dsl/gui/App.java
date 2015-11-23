@@ -1,27 +1,24 @@
 package de.whs.bpm.car_rental_dsl.gui;
 
-import java.awt.Dialog;
 import java.awt.EventQueue;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.AbstractListModel;
+import javax.swing.JTextField;
 
-import org.hibernate.ejb.criteria.expression.function.UpperFunction;
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -29,12 +26,6 @@ import org.jdatepicker.impl.UtilDateModel;
 import de.whs.bpm.car_rental_dsl.Customer;
 import de.whs.bpm.car_rental_dsl.Garage;
 import de.whs.bpm.car_rental_dsl.RentalRequest;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 
 public class App {
 
@@ -97,8 +88,8 @@ public class App {
 		frame.getContentPane().setLayout(null);
 		
 		final DefaultListModel<Customer> listModel;
-		listModel = new DefaultListModel();
-		final JList list = new JList(listModel);
+		listModel = new DefaultListModel<Customer>();
+		final JList<Customer> list = new JList<Customer>(listModel);
 
 	
 		list.setBounds(12, 13, 314, 182);
@@ -179,8 +170,8 @@ public class App {
         lblFarzeugklasse.setBounds(12, 331, 84, 16);
         frame.getContentPane().add(lblFarzeugklasse);
         
-        final JComboBox comboBox = new JComboBox();
-        comboBox.setModel(new DefaultComboBoxModel(new String[] {SMALL, COMPACT, MIDDLE, UPPER}));
+        final JComboBox<String> comboBox = new JComboBox<String>();
+        comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {SMALL, COMPACT, MIDDLE, UPPER}));
         comboBox.setBounds(109, 328, 217, 22);
         frame.getContentPane().add(comboBox);
         
