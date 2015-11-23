@@ -209,7 +209,7 @@ rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
         $d : RentalDay( isWeekend(day) || isSpecialDay(day) ) from $days
     then
         int price = $d.getPrice();
-        int discount = (int)(price * 0.25f);
+        int discount = Math.round(0.25f * price);
         $d.setPrice(price - discount);
 
 end
@@ -293,7 +293,8 @@ rule "Final Price: Automatic fee" ruleflow-group "price-calculation"
 	when
 		$r : RentalRequest( automatic )
 	then
-		$r.addToFinalPrice(500);
+		int automaticFee = Math.round(0.05f * $r.getBasePrice());
+		$r.addToFinalPrice(automaticFee);
 
 end
 
