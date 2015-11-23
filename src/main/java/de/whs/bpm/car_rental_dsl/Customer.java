@@ -9,6 +9,8 @@ public class Customer {
 	private int age;
 	private int drivingLicense;
 	
+	private String Name;
+	
 	public Customer() {
 		
 	}
@@ -44,5 +46,19 @@ public class Customer {
 		this.drivingLicense = drivingLicense;
 	}
 	
+	
+	@Override
+	public String toString() {
+		
+		return getName();
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
 	
 }
