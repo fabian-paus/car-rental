@@ -1,0 +1,208 @@
+package de.whs.bpm.car_rental_dsl2
+
+import java.util.Calendar;
+import de.whs.bpm.car_rental_dsl.RentalDay;
+import de.whs.bpm.car_rental_dsl.RentalRequest;
+import de.whs.bpm.car_rental_dsl.Garage;
+import de.whs.bpm.car_rental_dsl.Customer;
+
+expander rental-language.dsl
+
+function boolean isWeekend(Calendar day) {
+	return day.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+			|| day.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+}
+
+function boolean isHoliday(Calendar day) {
+	int dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
+	int month = day.get(Calendar.MONTH);
+	// Month is zero-based!
+	return dayOfMonth ==  1 && month ==  0
+		|| dayOfMonth == 25 && month ==  2
+		|| dayOfMonth == 28 && month ==  2
+		|| dayOfMonth == 24 && month == 11
+		|| dayOfMonth == 31 && month == 11
+	;
+}
+
+function boolean isAvailable(Garage garage, String carClass) {
+	return garage.getCount(carClass) > 0;
+}
+
+// Marks a customer as a driving novice
+declare Novice
+	customer: Customer
+end
+
+// Marks a car class as available upgrade
+declare Upgrade
+	carClass : String
+end
+
+// Novice check
+
+rule "Is driving novice" ruleflow-group "novice-check"
+	when
+		there is a request
+		there is a customer with that request
+		- age is less than 21 or has driving license for less than 2	
+	then
+		the customer is a driving novice	
+end
+
+rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-check"
+	when
+		there is a request
+		there exists a customer who is driving novice
+	then
+		treat the request as novice
+		set extra charge to 10%	
+end
+
+rule "Permission for higher classes required" ruleflow-group "novice-check"
+	when
+		there is a request
+		- car class is not in ("Small", "Compact")
+		there exists a customer who is driving novice
+	then
+		ask the boss for permission
+end
+
+
+// Availability check
+
+rule "Downgrade for upper class if not available" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Upper"
+		- car is not available
+	then
+		set car class to "Middle"
+		set extra deduction to 10%
+		update the request
+end
+
+rule "Upgrade from Small to Compact" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Small"
+		- "Compact" car is available
+		there exists no upgrade
+	then
+		upgrade to "Compact" is possible	
+end
+
+rule "Upgrade from Small to Middle" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Small"
+		- "Middle" car is available
+		there exists no upgrade
+	then
+		upgrade to "Middle" is possible	
+end
+
+rule "Upgrade from Small to Upper" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Small"
+		- "Upper" car is available
+		there exists no upgrade
+	then
+		upgrade to "Upper" is possible	
+end
+
+rule "Upgrade from Compact to Middle" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Compact"
+		- "Middle" car is available
+		there exists no upgrade
+	then
+		upgrade to "Middle" is possible	
+end
+
+rule "Upgrade from Compact to Upper" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Compact"
+		- "Upper" car is available
+		there exists no upgrade
+	then
+		upgrade to "Upper" is possible	
+end
+
+rule "Upgrade from Middle to Upper" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Middle"
+		- "Upper" car is available
+		there exists no upgrade
+	then
+		upgrade to "Upper" is possible	
+end
+
+rule "If updgrade possible it requires permission" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car is not available
+		there is a possible upgrade
+	then
+		upgrade the car class
+end
+
+// Base price
+
+rule "Daily price: Small class car" ruleflow-group "price-calculation"
+    when
+    	there is a request
+    	- car class is "Small"
+    	there is a rental day from that request
+    then
+    	set the daily price to 4000
+end
+
+rule "Daily price: Compact class car" ruleflow-group "price-calculation"
+    when
+    	there is a request
+    	- car class is "Compact"
+    	there is a rental day from that request
+    then
+    	set the daily price to 5000
+end
+
+rule "Daily price: Middle class car" ruleflow-group "price-calculation"
+    when
+    	there is a request
+    	- car class is "Middle"
+    	there is a rental day from that request
+    then
+    	set the daily price to 7000
+end
+
+rule "Daily price: Upper class car" ruleflow-group "price-calculation"
+    when
+    	there is a request
+    	- car class is "Upper"
+    	there is a rental day from that request
+    then
+    	set the daily price to 9000
+end
+
+rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
+    when
+    	there is a request
+    	there is a rental day from that request
+    	- is weekend or holiday
+    then
+    	the daily price is discounted by 25%
+end
+
+rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
+    when
+    	there is a request
+    	there is a rental day from that request
+    	- day index is in (7, 14, 21, 28)
+    then
+    	set daily price to 0
+end

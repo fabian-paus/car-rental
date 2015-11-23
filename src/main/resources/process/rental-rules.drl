@@ -144,7 +144,7 @@ rule "If updgrade possible it requires permission" ruleflow-group "availibility-
 
 	when
 		$r : RentalRequest( !isAvailable(garage, carClass) )
-		$u : Upgrade( $upgradeClass : carClass )
+		Upgrade( $upgradeClass : carClass )
 	then
 		$r.setUpgradeClass($upgradeClass);
 		$r.setCarAvailable(true);

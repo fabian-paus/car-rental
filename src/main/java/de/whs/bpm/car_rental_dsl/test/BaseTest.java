@@ -27,7 +27,9 @@ public class BaseTest extends JbpmJUnitBaseTestCase {
 		
 		Map<String, ResourceType> resources = new HashMap<String, ResourceType>();
 		resources.put("process/rental-process.bpmn", ResourceType.BPMN2);
-		resources.put("process/rental-rules.drl", ResourceType.DRL);
+		resources.put("process/rental-language.dsl", ResourceType.DSL);
+		resources.put("process/rental-rules-dsl.dslr", ResourceType.DSLR);
+		//resources.put("process/rental-rules.drl", ResourceType.DRL);
 		runtimeManager = createRuntimeManager(resources);
 		
 		runtimeEngine = getRuntimeEngine(null);
