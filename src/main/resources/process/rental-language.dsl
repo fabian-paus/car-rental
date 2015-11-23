@@ -19,7 +19,7 @@
 [condition][]there is a possible upgrade=Upgrade( $upgradeClass : carClass )
 [consequence][]upgrade the car class=$r.setUpgradeClass($upgradeClass); 
 [condition][]there is a rental day from that request=$d : RentalDay( ) from $days
-[consequence][]set the daily price to {price}=$d.setPrice({price});
+[consequence][]set the daily price to {price}=$d.setPrice((int)Math.round(100 * {price}));
 [condition][RentalDay]- is weekend or holiday=isWeekend(day) || isHoliday(day)
 [consequence][]the daily price is discounted by {percent}%=$d.setPrice(Math.round((100 - {percent}) / 100.0f * $d.getPrice()));
 [condition][]- day index is in {indices}=dayIndex in {indices}
@@ -35,5 +35,6 @@
 [consequence][]subtract the discount from the final price=$r.addToFinalPrice(-$r.getDiscount());
 [condition][RentalRequest]- for an automatic car=automatic
 [consequence][]add a {percent}% fee of the base price to the final price=$r.addToFinalPrice(Math.round({percent} / 100.0f * $r.getBasePrice()));
-[consequence][]calculate the total price using extra charge and deduction percentages=$r.setTotalPrice(Math.round((100 + $r.getExtraChargePercent() - $r.getExtraDeductionPercent()) / 100.0f * $r.getFinalPrice()));
 [consequence][]mark the car for that request as available=$r.setCarAvailable(true);
+[*][]set {var} to 100% plus extra charge minus extra deduction=int {var} = 100 + $r.getExtraChargePercent() - $r.getExtraDeductionPercent();
+[*][]set the total price to {percent}% of the final price=$r.setTotalPrice(Math.round({percent} / 100.0f * $r.getFinalPrice()));

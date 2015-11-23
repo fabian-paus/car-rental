@@ -16,7 +16,7 @@ function boolean isWeekend(Calendar day) {
 function boolean isHoliday(Calendar day) {
 	int dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
 	int month = day.get(Calendar.MONTH);
-	// Month is zero-based!
+	// Add holidays here (month is zero-based):
 	return dayOfMonth ==  1 && month ==  0
 		|| dayOfMonth == 25 && month ==  2
 		|| dayOfMonth == 28 && month ==  2
@@ -168,7 +168,7 @@ rule "Daily price: Small class car" ruleflow-group "price-calculation"
     	- car class is "Small"
     	there is a rental day from that request
     then
-    	set the daily price to 4000
+    	set the daily price to 40.00
 end
 
 rule "Daily price: Compact class car" ruleflow-group "price-calculation"
@@ -177,7 +177,7 @@ rule "Daily price: Compact class car" ruleflow-group "price-calculation"
     	- car class is "Compact"
     	there is a rental day from that request
     then
-    	set the daily price to 5000
+    	set the daily price to 50.00
 end
 
 rule "Daily price: Middle class car" ruleflow-group "price-calculation"
@@ -186,7 +186,7 @@ rule "Daily price: Middle class car" ruleflow-group "price-calculation"
     	- car class is "Middle"
     	there is a rental day from that request
     then
-    	set the daily price to 7000
+    	set the daily price to 70.00
 end
 
 rule "Daily price: Upper class car" ruleflow-group "price-calculation"
@@ -195,7 +195,7 @@ rule "Daily price: Upper class car" ruleflow-group "price-calculation"
     	- car class is "Upper"
     	there is a rental day from that request
     then
-    	set the daily price to 9000
+    	set the daily price to 90.00
 end
 
 rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
@@ -213,7 +213,7 @@ rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
     	there is a rental day from that request
     	- day index is in (7, 14, 21, 28)
     then
-    	set the daily price to 0
+    	set the daily price to 0.00
 end
 
 rule "Base price is the sum of daily prices" ruleflow-group "price-calculation"
@@ -282,5 +282,6 @@ rule "Total Price" ruleflow-group "price-calculation"
 	when
 		there is a request
 	then
-		calculate the total price using extra charge and deduction percentages
+		set percent to 100% plus extra charge minus extra deduction
+		set the total price to percent% of the final price
 end
