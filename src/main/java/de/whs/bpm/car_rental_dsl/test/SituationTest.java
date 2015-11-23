@@ -1,89 +1,12 @@
 package de.whs.bpm.car_rental_dsl.test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.jbpm.test.JbpmJUnitBaseTestCase;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.kie.api.io.ResourceType;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.manager.RuntimeEngine;
-import org.kie.api.runtime.manager.RuntimeManager;
 
 import de.whs.bpm.car_rental_dsl.Customer;
 import de.whs.bpm.car_rental_dsl.Garage;
 import de.whs.bpm.car_rental_dsl.RentalRequest;
 
-public class SituationTest extends JbpmJUnitBaseTestCase {
-	
-	private RuntimeManager runtimeManager;
-	private RuntimeEngine runtimeEngine;
-	private KieSession kSession;
-	private ApprovalWorkItemHandler workItemHandler;
-	
-	@Before
-	public void setupKieRuntime() {
-		
-		Map<String, ResourceType> resources = new HashMap<String, ResourceType>();
-		resources.put("process/rental-process.bpmn", ResourceType.BPMN2);
-		resources.put("process/rental-rules.drl", ResourceType.DRL);
-		runtimeManager = createRuntimeManager(resources);
-		
-		runtimeEngine = getRuntimeEngine(null);
-		kSession = runtimeEngine.getKieSession();
-		
-		workItemHandler = new ApprovalWorkItemHandler();
-		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
-	}
-	
-	@After
-	public void cleanupKieRuntime() {
-		
-		runtimeManager.disposeRuntimeEngine(runtimeEngine);
-		runtimeManager.close();
-	}
-	
-	private void runProcess(RentalRequest request) {
-		
-		Map<String, Object> parameterMap = new HashMap<String, Object>();
-    	parameterMap.put("request", request);
-    	
-		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
-		kSession.fireAllRules();
-	}
-	
-	private void assertRemainingCars(Garage garage, int small, int compact, int middle, int upper) {
-		
-		assertEquals(garage.getCount(Garage.SMALL), small);
-		assertEquals(garage.getCount(Garage.COMPACT), compact);
-		assertEquals(garage.getCount(Garage.MIDDLE), middle);
-		assertEquals(garage.getCount(Garage.UPPER), upper);
-	}
-	
-	private Garage makeGarage(int small, int compact, int middle, int upper) {
-		
-		Garage garage = new Garage();
-		
-		garage.setCount(Garage.SMALL, small);
-		garage.setCount(Garage.COMPACT, compact);
-		garage.setCount(Garage.MIDDLE, middle);
-		garage.setCount(Garage.UPPER, upper);
-		
-		return garage;
-	}
-	
-	private Calendar getStartDate() {
-		
-		Calendar startDate = Calendar.getInstance();
-		startDate.set(2016, 3 - 1, 21);
-		return startDate;
-	}
+public class SituationTest extends BaseTest {
 
 	@Test
 	public void testCustomerA() {
@@ -126,11 +49,6 @@ public class SituationTest extends JbpmJUnitBaseTestCase {
 		assertEquals(request.getTotalPrice(), 31587);
 		
 		assertRemainingCars(garage, 2, 2, 1, 2);
-		
-		String[] classes = { "Small", "Compact", "Middle", "Upper" };
-		List<String> upgrades = new ArrayList<String>();
-		
-		Collections.addAll(upgrades, "Small", "Compact", "Middle", "Upper");
 	}
 	
 	@Test
