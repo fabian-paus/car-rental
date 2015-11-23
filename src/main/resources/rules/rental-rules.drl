@@ -3,6 +3,7 @@ package de.whs.bpm.car_rental_dsl
 import java.util.Calendar;
 import de.whs.bpm.car_rental_dsl.RentalDay;
 import de.whs.bpm.car_rental_dsl.RentalRequest;
+import de.whs.bpm.car_rental_dsl.Garage;
 import de.whs.bpm.car_rental_dsl.Customer;
 
 function boolean isWeekend(Calendar day) {
@@ -11,128 +12,301 @@ function boolean isWeekend(Calendar day) {
 }
 
 function boolean isSpecialDay(Calendar day) {
-	return day.get(Calendar.DAY_OF_MONTH) == 1 && day.get(Calendar.MONTH) == 0
-		|| day.get(Calendar.DAY_OF_MONTH) == 24 && day.get(Calendar.MONTH) == 11
-		|| day.get(Calendar.DAY_OF_MONTH) == 31 && day.get(Calendar.MONTH) == 11
+	int dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
+	int month = day.get(Calendar.MONTH);
+	// Month is zero-based!
+	return dayOfMonth ==  1 && month ==  0
+		|| dayOfMonth == 25 && month ==  2
+		|| dayOfMonth == 28 && month ==  2
+		|| dayOfMonth == 24 && month == 11
+		|| dayOfMonth == 31 && month == 11
 	;
 }
 
-declare IsNovice
+function boolean isAvailable(Garage garage, String carClass) {
+	return garage.getCount(carClass) > 0;
+}
+
+// Marks a customer as a driving novice
+declare Novice
 	customer: Customer
 end
 
-
-rule "Daily base price: Small class car"
-
-    when
-        $d : RentalDay( carClass == "Small" )
-    then
-        $d.setPrice(4000);
-
+// Marks a car class as available upgrade
+declare Upgrade
+	carClass : String
 end
 
-rule "Daily base price: Compact class car"
-
-    when
-        $d : RentalDay( carClass == "Compact" )
-    then
-        $d.setPrice(5000);
-
-end
-
-rule "Daily base price: Middle class car"
-
-    when
-        $d : RentalDay( carClass == "Middle" )
-    then
-        $d.setPrice(7000);
-
-end
-
-rule "Daily base price: Upper class car"
-
-    when
-        $d : RentalDay( carClass == "Upper" )
-    then
-        $d.setPrice(9000);
-
-end
-
-rule "Daily price: Weekend discount"
-
-    when
-        $d : RentalDay( isWeekend(day) || isSpecialDay(day) )
-    then
-        int price = $d.getPrice();
-        int discount = (int)(price * 0.25f);
-        $d.setPrice(price - discount);
-
-end
-
-rule "Daily price: free seventh"
-
-    when
-        $d : RentalDay( dayIndex == 7 || dayIndex == 14 || dayIndex == 21 || dayIndex == 28 )
-    then
-        $d.setPrice(0);
-
-end
-
-rule "Sum daily prices"
-
-	when
-		$r : RentalRequest( )
-		$d : RentalDay( request == $r )
-	then
-		$r.addToBasePrice($d.getPrice());
-
-end
+// Novice check
 
 rule "Is driving novice" ruleflow-group "novice-check"
 	
 	when
-		$c : Customer( age < 21 || drivingLicense < 2 )
+		$r : RentalRequest( $customers : customers )
+		$c : Customer( age < 21 || drivingLicense < 2 ) from $customers
 	then
-		insert( new IsNovice($c) );
+		insert( new Novice($c) );
 end
 
-rule "Novice: extra charge" ruleflow-group "novice-check"
+rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-check"
 
 	when
-		$r : RentalRequest( )
-		$c : Customer( )
-		IsNovice(customer == $c)
+		$r : RentalRequest( $customers : customers )
+		exists( Novice( customer memberOf $customers ) )
 	then
 		$r.setNovice(true);
 		$r.setExtraChargePercent(10);
 end
 
-rule "Novice: permission required" ruleflow-group "novice-check"
+rule "Permission for higher classes required" ruleflow-group "novice-check"
 
 	when
-		$r : RentalRequest( carClass != "Small" || carClass != "Compact" )
-		$c : Customer( )
-		IsNovice(customer == $c)
+		$r : RentalRequest( carClass not in ("Small", "Compact"), $customers : customers )
+		exists( Novice( customer memberOf $customers ) )
 	then
 		$r.setRequiresNovicePermission(true);
 end
 
-rule "Novice: check passed 1" ruleflow-group "novice-check"
+// Availability check
+
+rule "Downgrade for upper class if not available" ruleflow-group "availibility-check"
+
+	when
+		$r : RentalRequest( carClass == "Upper", !isAvailable(garage, carClass) )
+	then
+		$r.setCarClass("Middle");
+		$r.setExtraDeductionPercent(10);
+		update( $r );
+
+end
+
+rule "Upgrade from Small to Compact" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Small", isAvailable(garage, "Compact") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Compact") );
+		
+end
+
+rule "Upgrade from Small to Middle" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Small", isAvailable(garage, "Middle") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Middle") );
+		
+end
+
+rule "Upgrade from Small to Upper" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Small", isAvailable(garage, "Upper") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Upper") );
+		
+end
+
+rule "Upgrade from Compact to Middle" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Compact", isAvailable(garage, "Middle") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Middle") );
+		
+end
+
+rule "Upgrade from Compact to Upper" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Compact", isAvailable(garage, "Upper") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Upper") );
+		
+end
+
+rule "Upgrade from Middle to Upper" ruleflow-group "availibility-check"
+	
+	when
+		$r : RentalRequest( carClass == "Middle", isAvailable(garage, "Upper") )
+		not (exists Upgrade( ))
+	then
+		insert( new Upgrade("Upper") );
+		
+end
+
+rule "If updgrade possible it requires permission" ruleflow-group "availibility-check"
+
+	when
+		$r : RentalRequest( !isAvailable(garage, carClass) )
+		$u : Upgrade( $upgradeClass : carClass )
+	then
+		$r.setUpgradeClass($upgradeClass);
+		$r.setCarAvailable(true);
+		
+end
+
+rule "A car is available" ruleflow-group "availibility-check"
+
+	when
+		$r: RentalRequest( isAvailable(garage, carClass) )
+	then
+		$r.setCarAvailable(true);
+		
+end
+
+// Base price
+
+rule "Daily price: Small class car" ruleflow-group "price-calculation"
+
+    when
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Small" ) from $days
+    then
+        $d.setPrice(4000);
+
+end
+
+rule "Daily price: Compact class car" ruleflow-group "price-calculation"
+
+    when
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Compact" ) from $days
+    then
+        $d.setPrice(5000);
+
+end
+
+rule "Daily price: Middle class car" ruleflow-group "price-calculation"
+
+    when
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Middle" ) from $days
+    then
+        $d.setPrice(7000);
+
+end
+
+rule "Daily price: Upper class car" ruleflow-group "price-calculation"
+
+    when
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( carClass == "Upper" ) from $days
+    then
+        $d.setPrice(9000);
+
+end
+
+rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
+
+    when
+    	$r : RentalRequest( $days : days )
+        $d : RentalDay( isWeekend(day) || isSpecialDay(day) ) from $days
+    then
+        int price = $d.getPrice();
+        int discount = Math.round(0.25f * price);
+        $d.setPrice(price - discount);
+
+end
+
+rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
+
+    when
+    	$r : RentalRequest( $days : days )
+    	$d : RentalDay( dayIndex in (7, 14, 21, 28) ) from $days
+    then
+        $d.setPrice(0);
+
+end
+
+rule "Base price is the sum of daily prices" ruleflow-group "price-calculation"
+
+	when
+		$r : RentalRequest( $days : days )
+		$d : RentalDay( ) from $days
+	then
+		$r.addToBasePrice($d.getPrice());
+
+end
+
+// Discount
+
+rule "Discount: All customers are new customers" ruleflow-group "price-calculation"
+
+	when
+		$r : RentalRequest( $customers : customers )
+		forall( Customer( newCustomer ) from $customers )
+	then
+		$r.addToDiscount(1000);
+
+end
+
+rule "Discount: All customers have an old reclamation" ruleflow-group "price-calculation"
+
+	when
+		$r : RentalRequest( $customers : customers )
+		forall ( Customer( hasReclamation ) from $customers )
+	then
+		int reclamationDiscount = Math.round(0.20f * $r.getBasePrice());
+		$r.addToDiscount(reclamationDiscount);
+
+end
+
+rule "Discount: All customers have participated in security training" ruleflow-group "price-calculation"
+
+	when
+		$r : RentalRequest( $customers : customers )
+		forall( Customer( hasSecurityTraining ) from $customers )
+	then
+		int securityDiscount = Math.round(0.05f * $r.getBasePrice());
+		$r.addToDiscount(securityDiscount);
+
+end
+
+rule "Discount is limited to 100 €" ruleflow-group "price-calculation"
+
+	when
+		$r : RentalRequest( discount > 10000 )
+	then
+		$r.setDiscount(10000);
+
+end
+
+// Final price
+
+rule "Final Price: Calculation" ruleflow-group "price-calculation"
 
 	when
 		$r : RentalRequest( )
-		$c : Customer( )
-		not IsNovice(customer == $c)
 	then
-		$r.setNoviceCheckPassed(true);
+		$r.setFinalPrice($r.getBasePrice() - $r.getDiscount());
+
 end
 
-rule "Novice: check passed 2" ruleflow-group "novice-check"
+rule "Final Price: Automatic fee" ruleflow-group "price-calculation"
 
 	when
-		$r : RentalRequest( carClass == "Small" || carClass == "Compact" )
-		$c : Customer( )
-		IsNovice(customer == $c)
+		$r : RentalRequest( automatic )
 	then
-		$r.setNoviceCheckPassed(true);
+		int automaticFee = Math.round(0.05f * $r.getBasePrice());
+		$r.addToFinalPrice(automaticFee);
+
+end
+
+// Total price
+
+rule "Total Price" ruleflow-group "price-calculation"
+
+	when
+		$r : RentalRequest( )
+	then
+		int percent = 100 + $r.getExtraChargePercent() - $r.getExtraDeductionPercent();
+		int totalPrice = Math.round(percent / 100.0f * $r.getFinalPrice());
+		$r.setTotalPrice(totalPrice);
+	
 end
