@@ -204,5 +204,5 @@ rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
     	there is a rental day from that request
     	- day index is in (7, 14, 21, 28)
     then
-    	set daily price to 0
+    	set the daily price to 0
 end

@@ -98,7 +98,7 @@ public class App {
 		
 		final DefaultListModel<Customer> listModel;
 		listModel = new DefaultListModel();
-		JList list = new JList(listModel);
+		final JList list = new JList(listModel);
 
 	
 		list.setBounds(12, 13, 314, 182);
@@ -146,7 +146,7 @@ public class App {
 		btnBearbeiten.setBounds(229, 197, 97, 25);
 		frame.getContentPane().add(btnBearbeiten);
 		
-	    JDatePickerImpl datePicker;
+	    final JDatePickerImpl datePicker;
         UtilDateModel model = new UtilDateModel();
         
         model.setDate(2016, 3, 21);
@@ -179,7 +179,7 @@ public class App {
         lblFarzeugklasse.setBounds(12, 331, 84, 16);
         frame.getContentPane().add(lblFarzeugklasse);
         
-        JComboBox comboBox = new JComboBox();
+        final JComboBox comboBox = new JComboBox();
         comboBox.setModel(new DefaultComboBoxModel(new String[] {SMALL, COMPACT, MIDDLE, UPPER}));
         comboBox.setBounds(109, 328, 217, 22);
         frame.getContentPane().add(comboBox);
@@ -212,19 +212,19 @@ public class App {
         
        
         
-        JLabel lblKleinwagen = new JLabel(SMALL+": "+garage.getCount(Garage.SMALL));
+        final JLabel lblKleinwagen = new JLabel(SMALL+": "+garage.getCount(Garage.SMALL));
         lblKleinwagen.setBounds(12, 531, 164, 16);
         frame.getContentPane().add(lblKleinwagen);
         
-        JLabel lblKompaktwagen = new JLabel(COMPACT+": "+garage.getCount(Garage.COMPACT));
+        final JLabel lblKompaktwagen = new JLabel(COMPACT+": "+garage.getCount(Garage.COMPACT));
         lblKompaktwagen.setBounds(12, 560, 164, 16);
         frame.getContentPane().add(lblKompaktwagen);
         
-        JLabel lblMittelklasseWagen = new JLabel(MIDDLE+": "+garage.getCount(Garage.MIDDLE));
+        final JLabel lblMittelklasseWagen = new JLabel(MIDDLE+": "+garage.getCount(Garage.MIDDLE));
         lblMittelklasseWagen.setBounds(12, 589, 164, 16);
         frame.getContentPane().add(lblMittelklasseWagen);
         
-        JLabel lblUpperklasseWagen = new JLabel(UPPER+": "+garage.getCount(Garage.UPPER));
+        final JLabel lblUpperklasseWagen = new JLabel(UPPER+": "+garage.getCount(Garage.UPPER));
         lblUpperklasseWagen.setBounds(12, 618, 164, 16);
         frame.getContentPane().add(lblUpperklasseWagen);
         

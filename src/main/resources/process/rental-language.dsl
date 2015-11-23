@@ -17,10 +17,9 @@
 [condition][]there exists no upgrade=not (exists Upgrade( ))
 [consequence][]upgrade to {class} is possible=insert( new Upgrade({class}) );
 [condition][]there is a possible upgrade=Upgrade( $upgradeClass : carClass )
-[consequence][]upgrade the car class=$r.setUpgradeClass($upgradeClass); $r.setCarAvailable(true);
+[consequence][]upgrade the car class=$r.setUpgradeClass($upgradeClass);  $r.setCarAvailable(true);
 [condition][]there is a rental day from that request=$d : RentalDay( ) from $days
 [consequence][]set the daily price to {price}=$d.setPrice({price});
 [condition][RentalDay]- is weekend or holiday=isWeekend(day) || isHoliday(day)
-[consequence][]the daily price is discounted by {percent}%=$d.setPrice(Math.round((100 - {percent}) / 100.0f * $d.getPrice()))
+[consequence][]the daily price is discounted by {percent}%=$d.setPrice(Math.round((100 - {percent}) / 100.0f * $d.getPrice()));
 [condition][]- day index is in {indices}=dayIndex in {indices}
-[consequence][]set daily price to {price}=$d.setPrice({price});
