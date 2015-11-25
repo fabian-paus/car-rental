@@ -5,25 +5,17 @@ import java.util.Calendar;
 
 public class RentalDay {
 
-	private RentalRequest request;
 	private int dayIndex;
 	private Calendar day;
 	private int price;
 	
-	public RentalDay(RentalRequest request, int dayIndex) {
+	public RentalDay(Calendar startDate, int dayIndex) {
 		super();
-		this.request = request;
 		this.dayIndex = dayIndex;
-		this.day = (Calendar)request.getStartDate().clone();
+		this.day = (Calendar)startDate.clone();
 		this.day.add(Calendar.DATE, dayIndex);
 	}
 	
-	public RentalRequest getRequest() {
-		return request;
-	}
-	public void setRequest(RentalRequest request) {
-		this.request = request;
-	}
 	public Calendar getDay() {
 		return day;
 	}
@@ -39,15 +31,6 @@ public class RentalDay {
 	
 	public long getDayIndex() {
 		return dayIndex + 1;
-	}
-	
-	public String getCarClass() {
-		return request.getCarClass();
-	}
-	
-	public boolean isWeekend() {
-		return day.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
-				|| day.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
 	}
 
 	@Override

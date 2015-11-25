@@ -78,7 +78,7 @@ public class RentalRequest {
 		days = new RentalDay[durationInDays];
         for (int i = 0; i < days.length; ++i)
         {
-        	days[i] = new RentalDay(this, i);
+        	days[i] = new RentalDay(startDate, i);
         }
 	}
 	public String getCarClass() {

@@ -165,8 +165,8 @@ end
 rule "Daily price: Small class car" ruleflow-group "price-calculation"
 
     when
-    	$r : RentalRequest( $days : days )
-        $d : RentalDay( carClass == "Small" ) from $days
+    	$r : RentalRequest( carClass == "Small", $days : days )
+        $d : RentalDay( ) from $days
     then
         $d.setPrice(4000);
 
@@ -175,8 +175,8 @@ end
 rule "Daily price: Compact class car" ruleflow-group "price-calculation"
 
     when
-    	$r : RentalRequest( $days : days )
-        $d : RentalDay( carClass == "Compact" ) from $days
+    	$r : RentalRequest( carClass == "Compact", $days : days )
+        $d : RentalDay( ) from $days
     then
         $d.setPrice(5000);
 
@@ -185,8 +185,8 @@ end
 rule "Daily price: Middle class car" ruleflow-group "price-calculation"
 
     when
-    	$r : RentalRequest( $days : days )
-        $d : RentalDay( carClass == "Middle" ) from $days
+    	$r : RentalRequest( carClass == "Middle", $days : days )
+        $d : RentalDay( ) from $days
     then
         $d.setPrice(7000);
 
@@ -195,8 +195,8 @@ end
 rule "Daily price: Upper class car" ruleflow-group "price-calculation"
 
     when
-    	$r : RentalRequest( $days : days )
-        $d : RentalDay( carClass == "Upper" ) from $days
+    	$r : RentalRequest( carClass == "Upper", $days : days )
+        $d : RentalDay( ) from $days
     then
         $d.setPrice(9000);
 

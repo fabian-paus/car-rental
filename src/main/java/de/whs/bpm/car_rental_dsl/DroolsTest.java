@@ -25,7 +25,7 @@ public class DroolsTest {
             RentalDay[] days = new RentalDay[8];
             for (int i = 0; i < days.length; ++i)
             {
-            	days[i] = new RentalDay(request, i);
+            	days[i] = new RentalDay(request.getStartDate(), i);
             	kSession.insert(days[i]);
             }
             
