@@ -400,12 +400,12 @@ Dazu beschreiben wir zunächst die Ausgangssituation und dann die einzelnen Kund
 \subsection{Ausgangssituation}
 
 Am 21. März 2016 stehen zu jeder Fahrzeugklasse zwei Fahrzeuge zur Verfügung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 2
-	\item[Oberklasse:] 2
-\end{description}
+
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 2 & 2 \\ 
+	\hline 
+\end{tabular} 
 
 Relevante Feiertage:
 \begin{itemize}
@@ -414,7 +414,7 @@ Relevante Feiertage:
 	\item So 01.05.2016: 1. Mai / Tag der Arbeit
 \end{itemize}
 
-Klärung:
+Vorgehen:
 \begin{itemize}
 	\item Wir runden mathematisch, weil das einfacher zu implementieren ist.
 	\item Nicht spezifizierte Anfrageparameter nehmen einen Standardwert an (Nein, bzw. 0).
@@ -424,88 +424,90 @@ Klärung:
 
 \subsection{Kunde A}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Mittel
-	\item Dauer: 5 Tage
-	\item Automatik: Nein
-	\item Sicherheitstraining: Ja
-	
-	\item Alter: > 21 Jahre
-	\item Neukunde: Nein
-	\item Alte Reklamation: Nein
-	\item Führerscheindauer: 20 Jahre
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 42 & 20 & Nein & Nein & Ja \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Mittel & 5 & Nein \\ 
+	\hline 
+\end{tabular}
 
-Zwischenergebnis:
+\vspace{12pt}
+Preisberechnung:
 \begin{itemize}
 	\item Zeitraum: 4 Wochentage, 0 Wochenende, 1 Feiertag
 	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
 	\item Verfügbarkeitsprüfung: Bestanden, Nachlass: 0\%
 	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
-	\item Basispreis = $70€ * 4 + 52,50€ * 1 = 332,50€$
+	\item Basispreis = 70€ * 4 + 52,50€ * 1 = 332,50€
 	\item Rabatt = 5\% * Basispreis = 16,63€
 	\item Endpreis = 315,87€
 	\item Gesamtpreis = Endpreis = 315,87€
 \end{itemize}
 
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 1
-	\item[Oberklasse:] 2
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 1 & 2 \\ 
+	\hline 
+\end{tabular} 
 
 \subsection{Kunde B}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Mittel
-	\item Dauer: 1 Tage
-	\item Automatik: Nein
-	
-	\item Alter: 20 Jahre
-	\item Sicherheitstraining: Nein
-	\item Neukunde: Ja
-	\item Alte Reklamation: Nein
-	\item Führerscheindauer: 3 Jahre
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 20 & 3 & Ja & Nein & Nein \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Mittel & 1 & Nein \\ 
+	\hline 
+\end{tabular}
 
-Zwischenergebnis:
+Preisberechnung:
 \begin{itemize}
 	\item Zeitraum: 1 Wochentag, 0 Wochenende oder Feiertage
 	\item Fahranfängerprüfung: Genehmigung, Bestanden, Zuschlag: 10\%
 	\item Verfügbarkeitsprüfung: Bestanden, Nachlass: 0\%
 	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
-	\item Basispreis = $70€ * 1 + 52,50€ * 0 = 70,00€$
+	\item Basispreis = 70€ * 1 + 52,50€ * 0 = 70,00€
 	\item Rabatt = 10,00€
 	\item Endpreis = 60,00€
 	\item Gesamtpreis = 110\% * Endpreis = 66,00€
 \end{itemize}
 
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 0
-	\item[Oberklasse:] 2
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 0 & 2 \\ 
+	\hline 
+\end{tabular} 
 
 \subsection{Kunde C}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Mittel
-	\item Dauer: 7 Tage
-	\item Automatik: Nein
-	
-	\item Alter: 30 Jahre
-	\item Sicherheitstraining: Nein
-	\item Neukunde: Nein
-	\item Alte Reklamation: Nein
-	\item Führerscheindauer: 12 Jahre
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 30 & 12 & Nein & Nein & Nein \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Mittel & 7 & Nein \\ 
+	\hline 
+\end{tabular}
 
 Zwischenergebnis:
 \begin{itemize}
@@ -513,153 +515,153 @@ Zwischenergebnis:
 	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
 	\item Verfügbarkeitsprüfung: Genehmigung, Bestanden, Upgrade auf höhere Klasse, Nachlass: 0\%
 	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
-	\item Basispreis = $70€ * 4 + 52,50€ * 2 + 0€ * 1 = 385,00€$
+	\item Basispreis = 70€ * 4 + 52,50€ * 2 + 0€ * 1 = 385,00€
 	\item Rabatt = 0,00€
 	\item Endpreis = 385,00€
 	\item Gesamtpreis = 100\% * Endpreis = 385,00€
 \end{itemize}
 
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 0
-	\item[Oberklasse:] 1
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 0 & 1 \\ 
+	\hline 
+\end{tabular} 
 
 \subsection{Kunde D}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Mittel
-	\item Dauer: 1 Tage
-	\item Automatik: Nein
-	
-	\item Alter: 35 Jahre
-	\item Sicherheitstraining: Nein
-	\item Neukunde: Ja
-	\item Alte Reklamation: Nein
-	\item Führerscheindauer: 10 Jahre
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 35 & 10 & Ja & Nein & Nein \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Mittel & 1 & Nein \\ 
+	\hline 
+\end{tabular}
 
-Zwischenergebnis:
+Preisberechnung:
 \begin{itemize}
 	\item Zeitraum: 1 Wochentag, 0 Wochenende oder Feiertage
 	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
 	\item Verfügbarkeitsprüfung: Genehmigung, Bestanden, Upgrade auf höhere Klasse, Nachlass: 0\%
 	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
-	\item Basispreis = $70€ * 1 + 52,50€ * 0 = 70,00€$
+	\item Basispreis = 70€ * 1 + 52,50€ * 0 = 70,00€
 	\item Rabatt = 10,00€
 	\item Endpreis = 60,00€
 	\item Gesamtpreis = 100\% * Endpreis = 60,00€
 \end{itemize}
 
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 0
-	\item[Oberklasse:] 0
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 0 & 0 \\ 
+	\hline 
+\end{tabular}
 
 \subsection{Kunde E}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Ober
-	\item Dauer: 6 Tage
-	\item Automatik: Nein
-	
-	\item Alter: 46 Jahre
-	\item Sicherheitstraining: Nein
-	\item Neukunde: Ja
-	\item Alte Reklamation: Nein
-	\item Führerscheindauer: 20 Jahre
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 46 & 20 & Ja & Nein & Nein \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Ober & 6 & Nein \\ 
+	\hline 
+\end{tabular}
 
-Zwischenergebnis:
+Preisberechnung:
 \begin{itemize}
 	\item Zeitraum: 4 Wochentag, 2 Wochenende oder Feiertage
 	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
 	\item Verfügbarkeitsprüfung: Genehmigung, Abgelehnt, Nachlass: 10\%, Klasse = Mittel
 	
 	% Es gibt noch eine Oberklasse:
-	\item Tagespreis: 90€/Wochentag, 67,50€/Feiertag
-	\item Basispreis = $90€ * 4 + 67,50€ * 2 = 495,00€$
-	\item Rabatt = 10,00€
-	\item Endpreis = 485,00€
-	\item Gesamtpreis = 100\% * Endpreis = 485,00€
+	%\item Tagespreis: 90€/Wochentag, 67,50€/Feiertag
+	%\item Basispreis = $90€ * 4 + 67,50€ * 2 = 495,00€$
+%	\item Rabatt = 10,00€
+%	\item Endpreis = 485,00€
+%	\item Gesamtpreis = 100\% * Endpreis = 485,00€
 	
 	% Es gibt keine Oberklasse aber eine Mittelklasse
-	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
-	\item Basispreis = $70€ * 4 + 52,50€ * 2 = 385,00€$
-	\item Rabatt = 10,00€
-	\item Endpreis = 375,00€
-	\item Gesamtpreis = 90\% * Endpreis = 337,50€
+%	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
+%	\item Basispreis = $70€ * 4 + 52,50€ * 2 = 385,00€$
+%	\item Rabatt = 10,00€
+%	\item Endpreis = 375,00€
+%	\item Gesamtpreis = 90\% * Endpreis = 337,50€
 \end{itemize}
 
 Abgelehnt: Keine Änderung
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 0
-	\item[Oberklasse:] 0
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 0 & 0 \\ 
+	\hline 
+\end{tabular}
 
 \subsection{Kunde F}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Ober
-	\item Dauer: 4 Tage
-	\item Automatik: Nein
-	
-	\item Alter: 32 Jahre
-	\item Sicherheitstraining: Ja
-	\item Neukunde: Nein
-	\item Alte Reklamation: Ja
-	\item Führerscheindauer: 10 Jahre
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 32 & 10 & Nein & Nein & Ja \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Ober & 4 & Nein \\ 
+	\hline 
+\end{tabular}
 
 Zwischenergebnis:
 \begin{itemize}
 	\item Zeitraum: 4 Wochentag, 0 Wochenende oder Feiertage
 	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
 	\item Verfügbarkeitsprüfung: Genehmigung, Abgelehnt, Nachlass: 0\%
-	\item Tagespreis: 90€/Wochentag, 67,50€/Feiertag
-	\item Basispreis = $90€ * 4 + 67,50€ * 0 = 360,00€$
-	\item Rabatt = 20\% * 360€ + 5\% * 360€ = 72€ + 18€ = 90€
-	\item Endpreis = 270,00€
-	\item Gesamtpreis = 100\% * Endpreis = 270,00€
+%	\item Tagespreis: 90€/Wochentag, 67,50€/Feiertag
+%	\item Basispreis = $90€ * 4 + 67,50€ * 0 = 360,00€$
+%	\item Rabatt = 20\% * 360€ + 5\% * 360€ = 72€ + 18€ = 90€
+%	\item Endpreis = 270,00€
+%	\item Gesamtpreis = 100\% * Endpreis = 270,00€
 	
 	% Siehe E
 \end{itemize}
 
 Abgelehnt: Keine Änderung
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 2
-	\item[Mittelklasse:] 0
-	\item[Oberklasse:] 0
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 0 & 0 \\ 
+	\hline 
+\end{tabular}
 
 \subsection{Kunde G}
 
-Kundenanfrage:
-\begin{itemize}
-	\item Klasse: Kompakt
-	\item Dauer: 1 Tage
-	\item Automatik: Nein
-	
-	\item Alter: > 21 Jahre
-	\item Sicherheitstraining: Nein (wg. Frau)
-	\item Neukunde: Nein
-	\item Alte Reklamation: Nein
-	\item Führerscheindauer: mind. 6 Jahre 
-	\item Fahranfänger wg. Frau
-\end{itemize}
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 30 & 6 & Nein & Nein & Ja \\ 
+	\hline 25 & 1 & Nein & Nein & Nein \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Kompakt & 1 & Nein \\ 
+	\hline 
+\end{tabular}
 
 Zwischenergebnis:
 \begin{itemize}
@@ -667,19 +669,18 @@ Zwischenergebnis:
 	\item Fahranfängerprüfung: Bestanden, Zuschlag: 10\%
 	\item Verfügbarkeitsprüfung: Bestanden, Nachlass: 0\%
 	\item Tagespreis: 50€/Wochentag, 37,50€/Feiertag
-	\item Basispreis = $50€ * 1 + 37,50€ * 0 = 50,00€$
+	\item Basispreis = 50€ * 1 + 37,50€ * 0 = 50,00€
 	\item Rabatt = 0€
 	\item Endpreis = 50,00€
 	\item Gesamtpreis = 110\% * Endpreis = 55,00€
 \end{itemize}
 
-Zustand nach Vermietung:
-\begin{description}
-	\item[Kleinklasse:] 2
-	\item[Kompaktklasse:] 1
-	\item[Mittelklasse:] 0
-	\item[Oberklasse:] 0
-\end{description}
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 0 & 0 \\ 
+	\hline 
+\end{tabular}
 
 \section{Prototyp}
 
