@@ -18,6 +18,10 @@ import java.awt.event.ActionEvent;
 
 public class EditgarageDialog extends JDialog {
 
+	private static final String CANCEL = "Cancel";
+
+	private static final String OK = "OK";
+
 	private static final long serialVersionUID = -7670790502555107368L;
 	
 	private final JPanel contentPanel = new JPanel();
@@ -94,25 +98,25 @@ public class EditgarageDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton(OK);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						save = true;
 						self.setVisible(false);
 					}
 				});
-				okButton.setActionCommand("OK");
+				okButton.setActionCommand(OK);
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton(CANCEL);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						self.setVisible(false);
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
+				cancelButton.setActionCommand(CANCEL);
 				buttonPane.add(cancelButton);
 			}
 		}

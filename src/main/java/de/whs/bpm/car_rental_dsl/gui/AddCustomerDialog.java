@@ -18,6 +18,14 @@ import de.whs.bpm.car_rental_dsl.Customer;
 
 public class AddCustomerDialog extends JDialog {
 
+	private static final String CANCEL = "Cancel";
+	private static final String OK = "OK";
+	private static final String ALTER = "Alter:";
+	private static final String FÜHRERSCHEIN = "F\u00FChrerschein:";
+	private static final String HAT_SICHERHEITSTRAINING = "Hat Sicherheitstraining";
+	private static final String HAT_REKLAMATION = "Hat Reklamation";
+	private static final String NEUER_KUNDE = "Neuer Kunde";
+	private static final String NAME2 = "Name:";
 	/**
 	 * 
 	 */
@@ -50,60 +58,60 @@ public class AddCustomerDialog extends JDialog {
 	 */
 	public AddCustomerDialog(JFrame owner,Customer c) {
 		super(owner, true);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 331, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		tfName = new JTextField();
-		tfName.setBounds(69, 13, 116, 22);
+		tfName.setBounds(94, 13, 116, 22);
 		contentPanel.add(tfName);
 		tfName.setColumns(10);
 		
 		
 		final JDialog self = this;
 		
-		JLabel lblName = new JLabel("Name");
+		JLabel lblName = new JLabel(NAME2);
 		lblName.setBounds(12, 16, 56, 16);
 		contentPanel.add(lblName);
 		
-		cbxNew = new JCheckBox("Neuer Kunde");
-		cbxNew.setBounds(69, 44, 113, 25);
+		cbxNew = new JCheckBox(NEUER_KUNDE);
+		cbxNew.setBounds(91, 44, 113, 25);
 		contentPanel.add(cbxNew);
 		
 		
 		
-		cbxReclamation = new JCheckBox("Hat Reklamation");
-		cbxReclamation.setBounds(69, 74, 144, 25);
+		cbxReclamation = new JCheckBox(HAT_REKLAMATION);
+		cbxReclamation.setBounds(91, 74, 144, 25);
 		contentPanel.add(cbxReclamation);
 		
 		
 		
-		cbxSaftytraining = new JCheckBox("Hat Sicherheitstraining");
-		cbxSaftytraining.setBounds(72, 104, 113, 25);
+		cbxSaftytraining = new JCheckBox(HAT_SICHERHEITSTRAINING);
+		cbxSaftytraining.setBounds(91, 104, 190, 25);
 		contentPanel.add(cbxSaftytraining);
 		
 		
 		
-		JLabel lblFhrerschein = new JLabel("F\u00FChrerschein");
-		lblFhrerschein.setBounds(0, 136, 88, 16);
+		JLabel lblFhrerschein = new JLabel(FÜHRERSCHEIN);
+		lblFhrerschein.setBounds(12, 136, 88, 16);
 		contentPanel.add(lblFhrerschein);
 		
 		tfDriving = new JTextField();
-		tfDriving.setBounds(82, 138, 116, 22);
+		tfDriving.setBounds(94, 138, 116, 22);
 		contentPanel.add(tfDriving);
 		tfDriving.setColumns(10);
 		
 		
 		
-		JLabel lblAlter = new JLabel("Alter");
-		lblAlter.setBounds(0, 172, 56, 16);
+		JLabel lblAlter = new JLabel(ALTER);
+		lblAlter.setBounds(12, 172, 56, 16);
 		contentPanel.add(lblAlter);
 		
 		
 		tfAge = new JTextField();
-		tfAge.setBounds(69, 169, 116, 22);
+		tfAge.setBounds(94, 169, 116, 22);
 		contentPanel.add(tfAge);
 		tfAge.setColumns(10);
 		
@@ -125,25 +133,25 @@ public class AddCustomerDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton(OK);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						save = true;
 						self.setVisible(false);
 					}
 				});
-				okButton.setActionCommand("OK");
+				okButton.setActionCommand(OK);
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton(CANCEL);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						self.setVisible(false);
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
+				cancelButton.setActionCommand(CANCEL);
 				buttonPane.add(cancelButton);
 			}
 		}

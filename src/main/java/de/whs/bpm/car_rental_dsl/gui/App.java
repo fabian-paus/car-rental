@@ -29,6 +29,15 @@ import de.whs.bpm.car_rental_dsl.RentalRequest;
 
 public class App {
 
+	private static final String GARAGE_BEARBEITEN = "Garage Bearbeiten";
+	private static final String ANFRAGEN = "Anfragen";
+	private static final String SOLL_AUTOMATK_HABEN = "Soll Automatk haben";
+	private static final String FARZEUGKLASSE = "Farzeugklasse";
+	private static final String DAUER = "Dauer";
+	private static final String START_DATUM = "Start Datum";
+	private static final String BEARBEITEN = "Bearbeiten";
+	private static final String LÖSCHEN = "L\u00F6schen";
+	private static final String HINZUFÜGEN = "Hinzuf\u00FCgen";
 	private JFrame frame;
 	private JTextField textField;
 	
@@ -97,7 +106,7 @@ public class App {
 		
 		final JFrame self = frame;
 		
-		JButton btnHinzufgen = new JButton("Hinzuf\u00FCgen");
+		JButton btnHinzufgen = new JButton(HINZUFÜGEN);
 		btnHinzufgen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddCustomerDialog dialog = new AddCustomerDialog(self,null);
@@ -113,7 +122,7 @@ public class App {
 		btnHinzufgen.setBounds(12, 197, 97, 25);
 		frame.getContentPane().add(btnHinzufgen);
 		
-		JButton btnLschen = new JButton("L\u00F6schen");
+		JButton btnLschen = new JButton(LÖSCHEN);
 		btnLschen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listModel.remove(list.getSelectedIndex());
@@ -123,7 +132,7 @@ public class App {
 		btnLschen.setBounds(121, 197, 97, 25);
 		frame.getContentPane().add(btnLschen);
 		
-		JButton btnBearbeiten = new JButton("Bearbeiten");
+		JButton btnBearbeiten = new JButton(BEARBEITEN);
 		btnBearbeiten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddCustomerDialog dialog = new AddCustomerDialog(self,listModel.getElementAt(list.getSelectedIndex()));
@@ -153,11 +162,11 @@ public class App {
         datePicker.setBounds(109, 241, 217, 31);
         frame.getContentPane().add(datePicker);
         
-        JLabel lblStartDatum = new JLabel("Start Datum");
+        JLabel lblStartDatum = new JLabel(START_DATUM);
         lblStartDatum.setBounds(12, 241, 84, 16);
         frame.getContentPane().add(lblStartDatum);
         
-        JLabel lblDauer = new JLabel("Dauer");
+        JLabel lblDauer = new JLabel(DAUER);
         lblDauer.setBounds(12, 294, 56, 16);
         frame.getContentPane().add(lblDauer);
         
@@ -166,7 +175,7 @@ public class App {
         frame.getContentPane().add(textField);
         textField.setColumns(10);
         
-        JLabel lblFarzeugklasse = new JLabel("Farzeugklasse");
+        JLabel lblFarzeugklasse = new JLabel(FARZEUGKLASSE);
         lblFarzeugklasse.setBounds(12, 331, 84, 16);
         frame.getContentPane().add(lblFarzeugklasse);
         
@@ -175,11 +184,11 @@ public class App {
         comboBox.setBounds(109, 328, 217, 22);
         frame.getContentPane().add(comboBox);
         
-        JCheckBox chckbxSollAutomatkHaben = new JCheckBox("Soll Automatk haben");
+        JCheckBox chckbxSollAutomatkHaben = new JCheckBox(SOLL_AUTOMATK_HABEN);
         chckbxSollAutomatkHaben.setBounds(105, 367, 221, 25);
         frame.getContentPane().add(chckbxSollAutomatkHaben);
         
-        JButton btnAnfragen = new JButton("Anfragen");
+        JButton btnAnfragen = new JButton(ANFRAGEN);
         btnAnfragen.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		
@@ -221,7 +230,7 @@ public class App {
         
         
         
-        JButton btnGerageBearbeiten = new JButton("Garage Bearbeiten");
+        JButton btnGerageBearbeiten = new JButton(GARAGE_BEARBEITEN);
         btnGerageBearbeiten.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		EditgarageDialog dialog = new EditgarageDialog(self,garage);
