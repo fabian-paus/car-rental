@@ -20,7 +20,7 @@ public class BaseTest extends JbpmJUnitBaseTestCase {
 	protected RuntimeManager runtimeManager;
 	protected RuntimeEngine runtimeEngine;
 	protected KieSession kSession;
-	protected ApprovalWorkItemHandler workItemHandler;
+	protected TestApprovalHandler workItemHandler;
 	
 	@Before
 	public void setupKieRuntime() {
@@ -35,7 +35,7 @@ public class BaseTest extends JbpmJUnitBaseTestCase {
 		runtimeEngine = getRuntimeEngine(null);
 		kSession = runtimeEngine.getKieSession();
 		
-		workItemHandler = new ApprovalWorkItemHandler();
+		workItemHandler = new TestApprovalHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
 	}
 	
