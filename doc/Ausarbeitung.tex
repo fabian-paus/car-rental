@@ -17,17 +17,380 @@
 
 \newpage
 
-\section{Regeln und Workflows}
-
-Hier wandeln wir die Aussagen in Regeln und Workflows.
-
 \section{Flussdiagramm}
 
-Hier das Flussdiagramm der kompletten Preisfindung.
+Anhand des Flussdiagramms beschreiben wir die einzelnen Regeln, die Anwendung finden.
 
-\section{Einordnung der Regeln}
+\subsection{Gesamter Prozess}
 
-Die Regeln in die Regelklassen einordnen.
+Wir haben den gesamten Prozess in drei Teilprozesse unterteilt:
+\begin{enumerate}
+	\item Fahranfängerprüfung
+	\item Verfügbarkeitsprüfung
+	\item Preisberechnung
+\end{enumerate}
+
+Nach Aussage 3 wird zuerst geprüft, ob die Anfrage die maximale Dauer überschreitet.
+
+\begin{figure}[tbh]
+\centering
+\includegraphics[width=1.0\linewidth]{Bilder/Preis_berechnen}
+\caption{Preisfindung}
+\label{fig:Preis_berechnen}
+\end{figure}
+
+\subsection{Fahranfängerprüfung}
+
+In Aussage 10 wird definiert, wer als Fahranfänger eingestuft wird, und welcher Aufschlag in dem 
+Fall zu zahlen ist. Aussage 11 bestimmt die Fahrzeugklassen, die nur mit Genehmigung vom Filialleiter
+durch Fahranfängern gemietet werden dürfen.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{Bilder/Fahranfaenger_pruefen}
+\caption{Fahranfängerprüfung}
+\label{fig:Fahranfänger_prüfen}
+\end{figure}
+
+\subsection{Verfügbarkeitsprüfung}
+
+Aussagen: 12 (Kostenloses Upgrade nach Genehmigung), 13 (Downgrade aus Oberklasse)
+
+In Aussage 12 wird beschrieben, was passieren soll, wenn kein Fahrzeug der angefragten Klasse
+verfügbar ist. Dann wird nach Genehmigung durch den Filialleiter ein kostenloses Upgrade 
+auf die nächsthöhere Klasse durchgeführt. 
+Aussage 13 erläutert den Fall, wenn kein Oberklassewagen verfügbar ist. In dem Fall wird
+ein Downgrade auf die Mittelklasse durchgeführt mit zusätzlichem Nachlass auf den Endpreis.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\linewidth]{Bilder/Verfuegbarkeit_pruefen}
+\caption{Verfügbarkeitsprüfung}
+\label{fig:Verfuegbarkeit_pruefen}
+\end{figure}
+
+\subsection{Preisberechnung}
+
+Die Preisberechnung besteht aus drei Schritten:
+\begin{enumerate}
+	\item Basispreisberechnung
+	\item Rabattberechnung
+	\item Automatikgebühr (nach Aussage 8)
+\end{enumerate}
+
+Der Endpreis setzt sich aus dem Basispreis abzüglich des Rabatts und zuzüglich 
+der Automatikgebühr zusammen.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{Bilder/Endpreis_berechnen}
+	\caption{Endpreis berechnen}
+	\label{fig:Endpreis_berechnen}
+\end{figure}
+
+\newpage 
+\subsubsection{Basispreis}
+
+Der Basispreis entspricht der Summe aller Tagespreise.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\linewidth]{Bilder/Basispreis_berechnen}
+	\caption{Basispreis berechnen}
+	\label{fig:Basispreis_berechnen}
+\end{figure}
+
+\subsubsection{Tagespreis}
+
+Bei der Tagespreisberechnung werden die Aussagen 1, 2 und 3 berücksichtigt.
+
+Aussage 1 bestimmt den Tagespreis in Abhängigkeit von der Fahrzeugklasse.
+Der Tagespreis wird allerdings an Wochenenden und Feiertagen nach Aussage 2
+reduziert. Außerdem ist jeder siebte Tag nach Aussage 3 kostenlos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Bilder/Tagespreis_berechnen}
+	\caption{Tagespreis berechnen}
+	\label{fig:Tagespreis_berechnen}
+\end{figure}
+
+\subsubsection{Rabatt}
+
+Bei der Rabattberechnung werden laut Aussagen 4, 5 und 6 die Eigenschaften Neukunde, alte Reklamation
+und Sicherheitstraining berücksichtigt. Dabei ist zu beachten, dass bei mehreren Fahrern die
+schlechteren Konditionen gelten. Das haben wir über die "`Alle Fahrer"'-Bedingungen abgebildet (Aussage 7). Außerdem darf nach Aussage 9 der Rabatt eine bestimmte Grenze nicht überschreiten.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Bilder/Rabatt_berechnen}
+	\caption{Rabatt berechnen}
+	\label{fig:Rabatt_berechnen}
+\end{figure}
+
+\section{Regeln und Prozesse}
+
+Aus den Aussagen und dem Flussdiagramm ergibt sich folgender grober Prozessablauf:
+\begin{enumerate}
+	\item Fahranfängerprüfung
+	\item Ggf. Genehmigung der Fahrzeugklasse durch den Filialleiter
+	\item Verfügbarkeitsprüfung
+	\item Ggf. Genehmigung des Upgrades durch den Filialleiter
+	\item Preisberechnung
+\end{enumerate}
+
+Die Genehmigungen sind manuelle Prozesse, die durch den Filialleiter durchgeführt werden müssen.
+Die Fahranfängerprüfung, die Verfügbarkeitsprüfung sowie die Preisberechnung lassen sich über
+Geschäftsregeln abbilden. 
+Im Folgenden beschreiben wir die Regeln, die wir aus den Aussagen der Aufgabenstellung
+extrahiert haben.
+
+\subsection{Fahranfängerprüfung}
+
+Regel: Definition eines Fahranfängers \\
+Kategorie: Definitionsregel
+
+\begin{lstlisting}
+rule "Is driving novice" ruleflow-group "novice-check"
+	when
+		there is a request
+		there is a customer with that request
+		- age is less than 21 or has driving license for less than 2	
+	then
+		the customer is a driving novice	
+end
+\end{lstlisting}
+
+Regel: Zuschlag für Fahranfänger \\
+Kategorie: Prozessregel
+
+\begin{lstlisting}
+rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-check"
+	when
+		there is a request
+		there exists a customer who is driving novice
+	then
+		treat the request as novice
+		set extra charge to 10%	
+end
+\end{lstlisting}
+
+Regel: Genehmigung für höhere Klassen bei Fahranfängern \\
+Kategorie: Prozessregel
+
+\begin{lstlisting}
+rule "Permission for higher classes required" ruleflow-group "novice-check"
+	when
+		there is a request
+		- car class is not in ("Small", "Compact")
+		there exists a customer who is driving novice
+	then
+		ask the boss for permission
+end
+\end{lstlisting}
+
+\subsection{Verfügbarkeitsprüfung}
+
+Regel: Downgrade aus Oberklasse, wenn nicht verfügbar \\
+Kategorie: Prozessregel
+
+\begin{lstlisting}
+rule "Downgrade for upper class if not available" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Upper"
+		- car is not available
+	then
+		set car class to "Middle"
+		set extra deduction to 10%
+		update the request
+end
+\end{lstlisting}
+
+Regel: Definition eines Upgrades für die Fahrzeugklasse \\
+Kategorie: Definitionsregel
+
+Es gibt eine Reihe von Regeln, die definieren welche Fahrzeugklassen ein Upgrade
+für die angefragte Klasse darstellen. Folgende Regel ist ein Beispiel von
+Klein- nach Kompaktwagen.
+
+\begin{lstlisting}
+rule "Upgrade from Small to Compact" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car class is "Small"
+		- "Compact" car is available
+		there exists no upgrade
+	then
+		upgrade to "Compact" is possible	
+end
+\end{lstlisting}
+
+Regel: Upgrade auf nächsthöhere Klasse, wenn nicht verfügbar \\
+Kategorie: Prozessregel
+
+\begin{lstlisting}
+rule "If updgrade possible it requires permission" ruleflow-group "availibility-check"
+	when
+		there is a request
+		- car is not available
+		there is a possible upgrade
+	then
+		upgrade the car class
+		mark the car for that request as available
+end
+\end{lstlisting}
+
+\subsection{Preisberechnung}
+
+Regel: Definition des Tagespreises \\
+Kategorie: Definitionsregel
+
+Es gibt eine Reihe von Regeln, die den Tagespreis für jede Fahrzeugklasse festlegen.
+Folgende Regel ist ein Beispiel für Kleinwagen.
+
+\begin{lstlisting}
+rule "Daily price: Small class car" ruleflow-group "price-calculation"
+	when
+		there is a request
+		- car class is "Small"
+		there is a rental day from that request
+	then
+		set the daily price to 40.00
+end
+\end{lstlisting}
+
+Regel: Wochenenden und Feiertage haben reduzierten Tagespreis \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
+	when
+		there is a request
+		there is a rental day from that request
+		- is weekend or holiday
+	then
+		the daily price is discounted by 25%
+end
+\end{lstlisting}
+
+Regel: Jeder siebte Tag ist kostenlos \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
+	when
+		there is a request
+		there is a rental day from that request
+		- day index is in (7, 14, 21, 28)
+	then
+		set the daily price to 0.00
+end
+\end{lstlisting}
+
+Regel: Basispreis ist die Summe der Tagespreise \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Base price is the sum of daily prices" ruleflow-group "price-calculation"
+	when
+		there is a request
+		there is a rental day from that request
+	then
+		add the daily price to the base price
+end
+\end{lstlisting}
+
+Regel: Neukundenrabatt \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Discount: All customers are new customers" ruleflow-group "price-calculation"
+	when
+		there is a request
+		every customer from that request is a new customer
+	then
+		add 10.00 to the discount
+end
+\end{lstlisting}
+
+Regel: Reklamationsrabatt \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Discount: All customers have an old reclamation" ruleflow-group "price-calculation"
+	when
+		there is a request
+		every customer from that request had a valid reclamation
+	then
+		discount the base price by 20%
+end
+\end{lstlisting}
+
+Regel: Rabatt für Sicherheitstraining \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Discount: All customers have participated in security training" ruleflow-group "price-calculation"
+	when
+		there is a request
+		every customer from that request had a security training
+	then
+		discount the base price by 5%;
+end
+\end{lstlisting}
+
+Regel: Maximaler Rabatt \\
+Kategorie: Einschränkungsregel
+
+\begin{lstlisting}
+rule "Discount is limited to 100 Euro" ruleflow-group "price-calculation"
+	when
+		there is a request
+		- discount is greater than 100.00
+	then
+		set the discount to 100.00
+end
+\end{lstlisting}
+
+Regel: Endpreis berechnen \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Final Price: Calculation" ruleflow-group "price-calculation"
+	when
+		there is a request
+	then
+		set the final price to the base price
+		subtract the discount from the final price
+end
+\end{lstlisting}
+
+Regel: Automatikgebühr abziehen \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Final Price: Automatic fee" ruleflow-group "price-calculation"
+	when
+		there is a request
+		- for an automatic car
+	then
+		add a 5% fee of the base price to the final price
+end
+\end{lstlisting}
+
+Regel: Gesamtpreis berechnen \\
+Kategorie: Ableitungsregel
+
+\begin{lstlisting}
+rule "Total Price" ruleflow-group "price-calculation"
+	when
+		there is a request
+	then
+		set percent to 100% plus extra charge minus extra deduction
+		set the total price to percent% of the final price
+end
+\end{lstlisting}
 
 \section{Anwendungssituation}
 
