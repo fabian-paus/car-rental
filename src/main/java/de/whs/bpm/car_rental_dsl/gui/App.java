@@ -246,7 +246,7 @@ public class App {
         comboBox.setBounds(109, 328, 217, 22);
         frame.getContentPane().add(comboBox);
         
-        JCheckBox chckbxSollAutomatkHaben = new JCheckBox(SOLL_AUTOMATK_HABEN);
+        final JCheckBox chckbxSollAutomatkHaben = new JCheckBox(SOLL_AUTOMATK_HABEN);
         chckbxSollAutomatkHaben.setBounds(105, 367, 221, 25);
         frame.getContentPane().add(chckbxSollAutomatkHaben);
         
