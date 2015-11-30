@@ -17,12 +17,17 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 
+import de.whs.bpm.car_rental_dsl.ApprovalWorkItemHandler;
 import de.whs.bpm.car_rental_dsl.Customer;
 import de.whs.bpm.car_rental_dsl.Garage;
 import de.whs.bpm.car_rental_dsl.RentalRequest;
@@ -50,6 +55,11 @@ public class App {
 	public final static String UPPER = "Oberklasse Wagen";
 	
 	private Map<String, String> WagenklasseToCarclass;
+	private KieSession kSession;
+	private JLabel lblKleinwagen;
+	private JLabel lblKompaktwagen;
+	private JLabel lblMittelklasseWagen;
+	private JLabel lblUpperklasseWagen;
 	
 	
 	/**
@@ -61,6 +71,7 @@ public class App {
 				try {
 					App window = new App();
 					window.frame.setVisible(true);
+					window.frame.setTitle("Autovermietung");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -85,6 +96,57 @@ public class App {
 		WagenklasseToCarclass.put(UPPER, Garage.UPPER);
 		
 		initialize();
+		
+		ApprovalWorkItemHandler workhandler = new ApprovalWorkItemHandler() {
+			
+			@Override
+			public boolean approveUpgrade() {
+				//default icon, custom title
+				Object[] options = {"Genehmigen",
+                "Ablehnen"};
+				int n = JOptionPane.showOptionDialog(
+				    frame,
+				    "Es steht kein Auto in der angeforderten Klasse zur Verfügung. Genemigen Sie ein kostenloses Upgrade?",
+				    "Upgrade?",
+				    JOptionPane.YES_NO_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null, options,options[0]);
+
+					return n==0; 
+
+			}
+			
+			@Override
+			public boolean approveNovice() {
+				Object[] options = {"Genehmigen",
+                "Ablehnen"};
+				
+				int n = JOptionPane.showOptionDialog(
+					    frame,
+					    "Diese Fahrzeigklasse benötigt eine Genehmigung.",
+					    "Fahanfänger!",
+					    JOptionPane.YES_NO_OPTION,
+					    JOptionPane.QUESTION_MESSAGE,
+					    null, options,options[0]);
+
+						return n==0; 
+			}
+		};
+		
+		
+		 // load up the knowledge base
+        KieServices ks = KieServices.Factory.get();
+	    KieContainer kContainer = ks.getKieClasspathContainer();
+    	kSession = kContainer.newKieSession("ksession-process");
+
+        // start a new process instance
+    	kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workhandler);
+    	
+    	
+    	
+       // kSession.startProcess("de.whs.bpm.car_rental_dsl.hello");
+		
+		
 	}
 
 	/**
@@ -92,7 +154,7 @@ public class App {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1114, 742);
+		frame.setBounds(100, 100, 358, 742);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -149,7 +211,7 @@ public class App {
 	    final JDatePickerImpl datePicker;
         UtilDateModel model = new UtilDateModel();
         
-        model.setDate(2016, 3, 21);
+        model.setDate(2016, 2, 21);
         model.setSelected(true);
         Properties p = new Properties();
         p.put("text.today", "Today");
@@ -205,6 +267,26 @@ public class App {
         		
         		request.setGarage(garage);
         		
+        		request.setAutomatic(chckbxSollAutomatkHaben.isSelected());
+        		
+        		
+        		Map<String, Object> parameterMap = new HashMap<String, Object>();
+            	parameterMap.put("request", request);
+            	
+        		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
+        		kSession.fireAllRules();
+        		
+        		
+        		ResultDialog dialog = new ResultDialog(frame,request);
+				
+				dialog.setVisible(true);
+				dialog.setAlwaysOnTop(true);
+				dialog.setModal(true);
+        		
+        		
+        		
+        		
+        		updateGarageView();
         	}
         });
         btnAnfragen.setBounds(12, 402, 314, 78);
@@ -212,19 +294,19 @@ public class App {
         
        
         
-        final JLabel lblKleinwagen = new JLabel(SMALL+": "+garage.getCount(Garage.SMALL));
+        lblKleinwagen = new JLabel(SMALL+": "+garage.getCount(Garage.SMALL));
         lblKleinwagen.setBounds(12, 531, 164, 16);
         frame.getContentPane().add(lblKleinwagen);
         
-        final JLabel lblKompaktwagen = new JLabel(COMPACT+": "+garage.getCount(Garage.COMPACT));
+        lblKompaktwagen = new JLabel(COMPACT+": "+garage.getCount(Garage.COMPACT));
         lblKompaktwagen.setBounds(12, 560, 164, 16);
         frame.getContentPane().add(lblKompaktwagen);
         
-        final JLabel lblMittelklasseWagen = new JLabel(MIDDLE+": "+garage.getCount(Garage.MIDDLE));
+        lblMittelklasseWagen = new JLabel(MIDDLE+": "+garage.getCount(Garage.MIDDLE));
         lblMittelklasseWagen.setBounds(12, 589, 164, 16);
         frame.getContentPane().add(lblMittelklasseWagen);
         
-        final JLabel lblUpperklasseWagen = new JLabel(UPPER+": "+garage.getCount(Garage.UPPER));
+        lblUpperklasseWagen = new JLabel(UPPER+": "+garage.getCount(Garage.UPPER));
         lblUpperklasseWagen.setBounds(12, 618, 164, 16);
         frame.getContentPane().add(lblUpperklasseWagen);
         
@@ -243,15 +325,23 @@ public class App {
 				
 				if(dialog.save){
 					garage = dialog.getGarage();
-					lblKleinwagen.setText(SMALL+": "+garage.getCount(Garage.SMALL));
-					lblKompaktwagen.setText(COMPACT+": "+garage.getCount(Garage.COMPACT));
-					lblMittelklasseWagen.setText(MIDDLE+": "+garage.getCount(Garage.MIDDLE));
-					lblUpperklasseWagen.setText(UPPER+": "+garage.getCount(Garage.UPPER));
+					updateGarageView();
 				}
         	}
+
+			
         });
         btnGerageBearbeiten.setBounds(12, 493, 164, 25);
         frame.getContentPane().add(btnGerageBearbeiten);
         
 	}
+	
+	private void updateGarageView() {
+		lblKleinwagen.setText(SMALL+": "+garage.getCount(Garage.SMALL));
+		lblKompaktwagen.setText(COMPACT+": "+garage.getCount(Garage.COMPACT));
+		lblMittelklasseWagen.setText(MIDDLE+": "+garage.getCount(Garage.MIDDLE));
+		lblUpperklasseWagen.setText(UPPER+": "+garage.getCount(Garage.UPPER));
+	}
+	
+	
 }
