@@ -706,7 +706,10 @@ Zustand nach Vermietung:\\
 Tests für die Anwendungssituation.
 
 \subsection{Oberfläche}
-Hier den Prototypen beschreiben.
+Zur einfachen Eingabe von Testfällen habe wir eine Java SWING GUI Programmiert. Diese besteht aus einer Haupt-Eingabemaske über die ein Mietgesuch eingegeben werden kann, einem Fahrer Verwaltungs-Dialog und einem Garagen Konfigurations-Dialog. Der Dialog zum Verwalten der Fahrer ermöglicht eingaben über den Name des Fahrers, das Alter des Fahrers, wie lange der Fahrer schon einen Führerschein besitzt, ob er ein Neukunde ist, eine Reklamation vorweisen kann und ob er ein Sicherheitstraining absolviert hat. Über den Garagen Konfigurations-Dialog kann die Anzahl der zu Verfügung stehenden Fahrzeuge in den einzelnen Fahrzeugklassen eingestellt werden. In der Haupt-Eingabemaske kann der Garagendialog aufgerufen werden und es können Fahrer über den Fahrerdialog hinzugefügt und verwaltet werden. Alle Fahrer einer Mietanfrage werden im Hauptfenster Angezeigt. Das Hauptfenster bietet die Möglichkeit zum einstellen des Mietstartdatums, der Mietdauer, der Fahrzeugklasse des Mietwagens und ob der Mietwagen eine Automatikschaltung haben soll. 
+
+Nachdem alle Eingaben gemacht wurden kann eine Mietanfrage an das System gesendet werden. Abhängig von den Eingabewerten muss ein Fahranfänger oder ein Fahrzeugupgrade genehmigt werden. Wird eine Genehmigung nicht erteilt oder steht kein Fahrzeug mehr zur Verfügung wird die Anfrage abgelehnt. Sollte die Anfrage berechnet werden, wird in einem abschließendem Dialog die Fahrzeugklasse und die zu zahlenden Kosten angezeigt.
+
 
 \begin{figure}
 \centering
