@@ -54,7 +54,6 @@ rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-
 		$r : RentalRequest( $customers : customers )
 		exists( Novice( customer memberOf $customers ) )
 	then
-		$r.setNovice(true);
 		$r.setExtraChargePercent(10);
 end
 

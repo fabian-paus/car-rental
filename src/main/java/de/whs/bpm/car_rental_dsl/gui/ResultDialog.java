@@ -2,25 +2,24 @@ package de.whs.bpm.car_rental_dsl.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 
 import de.whs.bpm.car_rental_dsl.RentalRequest;
 
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class ResultDialog extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
-
+	private static final long serialVersionUID = -626622502107931002L;
 	
+	private final JPanel contentPanel = new JPanel();	
 
 	/**
 	 * Create the dialog.
@@ -37,7 +36,6 @@ public class ResultDialog extends JDialog {
 		
 		String kosten = "";
 		String klasse = "";
-		String upgrade = "";
 		String declined = "";
 		
 		if(result.isDeclined())

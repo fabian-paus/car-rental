@@ -35,7 +35,6 @@ public class ExtraTest extends BaseTest {
 		runProcess(request);
 		
 		// Test the output data
-		assertFalse(request.isNovice());
 		assertEquals(request.getExtraChargePercent(), 0);
 		assertFalse(request.requiresNovicePermission());
 		
@@ -80,7 +79,6 @@ public class ExtraTest extends BaseTest {
 		runProcess(request);
 		
 		// Test the output data
-		assertTrue(request.isNovice());
 		assertEquals(request.getExtraChargePercent(), 10);
 		assertTrue(request.requiresNovicePermission());
 		
@@ -126,7 +124,6 @@ public class ExtraTest extends BaseTest {
 		runProcess(request);
 		
 		// Test the output data
-		assertTrue(request.isNovice());
 		assertEquals(request.getExtraChargePercent(), 10);
 		assertTrue(request.requiresNovicePermission());
 		
@@ -160,7 +157,6 @@ public class ExtraTest extends BaseTest {
 		runProcess(request);
 		
 		// Test the output data
-		assertTrue(request.isNovice());
 		assertEquals(request.getExtraChargePercent(), 10);
 		assertTrue(request.requiresNovicePermission());
 		

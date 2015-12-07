@@ -18,7 +18,6 @@ public class RentalRequest {
 	private Garage garage = new Garage();
 	
 	// Output
-	private boolean isNovice;
 	private int extraChargePercent;
 	private boolean requiresNovicePermission;
 	
@@ -32,8 +31,7 @@ public class RentalRequest {
 	private int discount;
 	private int finalPrice;
 	private int totalPrice;
-	
-	RentalDay[] days;
+	private RentalDay[] days;
 	
 	public RentalRequest(Calendar startDate, int durationInDays,
 			String carClass) {
@@ -144,16 +142,6 @@ public class RentalRequest {
 
 	public void setGarage(Garage garage) {
 		this.garage = garage;
-	}
-	
-	
-
-	public boolean isNovice() {
-		return isNovice;
-	}
-
-	public void setNovice(boolean isNovice) {
-		this.isNovice = isNovice;
 	}
 
 	public int getExtraChargePercent() {

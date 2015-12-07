@@ -841,6 +841,36 @@ Zustand nach Vermietung:\\
 
 \section{Prototyp}
 
+Die Umsetzung des Prototypen haben wir in vier Schritte eingeteilt:
+\begin{enumerate}
+	\item Festlegung des Datenmodells
+	\item Schreiben von Unit-Tests
+	\item Implementierung der Regeln
+	\item Transformation der Regeln in eine DSL 
+\end{enumerate}
+
+\subsection{Datenmodell}
+
+Die zu modellierenden Daten umfassen Kunden- und Anfragedaten. Diese beiden Datensätze
+werden als Java-Klassen modelliert (Customer und RentalRequest). Zusätzlich wird die
+Informationen über die zur Verfügung stehenden Autos in der Klasse Garage gespeichert.
+Die einzelnen Miettage werden als RentalDay modelliert. Das Klassendiagramm in
+Abbildung \ref{fig:Class_All} zeigt alle Klassen.
+
+\begin{figure}[tbh]
+\centering
+\includegraphics[width=1.0\linewidth]{Bilder/Class_All}
+\caption{Klassendiagramm}
+\label{fig:Class_All}
+\end{figure}
+
+Die Klasse RentalRequest dient sowohl der Eingabe als auch der Ausgabe von Daten.
+Das heißt, dass Regeln und Prozesse ggf. schreibend auf die aktuelle Instanz zugreifen.
+
+
+\subsubsection{Customer}
+
+
 \subsection{Umsetzung mittels einfacher Regeldatei}
 
 \subsection{Nutzung einer DSL}

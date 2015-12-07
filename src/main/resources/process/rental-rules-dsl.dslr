@@ -55,7 +55,6 @@ rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-
 		there is a request
 		there exists a customer who is driving novice
 	then
-		treat the request as novice
 		set extra charge to 10%	
 end
 
