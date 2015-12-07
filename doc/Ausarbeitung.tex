@@ -23,7 +23,9 @@ Aufgabe dieses Projekts war es eine Autovermietung mithilfe von jBPM und Drools 
 
 Im Laufe dieser Projektdokumentation werden die einzelnen Arbeitsschritte strukturiert und detailliert beschrieben. Der Quellcode und die Projektdokumentation kann über ein öffentliches Git-Repository (\url{https://github.com/fabian-paus/car-rental}) auf GitHub.com eingesehen werden. 
 
-Als Ergebnis haben wir eine Grafische Benutzeroberfläche über die ein Mietgesuch an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und verlangt, wenn nötig, an einigen Stellen eine Genehmigung. Am Ende wird die Anfrage entweder genehmigt oder Abgelehnt. Eine genehmigte Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden dann über die GUI an den Benutzer ausgegeben. 
+Als Ergebnis haben wir eine grafische Benutzeroberfläche entworfen, über die eine Mietanfrage an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und nutzt die Regel-Engine zur Ausführung von Geschäftsregeln.
+Unter gewissen Bedingungen muss der Filialleiter einen Schritt genehmigen.
+Am Ende wird die Anfrage entweder angenommen oder abgelehnt. Eine angenommene Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden dann über die Oberfläche an den Benutzer ausgegeben. 
 
 \section{Einarbeitung}
 
