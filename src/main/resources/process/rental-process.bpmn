@@ -290,31 +290,31 @@ else {&#xD;
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="de.whs.bpm.car_rental_dsl.price">
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="_2">
-        <dc:Bounds height="48.0" width="109.0" x="50.0" y="66.0"/>
+        <dc:Bounds height="48.0" width="109.0" x="51.0" y="82.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_1">
-          <dc:Bounds height="15.0" width="81.0" x="64.0" y="82.0"/>
+          <dc:Bounds height="15.0" width="81.0" x="65.0" y="98.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="_1">
-        <dc:Bounds height="36.0" width="36.0" x="87.0" y="0.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="87.0" y="20.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_2"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="_3">
-        <dc:Bounds height="36.0" width="36.0" x="95.0" y="1009.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="96.0" y="990.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_3">
-          <dc:Bounds height="30.0" width="50.0" x="88.0" y="1045.0"/>
+          <dc:Bounds height="30.0" width="50.0" x="89.0" y="1026.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_BusinessRuleTask_1" bpmnElement="BusinessRuleTask_1">
-        <dc:Bounds height="50.0" width="110.0" x="50.0" y="140.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="50.0" y="150.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_4">
-          <dc:Bounds height="15.0" width="75.0" x="67.0" y="157.0"/>
+          <dc:Bounds height="15.0" width="75.0" x="67.0" y="167.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_1">
-        <dc:Bounds height="50.0" width="110.0" x="58.0" y="936.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="59.0" y="920.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_5">
-          <dc:Bounds height="30.0" width="63.0" x="81.0" y="946.0"/>
+          <dc:Bounds height="30.0" width="63.0" x="82.0" y="930.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
@@ -368,9 +368,9 @@ else {&#xD;
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_BusinessRuleTask_3" bpmnElement="BusinessRuleTask_3">
-        <dc:Bounds height="50.0" width="110.0" x="59.0" y="861.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="59.0" y="850.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_15">
-          <dc:Bounds height="15.0" width="83.0" x="72.0" y="878.0"/>
+          <dc:Bounds height="15.0" width="83.0" x="72.0" y="867.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_4" bpmnElement="EndEvent_3">
@@ -396,22 +396,22 @@ else {&#xD;
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_ScriptTask_1">
-        <di:waypoint xsi:type="dc:Point" x="105.0" y="36.0"/>
-        <di:waypoint xsi:type="dc:Point" x="104.0" y="66.0"/>
+        <di:waypoint xsi:type="dc:Point" x="105.0" y="56.0"/>
+        <di:waypoint xsi:type="dc:Point" x="105.0" y="82.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_60"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_BusinessRuleTask_1">
-        <di:waypoint xsi:type="dc:Point" x="104.0" y="114.0"/>
-        <di:waypoint xsi:type="dc:Point" x="105.0" y="140.0"/>
+        <di:waypoint xsi:type="dc:Point" x="105.0" y="130.0"/>
+        <di:waypoint xsi:type="dc:Point" x="105.0" y="150.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_70"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_EndEvent_1">
-        <di:waypoint xsi:type="dc:Point" x="113.0" y="986.0"/>
-        <di:waypoint xsi:type="dc:Point" x="113.0" y="1009.0"/>
+        <di:waypoint xsi:type="dc:Point" x="114.0" y="970.0"/>
+        <di:waypoint xsi:type="dc:Point" x="114.0" y="990.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_90"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_BusinessRuleTask_1" targetElement="BPMNShape_ExclusiveGateway_1">
-        <di:waypoint xsi:type="dc:Point" x="105.0" y="190.0"/>
+        <di:waypoint xsi:type="dc:Point" x="105.0" y="200.0"/>
         <di:waypoint xsi:type="dc:Point" x="105.0" y="220.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_20"/>
       </bpmndi:BPMNEdge>
@@ -500,12 +500,12 @@ else {&#xD;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_22" bpmnElement="SequenceFlow_22" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_BusinessRuleTask_3">
         <di:waypoint xsi:type="dc:Point" x="114.0" y="830.0"/>
-        <di:waypoint xsi:type="dc:Point" x="114.0" y="861.0"/>
+        <di:waypoint xsi:type="dc:Point" x="114.0" y="850.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_32"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_23" bpmnElement="SequenceFlow_23" sourceElement="BPMNShape_BusinessRuleTask_3" targetElement="BPMNShape_ScriptTask_2">
-        <di:waypoint xsi:type="dc:Point" x="114.0" y="911.0"/>
-        <di:waypoint xsi:type="dc:Point" x="113.0" y="936.0"/>
+        <di:waypoint xsi:type="dc:Point" x="114.0" y="900.0"/>
+        <di:waypoint xsi:type="dc:Point" x="114.0" y="920.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_33"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_24" bpmnElement="SequenceFlow_24" sourceElement="BPMNShape_ExclusiveGateway_7" targetElement="BPMNShape_ScriptTask_3">
