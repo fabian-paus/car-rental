@@ -456,6 +456,7 @@ end
 \end{lstlisting}
 
 \section{Anwendungssituation}
+\label{sec:Anwendungssituation}
 
 Wir analysieren die Situation am 21. März 2016 in der Autovermietungsstation.
 Dazu beschreiben wir zunächst die Ausgangssituation und dann die einzelnen Kundenanfragen.
@@ -873,11 +874,48 @@ Abbildung \ref{fig:Class_All} zeigt alle Klassen.
 Die Klasse RentalRequest dient sowohl der Eingabe als auch der Ausgabe von Daten.
 Das heißt, dass Regeln und Prozesse ggf. schreibend auf die aktuelle Instanz zugreifen.
 
+\subsection{Unit-Tests: Anwendungssituation}
 
-\subsubsection{Customer}
+Nachdem wir das Datenmodell festgelegt haben, konnten wir Unit-Tests für die 
+Anwendungssituationen aus der Aufgabenstellung schreiben. Dabei ist uns aufgefallen,
+dass bei sequentieller Abarbeitung der Kunden A bis G die Wagen der Mittel- und
+Oberklasse schnell ausgehen. Dies führt dazu dass die Anfragen der Kunden E und F
+direkt abgelehnt werden. Für die Unit-Tests haben wir zusätzlich die Fälle betrachtet,
+wenn es genügend Wagen in der angeforderten Klasse gibt.
 
+Die erwarteten Preise in den einzelnen Anwendungssituationen haben wir manuell
+mithilfe des initial erstellten Flussdiagramms ermittelt. Die Ergebnisse dieser
+manuellen Auswertung befinden sich in Anhang \ref{sec:Anwendungssituation}.
+
+In der Java-Klasse SituationTest werden die vorgegebenen Situationen getestet.
+Zusätzlich haben wir in der Klasse ExtraTest versucht, bisher noch nicht
+getestete Szenarien abzubilden. Dazu zählen z.~B. die Automatikgebühr und verschiedene
+Genehmigungszenarien.
+
+\subsection{Definition des Geschäftsprozesses}
+
+Die Autovermietung ist ein Geschäftsprozess, in dem unterschiedliche Regelgruppen aktiviert
+werden müssen. Außerdem ist ja nach Anfrage eine menschliche Interaktion durch den
+Filialleiter in Form einer Genehmigung erforderlich. Dies haben wir mittels
+jBPM als Prozess definiert.
+
+Die Integration der Geschäftsregeln haben wir durch die Zuordnung zu Ruleflow-Groups
+in der Regeldatei und das Einbinden von Business-Rule-Tasks in den Prozess.
+Um die Genehmigung durch den Filialleiter zu ermöglichen haben wir User- bzw.
+Human-Tasks eingebunden.
+
+Der gesamte Prozess wird in Abbildung \ref{fig:Process_BPMN} dargestellt.
+
+\begin{figure}[tbh]
+\centering
+\includegraphics[width=0.8\linewidth]{Bilder/Process_BPMN}
+\caption{Geschäftsprozess in jBPM}
+\label{fig:Process_BPMN}
+\end{figure}
 
 \subsection{Umsetzung mittels einfacher Regeldatei}
+
+Um mögliche Fehlerquellen zu vermeiden, haben wir die Geschäftsregeln 
 
 \subsection{Nutzung einer DSL}
 
