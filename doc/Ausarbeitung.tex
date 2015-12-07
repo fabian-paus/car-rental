@@ -66,7 +66,7 @@ festgelegt werden.
 	\item[Basispreis:] Der Basispreis ist die Summe der Tagespreise über die gesamte Dauer. Einheit: Euro
 	\item[Rabatt:] Der Rabatt ist ein Nachlass, der auf Kundenbasis ermittelt wird. Einheit: Euro
 	\item[Automatikgebühr:] Eine zusätzliche Gebühr, falls ein Automatikwagen gemietet wird. Einheit: Euro
-	\item[Endpreis:] Der Endpreis wird aus dem Basispreis, dem Rabatt und der Automatikgebühr berechnet.
+	\item[Endpreis:] Der Endpreis wird aus dem Basispreis, dem Rabatt und der Automatikgebühr berechnet. Einheit: Euro
 	\item[Zuschlag:] Ein prozentualer Zuschlag auf den Endpreis. Einheit: Prozent
 	\item[Nachlass:] Ein prozentualer Nachlass auf den Endpreis. Einheit: Prozent
 	\item[Gesamtpreis:] Nachdem Zuschlag und Nachlass auf den Endpreis berechnet wurden, ergibt sich der Gesamtpreis. Einheit: Euro
@@ -477,6 +477,8 @@ Vorgehen:
 	\item Nicht spezifizierte Anfrageparameter nehmen einen Standardwert an (Nein, bzw. 0).
 	\item Bei nicht angegebenem Alter ist der Kunde älter als 21 Jahre.
 	\item Der Filialleiter genehmigt alle Anfragen.
+	\item Wenn die Anfrage abgelehnt wird, weil keine Wagen der angefragten Klasse vorhanden sind,
+		wird als Alternative dieselbe Anfrage mit vorhandener Klasse betrachtet.
 \end{itemize}
 
 \subsection{Kunde A}
@@ -620,7 +622,7 @@ Zustand nach Vermietung:\\
 	\hline 
 \end{tabular}
 
-\subsection{Kunde E}
+\subsection{Kunde E (abgelehnt)}
 
 Kundendaten:\\
 \begin{tabular}{|c|c|c|c|c|}
@@ -665,7 +667,7 @@ Zustand nach Vermietung:\\
 	\hline 
 \end{tabular}
 
-\subsection{Kunde F}
+\subsection{Kunde F (abgelehnt)}
 
 Kundendaten:\\
 \begin{tabular}{|c|c|c|c|c|}
@@ -736,6 +738,104 @@ Zustand nach Vermietung:\\
 \begin{tabular}{|c|c|c|c|}
 	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
 	\hline 2 & 2 & 0 & 0 \\ 
+	\hline 
+\end{tabular}
+
+\subsection{Kunde E (angenommen)}
+
+Wir nehmen an, es gäbe ausreichend Wagen jeder Klasse:
+
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 2 & 2 \\ 
+	\hline 
+\end{tabular}
+
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 46 & 20 & Ja & Nein & Nein \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Ober & 6 & Nein \\ 
+	\hline 
+\end{tabular}
+
+Preisberechnung:
+\begin{itemize}
+	\item Zeitraum: 4 Wochentag, 2 Wochenende oder Feiertage
+	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
+	\item Verfügbarkeitsprüfung: Bestanden, Nachlass: 0\%
+	
+	% Es gibt noch eine Oberklasse:
+	\item Tagespreis: 90€/Wochentag, 67,50€/Feiertag
+	\item Basispreis = $90€ * 4 + 67,50€ * 2 = 495,00€$
+	\item Rabatt = 10,00€
+	\item Endpreis = 485,00€
+	\item Gesamtpreis = 100\% * Endpreis = 485,00€
+	
+	% Es gibt keine Oberklasse aber eine Mittelklasse
+	%	\item Tagespreis: 70€/Wochentag, 52,50€/Feiertag
+	%	\item Basispreis = $70€ * 4 + 52,50€ * 2 = 385,00€$
+	%	\item Rabatt = 10,00€
+	%	\item Endpreis = 375,00€
+	%	\item Gesamtpreis = 90\% * Endpreis = 337,50€
+\end{itemize}
+
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 2 & 1 \\ 
+	\hline 
+\end{tabular}
+
+\subsection{Kunde F (angenommen)}
+
+Wir nehmen an, es gäbe ausreichend Wagen jeder Klasse:
+
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 2 & 2 \\ 
+	\hline 
+\end{tabular}
+
+Kundendaten:\\
+\begin{tabular}{|c|c|c|c|c|}
+	\hline \textbf{Alter} & \textbf{Führerschein} & \textbf{Neukunde} & \textbf{Reklamation} & \textbf{Sicherheitstraining} \\ 
+	\hline 32 & 10 & Nein & Nein & Ja \\ 
+	\hline 
+\end{tabular} 
+\\\\
+Anfrage:\\
+\begin{tabular}{|c|c|c|}
+	\hline \textbf{Klasse} & \textbf{Dauer in Tagen} & \textbf{Automatik} \\ 
+	\hline Ober & 4 & Nein \\ 
+	\hline 
+\end{tabular}
+
+Zwischenergebnis:
+\begin{itemize}
+	\item Zeitraum: 4 Wochentag, 0 Wochenende oder Feiertage
+	\item Fahranfängerprüfung: Bestanden, Zuschlag: 0\%
+	\item Verfügbarkeitsprüfung: Bestanden, Nachlass: 0\%
+	\item Tagespreis: 90€/Wochentag, 67,50€/Feiertag
+	\item Basispreis = 90€ * 4 + 67,50€ * 0 = 360,00€
+	\item Rabatt = 20\% * 360€ + 5\% * 360€ = 72€ + 18€ = 90€
+	\item Endpreis = 270,00€
+	\item Gesamtpreis = 100\% * Endpreis = 270,00€
+	
+	% Siehe E
+\end{itemize}
+
+Abgelehnt: Keine Änderung
+Zustand nach Vermietung:\\
+\begin{tabular}{|c|c|c|c|}
+	\hline \textbf{Kleinklasse} & \textbf{Kompaktklasse} & \textbf{Mittelklasse} & \textbf{Oberklasse}  \\ 
+	\hline 2 & 2 & 2 & 1 \\ 
 	\hline 
 \end{tabular}
 
