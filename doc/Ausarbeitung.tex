@@ -24,11 +24,54 @@ Aufgabe beschrieben.
 \section{Einarbeitung}
 
 Um die Aufgabe besser zu strukturieren definieren wir zunächst einige Domänenbegriffe und 
-beschreiben dann den Ablauf eines Vermietungsprozesses mithilfe eines Flussdiagramms.
+beschreiben dann den Ablauf des Vermietungsprozesses mithilfe eines Flussdiagramms.
 
 \subsection{Domänenbegriffe}
 
-TODO: Begriffe bescrheiben.
+In diesem Abschnitt werden Begriffe, die für den Vermietungsprozess wichtig sind, definiert.
+Diese Begriffe werden in Diagrammen, in Regeln und bei der Prozessdefinition verwendet.
+Einige Begriffe werden nicht exakt definiert, da diese später in Regeln genauer
+festgelegt werden.
+
+\begin{description}
+	\item[Kunde:] Ein Kunde möchte einen Wagen mieten. Für jeden Kunden sind folgende Eigenschaften bekannt:
+		\begin{description}
+			\item[Alter:] Wie alt ist der Kunde? Einheit: Jahre
+			\item[Führerscheindauer:] Wie lange hat der Kunde seinen Führerschein? Einheit: Jahre
+			\item[Sicherheitstraining:] Hat der Kunde ein Fahrsicherheitstraining absolviert?
+			\item[Reklamation:] Hat der Kunde eine berechtigte Reklamation vorgebracht?
+			\item[Neukunde:] Ist der Kunde zum ersten Mal bei der Autovermietung?
+		\end{description}
+	\item[Fahranfänger] Ein Kunde ist ein Fahranfänger, wenn er jünger als ein bestimmtes Alter ist oder
+		seinen Führerschein noch nicht sehr lange besitzt. Die genaue Definition erfolgt anhand einer
+		Geschäftsregel.	
+	\item[Filialleiter:] Gewisse Entscheidung beim Vermietungsprozess bedürfen der Genehmigung durch
+		den Filialleiter.
+	\item[Klasse:] Ein zu mietender Wagen wird in vier Klassen eingeteilt:
+		\begin{description}
+			\item[Klein:] Kleinwagen
+			\item[Kompakt:] Kompaktwagen
+			\item[Mittel:] Mittelklassewagen
+			\item[Ober] Oberklassewagen
+		\end{description}
+	\item[Anfrage:] Eine Anfrage für einen Mietwagen wird von einem Kunden gestellt. Sie enthält folgende Informationen:
+		\begin{description}
+			\item[Fahrer:] Welche Kunden fahren mit dem Auto? (Achtung: mehr als ein Fahrer möglich)
+			\item[Startdatum:] Ab welchem Datum wird das Auto gemietet? Einheit: Datum
+			\item[Dauer:] Für wie lange soll das Auto gemietet werden? Einheit: Tage
+			\item[Klasse:] Welche Wagenklasse soll gemietet werden? Einheit: Klasse (siehe Definition oben)
+			\item[Automatik:] Soll der Mietwagen eine Automatikschaltung haben?
+		\end{description}
+	\item[Tagespreis:] Der Tagespreis ist der Preis für eine Mietdauer von einem Tag. Einheit: Euro
+	\item[Basispreis:] Der Basispreis ist die Summe der Tagespreise über die gesamte Dauer. Einheit: Euro
+	\item[Rabatt:] Der Rabatt ist ein Nachlass, der auf Kundenbasis ermittelt wird. Einheit: Euro
+	\item[Automatikgebühr:] Eine zusätzliche Gebühr, falls ein Automatikwagen gemietet wird. Einheit: Euro
+	\item[Endpreis:] Der Endpreis wird aus dem Basispreis, dem Rabatt und der Automatikgebühr berechnet.
+	\item[Zuschlag:] Ein prozentualer Zuschlag auf den Endpreis. Einheit: Prozent
+	\item[Nachlass:] Ein prozentualer Nachlass auf den Endpreis. Einheit: Prozent
+	\item[Gesamtpreis:] Nachdem Zuschlag und Nachlass auf den Endpreis berechnet wurden, ergibt sich der Gesamtpreis. Einheit: Euro
+	
+\end{description}
 
 \subsection{Flussdiagramm}
 
