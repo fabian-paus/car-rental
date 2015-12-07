@@ -17,11 +17,25 @@
 
 \newpage
 
-\section{Flussdiagramm}
+\section{Einleitung}
 
-Anhand des Flussdiagramms beschreiben wir die einzelnen Regeln, die Anwendung finden.
+Aufgabe beschrieben.
 
-\subsection{Gesamter Prozess}
+\section{Einarbeitung}
+
+Um die Aufgabe besser zu strukturieren definieren wir zunächst einige Domänenbegriffe und 
+beschreiben dann den Ablauf eines Vermietungsprozesses mithilfe eines Flussdiagramms.
+
+\subsection{Domänenbegriffe}
+
+TODO: Begriffe bescrheiben.
+
+\subsection{Flussdiagramm}
+
+Anhand des Flussdiagramms beschreiben wir den gesamten Vermietungsprozess. Dabei gehen wir auf
+die einzelnen Aussagen aus der Aufgabenstellung ein.
+
+\subsubsection{Gesamter Prozess}
 
 Wir haben den gesamten Prozess in drei Teilprozesse unterteilt:
 \begin{enumerate}
@@ -39,7 +53,7 @@ Nach Aussage 3 wird zuerst geprüft, ob die Anfrage die maximale Dauer überschr
 \label{fig:Preis_berechnen}
 \end{figure}
 
-\subsection{Fahranfängerprüfung}
+\subsubsection{Fahranfängerprüfung}
 
 In Aussage 10 wird definiert, wer als Fahranfänger eingestuft wird, und welcher Aufschlag in dem 
 Fall zu zahlen ist. Aussage 11 bestimmt die Fahrzeugklassen, die nur mit Genehmigung vom Filialleiter
@@ -52,7 +66,7 @@ durch Fahranfängern gemietet werden dürfen.
 \label{fig:Fahranfänger_prüfen}
 \end{figure}
 
-\subsection{Verfügbarkeitsprüfung}
+\subsubsection{Verfügbarkeitsprüfung}
 
 Aussagen: 12 (Kostenloses Upgrade nach Genehmigung), 13 (Downgrade aus Oberklasse)
 
@@ -69,7 +83,7 @@ ein Downgrade auf die Mittelklasse durchgeführt mit zusätzlichem Nachlass auf 
 \label{fig:Verfuegbarkeit_pruefen}
 \end{figure}
 
-\subsection{Preisberechnung}
+\subsubsection{Preisberechnung}
 
 Die Preisberechnung besteht aus drei Schritten:
 \begin{enumerate}
@@ -89,7 +103,7 @@ der Automatikgebühr zusammen.
 \end{figure}
 
 \newpage 
-\subsubsection{Basispreis}
+\paragraph{Basispreis}
 
 Der Basispreis entspricht der Summe aller Tagespreise.
 
@@ -100,7 +114,7 @@ Der Basispreis entspricht der Summe aller Tagespreise.
 	\label{fig:Basispreis_berechnen}
 \end{figure}
 
-\subsubsection{Tagespreis}
+\paragraph{Tagespreis}
 
 Bei der Tagespreisberechnung werden die Aussagen 1, 2 und 3 berücksichtigt.
 
@@ -115,7 +129,7 @@ reduziert. Außerdem ist jeder siebte Tag nach Aussage 3 kostenlos.
 	\label{fig:Tagespreis_berechnen}
 \end{figure}
 
-\subsubsection{Rabatt}
+\paragraph{Rabatt}
 
 Bei der Rabattberechnung werden laut Aussagen 4, 5 und 6 die Eigenschaften Neukunde, alte Reklamation
 und Sicherheitstraining berücksichtigt. Dabei ist zu beachten, dass bei mehreren Fahrern die
@@ -684,7 +698,30 @@ Zustand nach Vermietung:\\
 
 \section{Prototyp}
 
+\subsection{Umsetzung mittels einfacher Regeldatei}
+
+\subsection{Nutzung einer DSL}
+
+\subsection{Unit-Tests}
+Tests für die Anwendungssituation.
+
+\subsection{Oberfläche}
 Hier den Prototypen beschreiben.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{Bilder/Screenshots/kunde}
+\caption{}
+\label{fig:kunde}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{Bilder/Screenshots/Garage}
+\caption{}
+\label{fig:Garage}
+\end{figure}
+
 
 %\appendix
 %\include{Inhalt/Anhang}
