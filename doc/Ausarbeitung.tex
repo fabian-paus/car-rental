@@ -192,6 +192,7 @@ schlechteren Konditionen gelten. Das haben wir über die "`Alle Fahrer"'-Bedingu
 \end{figure}
 
 \section{Regeln und Prozesse}
+\label{sec:rules}
 
 Aus den Aussagen und dem Flussdiagramm ergibt sich folgender grober Prozessablauf:
 \begin{enumerate}
@@ -848,12 +849,14 @@ Zustand nach Vermietung:\\
 
 \section{Prototyp}
 
-Die Umsetzung des Prototypen haben wir in vier Schritte eingeteilt:
+Die Umsetzung des Prototypen haben wir in sechs Schritte eingeteilt:
 \begin{enumerate}
 	\item Festlegung des Datenmodells
 	\item Schreiben von Unit-Tests
-	\item Implementierung der Regeln
-	\item Transformation der Regeln in eine DSL 
+	\item Definition des Geschäftsprozesses
+	\item Implementierung der Regeln in normaler Regelsprache
+	\item Transformation der Regeln in eine DSL
+	\item Entwurf und Implementierung einer Oberfläche
 \end{enumerate}
 
 \subsection{Datenmodell}
@@ -913,14 +916,22 @@ Der gesamte Prozess wird in Abbildung \ref{fig:Process_BPMN} dargestellt.
 \label{fig:Process_BPMN}
 \end{figure}
 
-\subsection{Umsetzung mittels einfacher Regeldatei}
+\subsection{Normale Regelsprache}
 
-Um mögliche Fehlerquellen zu vermeiden, haben wir die Geschäftsregeln 
+Um mögliche Fehlerquellen zu vermeiden, haben wir die Geschäftsregeln zuerst
+in der normalen Rule-Language implementiert. Durch die ausführlichen Unit-Tests
+konnten wir so Fehler schnell finden und korrigieren. Die so erstellte Regelbasis
+dient als Grundlage zur Erstellung der DSL. Anhang \ref{anh:normal-rules} enthält
+die entsprechende Regeldatei.
 
-\subsection{Nutzung einer DSL}
+\subsection{Transformation in DSL}
 
-\subsection{Unit-Tests}
-Tests für die Anwendungssituation.
+Wir haben uns entschieden unsere DSL in Englisch zu implementieren, um eine Mischung
+von Englisch und Deutsch zu vermeiden. Bei der Definition haben wir uns an der
+einfachen Regeldatei orientiert. Nachdem alle Regeln übersetzt waren, haben wir
+die Unit-Tests auf die in der DSL definierten Regeln umgestellt. Das hat uns erlaubt
+Fehler bei der Transformation schnell zu finden und auch zu beheben. Die so erstellten
+Regeln wurden bereits in Abschnitt \ref{sec:rules} vorgestellt.
 
 \subsection{Oberfläche}
 Zur einfachen Eingabe von Testfällen habe wir eine Java SWING GUI Programmiert. Diese besteht aus einer Haupt-Eingabemaske \ref{fig:Autovermietung} über die ein Mietgesuch eingegeben werden kann, einem Fahrer Verwaltungs-Dialog \ref{fig:kunde} und einem Garagen Konfigurations-Dialog \ref{fig:Garage}. Der Dialog zum Verwalten der Fahrer ermöglicht eingaben über den Name des Fahrers, das Alter des Fahrers, wie lange der Fahrer schon einen Führerschein besitzt, ob er ein Neukunde ist, eine Reklamation vorweisen kann und ob er ein Sicherheitstraining absolviert hat. Über den Garagen Konfigurations-Dialog kann die Anzahl der zu Verfügung stehenden Fahrzeuge in den einzelnen Fahrzeugklassen eingestellt werden. In der Haupt-Eingabemaske kann der Garagendialog aufgerufen werden und es können Fahrer über den Fahrerdialog hinzugefügt und verwaltet werden. Alle Fahrer einer Mietanfrage werden im Hauptfenster Angezeigt. Das Hauptfenster bietet die Möglichkeit zum einstellen des Mietstartdatums, der Mietdauer, der Fahrzeugklasse des Mietwagens und ob der Mietwagen eine Automatikschaltung haben soll. 
@@ -1001,7 +1012,12 @@ Framework:
 - Integration in die GUI: schnell und hat funktioniert
 
 %\appendix
-%\include{Inhalt/Anhang}
+\appendix
+
+\section{Normale Rule-Language}
+\label{anh:normal-rules}
+
+\lstinputlisting{src/rental-rules.drl}
 
 %\newpage
 %\printbibliography

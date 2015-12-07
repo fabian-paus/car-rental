@@ -267,7 +267,7 @@ rule "Discount: All customers have participated in security training" ruleflow-g
 
 end
 
-rule "Discount is limited to 100 €" ruleflow-group "price-calculation"
+rule "Discount is limited to 100 Euro" ruleflow-group "price-calculation"
 
 	when
 		$r : RentalRequest( discount > 10000 )
