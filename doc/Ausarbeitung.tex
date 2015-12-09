@@ -209,13 +209,31 @@ Geschäftsregeln abbilden.
 Im Folgenden beschreiben wir die Regeln, die wir aus den Aussagen der Aufgabenstellung
 extrahiert haben.
 
+Wir stellen die Regeln in folgendem Format vor:
+\begin{itemize}
+	\item Name bzw. kurze Beschreibung der Regel
+	\item Kategorie, in der wir die Regel eingeordnet haben
+	\item Definition der Regel in unserer DSL
+\end{itemize}
+Wir verzichten auf eine ausführliche Beschreibung der Regel in Deutsch, da unsere
+DSL bereits eine präzise Beschreibung in Englisch darstellt. Da die Einteilung in die
+Kategorien Definitions-, Ableitungs-, Prozess- und Einschränkungsregeln nicht immer
+eindeutig ist, sind wir nach folgendem Schema vorgegangen:
+\begin{description}
+	\item[Definitionsregel:] Ein neuer Begriff wird eingeführt (z.~B. Fahranfänger)
+	\item[Ableitungsregel:] Aus bestehenden Fakten werden neue Fakten abgeleitet (z.~B. Berechnung von Preisen)
+	\item[Prozessregel:] Beschreiben das Vorgehen im Geschäftsprozess (z.~B. Genehmigung durch Filialleiter)
+	\item[Einschränkungsregel:] Schränken ein, was möglich ist (z.~B. maximaler Rabatt)
+\end{description}
+
 \subsection{Fahranfängerprüfung}
 
 Regel: Definition eines Fahranfängers \\
 Kategorie: Definitionsregel
 
 \begin{lstlisting}
-rule "Is driving novice" ruleflow-group "novice-check"
+rule "Is driving novice" 
+	ruleflow-group "novice-check"
 	when
 		there is a request
 		there is a customer with that request
@@ -229,12 +247,12 @@ Regel: Zuschlag für Fahranfänger \\
 Kategorie: Prozessregel
 
 \begin{lstlisting}
-rule "Extra charge if at least one customer is a novice" ruleflow-group "novice-check"
+rule "Extra charge if at least one customer is a novice" 
+	ruleflow-group "novice-check"
 	when
 		there is a request
 		there exists a customer who is driving novice
 	then
-		treat the request as novice
 		set extra charge to 10%	
 end
 \end{lstlisting}
@@ -243,7 +261,8 @@ Regel: Genehmigung für höhere Klassen bei Fahranfängern \\
 Kategorie: Prozessregel
 
 \begin{lstlisting}
-rule "Permission for higher classes required" ruleflow-group "novice-check"
+rule "Permission for higher classes required"
+	ruleflow-group "novice-check"
 	when
 		there is a request
 		- car class is not in ("Small", "Compact")
@@ -259,7 +278,8 @@ Regel: Downgrade aus Oberklasse, wenn nicht verfügbar \\
 Kategorie: Prozessregel
 
 \begin{lstlisting}
-rule "Downgrade for upper class if not available" ruleflow-group "availibility-check"
+rule "Downgrade for upper class if not available"
+	ruleflow-group "availibility-check"
 	when
 		there is a request
 		- car class is "Upper"
@@ -279,7 +299,8 @@ für die angefragte Klasse darstellen. Folgende Regel ist ein Beispiel von
 Klein- nach Kompaktwagen.
 
 \begin{lstlisting}
-rule "Upgrade from Small to Compact" ruleflow-group "availibility-check"
+rule "Upgrade from Small to Compact"
+	ruleflow-group "availibility-check"
 	when
 		there is a request
 		- car class is "Small"
@@ -294,7 +315,8 @@ Regel: Upgrade auf nächsthöhere Klasse, wenn nicht verfügbar \\
 Kategorie: Prozessregel
 
 \begin{lstlisting}
-rule "If updgrade possible it requires permission" ruleflow-group "availibility-check"
+rule "If updgrade possible it requires permission"
+	ruleflow-group "availibility-check"
 	when
 		there is a request
 		- car is not available
@@ -314,7 +336,8 @@ Es gibt eine Reihe von Regeln, die den Tagespreis für jede Fahrzeugklasse festl
 Folgende Regel ist ein Beispiel für Kleinwagen.
 
 \begin{lstlisting}
-rule "Daily price: Small class car" ruleflow-group "price-calculation"
+rule "Daily price: Small class car" 
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		- car class is "Small"
@@ -328,7 +351,8 @@ Regel: Wochenenden und Feiertage haben reduzierten Tagespreis \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Daily price: Weekend discount" ruleflow-group "price-calculation"
+rule "Daily price: Weekend discount"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		there is a rental day from that request
@@ -342,7 +366,8 @@ Regel: Jeder siebte Tag ist kostenlos \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Daily price: Free seventh day" ruleflow-group "price-calculation"
+rule "Daily price: Free seventh day"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		there is a rental day from that request
@@ -356,7 +381,8 @@ Regel: Basispreis ist die Summe der Tagespreise \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Base price is the sum of daily prices" ruleflow-group "price-calculation"
+rule "Base price is the sum of daily prices"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		there is a rental day from that request
@@ -369,7 +395,8 @@ Regel: Neukundenrabatt \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Discount: All customers are new customers" ruleflow-group "price-calculation"
+rule "Discount: All customers are new customers"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		every customer from that request is a new customer
@@ -382,7 +409,8 @@ Regel: Reklamationsrabatt \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Discount: All customers have an old reclamation" ruleflow-group "price-calculation"
+rule "Discount: All customers have an old reclamation"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		every customer from that request had a valid reclamation
@@ -395,7 +423,8 @@ Regel: Rabatt für Sicherheitstraining \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Discount: All customers have participated in security training" ruleflow-group "price-calculation"
+rule "Discount: All customers have participated in security training"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		every customer from that request had a security training
@@ -408,7 +437,8 @@ Regel: Maximaler Rabatt \\
 Kategorie: Einschränkungsregel
 
 \begin{lstlisting}
-rule "Discount is limited to 100 Euro" ruleflow-group "price-calculation"
+rule "Discount is limited to 100 Euro"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		- discount is greater than 100.00
@@ -421,7 +451,8 @@ Regel: Endpreis berechnen \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Final Price: Calculation" ruleflow-group "price-calculation"
+rule "Final Price: Calculation"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 	then
@@ -434,7 +465,8 @@ Regel: Automatikgebühr abziehen \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Final Price: Automatic fee" ruleflow-group "price-calculation"
+rule "Final Price: Automatic fee"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 		- for an automatic car
@@ -447,7 +479,8 @@ Regel: Gesamtpreis berechnen \\
 Kategorie: Ableitungsregel
 
 \begin{lstlisting}
-rule "Total Price" ruleflow-group "price-calculation"
+rule "Total Price"
+	ruleflow-group "price-calculation"
 	when
 		there is a request
 	then
