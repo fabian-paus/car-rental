@@ -24,7 +24,7 @@ Aufgabe dieses Projekts war es eine Autovermietung mithilfe von jBPM und Drools 
 Im Laufe dieser Projektdokumentation werden die einzelnen Arbeitsschritte strukturiert und detailliert beschrieben. Der Quellcode und die Projektdokumentation kann über ein öffentliches Git-Repository (\url{https://github.com/fabian-paus/car-rental}) auf GitHub.com eingesehen werden. 
 
 Als Ergebnis haben wir eine grafische Benutzeroberfläche entworfen, über die eine Mietanfrage an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und nutzt die Regel-Engine zur Ausführung von Geschäftsregeln.
-Unter gewissen Bedingungen muss der Filialleiter einen Schritt genehmigen.
+Unter gewissen Bedingungen muss der Filialleiter Genehmigungen erteilen.
 Am Ende wird die Anfrage entweder angenommen oder abgelehnt. Eine angenommene Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden dann über die Oberfläche an den Benutzer ausgegeben. 
 
 \section{Einarbeitung}
@@ -48,7 +48,7 @@ festgelegt werden.
 			\item[Reklamation:] Hat der Kunde eine berechtigte Reklamation vorgebracht?
 			\item[Neukunde:] Ist der Kunde zum ersten Mal bei der Autovermietung?
 		\end{description}
-	\item[Fahranfänger] Ein Kunde ist ein Fahranfänger, wenn er jünger als ein bestimmtes Alter ist oder
+	\item[Fahranfänger:] Ein Kunde ist ein Fahranfänger, wenn er jünger als ein bestimmtes Alter ist oder
 		seinen Führerschein noch nicht sehr lange besitzt. Die genaue Definition erfolgt anhand einer
 		Geschäftsregel.	
 	\item[Filialleiter:] Gewisse Entscheidung beim Vermietungsprozess bedürfen der Genehmigung durch
@@ -58,7 +58,7 @@ festgelegt werden.
 			\item[Klein:] Kleinwagen
 			\item[Kompakt:] Kompaktwagen
 			\item[Mittel:] Mittelklassewagen
-			\item[Ober] Oberklassewagen
+			\item[Ober:] Oberklassewagen
 		\end{description}
 	\item[Anfrage:] Eine Anfrage für einen Mietwagen wird von einem Kunden gestellt. Sie enthält folgende Informationen:
 		\begin{description}
@@ -93,8 +93,6 @@ Wir haben den gesamten Prozess in drei Teilprozesse unterteilt:
 	\item Preisberechnung
 \end{enumerate}
 
-Nach Aussage 3 wird zuerst geprüft, ob die Anfrage die maximale Dauer überschreitet.
-
 \begin{figure}[tbh]
 \centering
 \includegraphics[width=1.0\linewidth]{Bilder/Preis_berechnen}
@@ -116,8 +114,6 @@ durch Fahranfängern gemietet werden dürfen.
 \end{figure}
 
 \subsubsection{Verfügbarkeitsprüfung}
-
-Aussagen: 12 (Kostenloses Upgrade nach Genehmigung), 13 (Downgrade aus Oberklasse)
 
 In Aussage 12 wird beschrieben, was passieren soll, wenn kein Fahrzeug der angefragten Klasse
 verfügbar ist. Dann wird nach Genehmigung durch den Filialleiter ein kostenloses Upgrade 
@@ -505,9 +501,9 @@ Die Umsetzung des Prototypen haben wir in sechs Schritte eingeteilt:
 \subsection{Datenmodell}
 
 Die zu modellierenden Daten umfassen Kunden- und Anfragedaten. Diese beiden Datensätze
-werden als Java-Klassen modelliert (Customer und RentalRequest). Zusätzlich werden die
-Informationen über die zur Verfügung stehenden Autos in die Klasse Garage gespeichert.
-Die einzelnen Miettage werden als RentalDay modelliert. Das Klassendiagramm in
+werden als Java-Klassen modelliert (\texttt{Customer} und \texttt{RentalRequest}). Zusätzlich werden die
+Informationen über die zur Verfügung stehenden Autos in die Klasse \texttt{Garage} gespeichert.
+Die einzelnen Miettage werden als \texttt{RentalDay} modelliert. Das Klassendiagramm in
 Abbildung \ref{fig:Class_All} zeigt alle Klassen.
 
 \begin{figure}[tbh]
@@ -517,7 +513,7 @@ Abbildung \ref{fig:Class_All} zeigt alle Klassen.
 \label{fig:Class_All}
 \end{figure}
 
-Die Klasse RentalRequest dient sowohl der Eingabe als auch der Ausgabe von Daten.
+Die Klasse \texttt{RentalRequest} dient sowohl der Eingabe als auch der Ausgabe von Daten.
 Das heißt, dass Regeln und Prozesse ggf. schreibend auf die aktuelle Instanz zugreifen.
 
 \subsection{Unit-Tests: Anwendungssituation}
@@ -533,15 +529,15 @@ Die erwarteten Preise in den einzelnen Anwendungssituationen haben wir manuell
 mithilfe des initial erstellten Flussdiagramms ermittelt. Die Ergebnisse dieser
 manuellen Auswertung befinden sich in Anhang \ref{sec:Anwendungssituation}.
 
-In der Java-Klasse SituationTest werden die vorgegebenen Situationen getestet.
-Zusätzlich haben wir in der Klasse ExtraTest versucht, bisher noch nicht
+In der Java-Klasse \texttt{SituationTest} werden die vorgegebenen Situationen getestet.
+Zusätzlich haben wir in der Klasse \texttt{ExtraTest} versucht, bisher noch nicht
 getestete Szenarien abzubilden. Dazu zählen z.~B. die Automatikgebühr und verschiedene
 Genehmigungszenarien.
 
 \subsection{Definition des Geschäftsprozesses}
 
 Die Autovermietung ist ein Geschäftsprozess, in dem unterschiedliche Regelgruppen aktiviert
-werden müssen. Außerdem ist ja nach Anfrage eine menschliche Interaktion durch den
+werden müssen. Außerdem ist abhängig von der Anfrage eine menschliche Interaktion durch den
 Filialleiter in Form einer Genehmigung erforderlich. Dies haben wir mittels
 jBPM als Prozess definiert.
 
@@ -577,9 +573,20 @@ Fehler bei der Transformation schnell zu finden und auch zu beheben. Die so erst
 Regeln wurden bereits in Abschnitt \ref{sec:rules} vorgestellt.
 
 \subsection{Oberfläche}
-Zur einfachen Eingabe von Testfällen habe wir eine Java SWING GUI Programmiert. Diese besteht aus einer Haupt-Eingabemaske \ref{fig:Autovermietung} über die ein Mietgesuch eingegeben werden kann, einem Fahrer Verwaltungs-Dialog \ref{fig:kunde} und einem Garagen Konfigurations-Dialog \ref{fig:Garage}. Der Dialog zum Verwalten der Fahrer ermöglicht eingaben über den Name des Fahrers, das Alter des Fahrers, wie lange der Fahrer schon einen Führerschein besitzt, ob er ein Neukunde ist, eine Reklamation vorweisen kann und ob er ein Sicherheitstraining absolviert hat. Über den Garagen Konfigurations-Dialog kann die Anzahl der zu Verfügung stehenden Fahrzeuge in den einzelnen Fahrzeugklassen eingestellt werden. In der Haupt-Eingabemaske kann der Garagendialog aufgerufen werden und es können Fahrer über den Fahrerdialog hinzugefügt und verwaltet werden. Alle Fahrer einer Mietanfrage werden im Hauptfenster Angezeigt. Das Hauptfenster bietet die Möglichkeit zum einstellen des Mietstartdatums, der Mietdauer, der Fahrzeugklasse des Mietwagens und ob der Mietwagen eine Automatikschaltung haben soll. 
+Zur einfachen Eingabe von Testfällen habe wir eine GUI in Swing programmiert.
+Diese besteht aus einer Haupt-Eingabemaske \ref{fig:Autovermietung},
+über die ein Mietgesuch eingegeben werden kann, einem Fahrer-Verwaltungsdialog \ref{fig:kunde} 
+und einem Garagen-Konfigurationsdialog \ref{fig:Garage}.
+Der Dialog zum Verwalten der Fahrer ermöglicht Eingaben über den Name des Fahrers,
+das Alter des Fahrers, wie lange der Fahrer schon einen Führerschein besitzt, 
+ob er ein Neukunde ist, eine Reklamation vorweisen kann und ob er ein Sicherheitstraining absolviert hat.
+Über den Garagen-Konfigurationsdialog kann die Anzahl der zu Verfügung stehenden Fahrzeuge in den einzelnen Fahrzeugklassen eingestellt werden. 
+In der Haupt-Eingabemaske kann der Garagendialog aufgerufen werden und es können Fahrer über den Fahrerdialog hinzugefügt und verwaltet werden.
+Alle Fahrer einer Mietanfrage werden im Hauptfenster angezeigt.
+Das Hauptfenster bietet die Möglichkeit zum Einstellen des Mietstartdatums, der Mietdauer, der Fahrzeugklasse des Mietwagens und, ob der Mietwagen eine Automatikschaltung haben soll. 
 
-Nachdem alle Eingaben gemacht wurden kann eine Mietanfrage an das System gesendet werden. Abhängig von den Eingabewerten muss ein Fahranfänger \ref{fig:Fahränfanger} oder ein Fahrzeugupgrade \ref{fig:Upgrade} genehmigt werden. Wird eine Genehmigung nicht erteilt oder steht kein Fahrzeug mehr zur Verfügung wird die Anfrage abgelehnt \ref{fig:ergebnisabgelehnt}. Sollte die Anfrage berechnet werden, wird in einem abschließendem Dialog die Fahrzeugklasse und die zu zahlenden Kosten angezeigt \ref{fig:ergebnis}.
+Nachdem alle Eingaben gemacht wurden, kann eine Mietanfrage an das System gesendet werden. Abhängig von den Eingabewerten muss ein Fahranfänger \ref{fig:Fahränfanger} oder ein Fahrzeugupgrade \ref{fig:Upgrade} genehmigt werden. Wird eine Genehmigung nicht erteilt oder steht kein Fahrzeug mehr zur Verfügung, wird die Anfrage abgelehnt \ref{fig:ergebnisabgelehnt}.
+Wurde die Anfrage angenommen, wird in einem abschließendem Dialog die Fahrzeugklasse und die zu zahlenden Kosten angezeigt \ref{fig:ergebnis}.
 
 
 \begin{figure}
