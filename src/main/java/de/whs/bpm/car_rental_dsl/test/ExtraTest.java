@@ -197,4 +197,85 @@ public class ExtraTest extends BaseTest {
 		assertTrue(request.isDeclined());
 		assertRemainingCars(garage, 2, 2, 0, 2);
 	}
+	
+	@Test
+	public void testCompactOnlyRemaining() {
+		
+		// Create input data
+		Garage garage = makeGarage(0, 2, 0, 0);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(40);
+		customer.setDrivingLicense(20);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(5);
+		request.setCarClass(Garage.SMALL);	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveUpgrade(true);
+		runProcess(request);
+		
+		// Test the output data
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertTrue(request.hasFreeClassUpgrade());
+		assertTrue(request.isCarAvailable());
+		
+		assertFalse(request.isDeclined());
+		
+		assertEquals(request.getCarClass(), Garage.SMALL);
+		assertEquals(request.getUpgradeClass(), Garage.COMPACT);
+		assertEquals(request.getBasePrice(), 19000);
+		assertEquals(request.getDiscount(), 0);
+		assertEquals(request.getFinalPrice(), 19000);
+		assertEquals(request.getTotalPrice(), 19000);
+		
+		assertRemainingCars(garage, 0, 1, 0, 0);
+	}
+	
+	@Test
+	public void testNoCars() {
+		
+		// Create input data
+		Garage garage = makeGarage(0, 0, 0, 0);
+		
+		Customer customer = new Customer();
+		customer.setNew(false);
+		customer.setHasReclamation(false);
+		customer.setHasSecurityTraining(false);
+		customer.setAge(40);
+		customer.setDrivingLicense(20);
+		
+		RentalRequest request = new RentalRequest();
+		request.setStartDate(getStartDate());
+		request.setDurationInDays(5);
+		request.setCarClass(Garage.SMALL);	
+		request.addCustomer(customer);
+		request.setGarage(garage);
+		
+		// Execute the process
+		workItemHandler.setApproveUpgrade(true);
+		runProcess(request);
+		
+		// Test the output data
+		assertEquals(request.getExtraChargePercent(), 0);
+		assertFalse(request.requiresNovicePermission());
+		
+		assertEquals(request.getExtraDeductionPercent(), 0);
+		assertFalse(request.hasFreeClassUpgrade());
+		assertFalse(request.isCarAvailable());
+		
+		assertTrue(request.isDeclined());
+		
+		assertRemainingCars(garage, 0, 0, 0, 0);
+	}
 }

@@ -26,6 +26,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.WorkItemHandler;
 
 import de.whs.bpm.car_rental_dsl.ApprovalWorkItemHandler;
 import de.whs.bpm.car_rental_dsl.Customer;
@@ -55,7 +56,8 @@ public class App {
 	public final static String UPPER = "Oberklasse Wagen";
 	
 	private Map<String, String> WagenklasseToCarclass;
-	private KieSession kSession;
+	WorkItemHandler mWorkItemHandler;
+	KieContainer kContainer;
 	private JLabel lblKleinwagen;
 	private JLabel lblKompaktwagen;
 	private JLabel lblMittelklasseWagen;
@@ -97,7 +99,7 @@ public class App {
 		
 		initialize();
 		
-		ApprovalWorkItemHandler workhandler = new ApprovalWorkItemHandler() {
+		mWorkItemHandler = new ApprovalWorkItemHandler() {
 			
 			@Override
 			public boolean approveUpgrade() {
@@ -133,14 +135,8 @@ public class App {
 			}
 		};
 		
-		
-		 // load up the knowledge base
         KieServices ks = KieServices.Factory.get();
-	    KieContainer kContainer = ks.getKieClasspathContainer();
-    	kSession = kContainer.newKieSession("ksession-process");
-
-        // start a new process instance
-    	kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workhandler);
+	    kContainer = ks.getKieClasspathContainer();
 	}
 
 	/**
@@ -270,17 +266,16 @@ public class App {
         		for (Object customer : listModel.toArray())
         			request.addCustomer((Customer)customer );
         		
-        		request.setGarage(garage);
-        		
+        		request.setGarage(garage);	
         		request.setAutomatic(chckbxSollAutomatkHaben.isSelected());
         		
-        		
+            	KieSession kSession = kContainer.newKieSession("ksession-process");
+            	kSession.getWorkItemManager().registerWorkItemHandler("Human Task", mWorkItemHandler);
         		Map<String, Object> parameterMap = new HashMap<String, Object>();
             	parameterMap.put("request", request);
-            	
         		kSession.startProcess("de.whs.bpm.car_rental_dsl.price", parameterMap);
         		kSession.fireAllRules();
-        		
+        		kSession.dispose();	
         		
         		ResultDialog dialog = new ResultDialog(frame,request);
 				
