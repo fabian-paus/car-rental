@@ -23,13 +23,13 @@ Aufgabe dieses Projekts war es eine Autovermietung mithilfe von jBPM und Drools 
 
 Im Laufe dieser Projektdokumentation werden die einzelnen Arbeitsschritte strukturiert und detailliert beschrieben. Der Quellcode und die Projektdokumentation kann über ein öffentliches Git-Repository (\url{https://github.com/fabian-paus/car-rental}) auf GitHub.com eingesehen werden. 
 
-Als Ergebnis haben wir eine grafische Benutzeroberfläche entworfen, über die eine Mietanfrage an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und nutzt die Regel-Engine zur Ausführung von Geschäftsregeln.
+Als Ergebnis haben wir eine grafische Benutzeroberfläche entworfen, über die eine Miet\-anfrage an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und nutzt die Regel-Engine zur Ausführung von Geschäftsregeln.
 Unter gewissen Bedingungen muss der Filialleiter Genehmigungen erteilen.
-Am Ende wird die Anfrage entweder angenommen oder abgelehnt. Eine angenommene Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden dann über die Oberfläche an den Benutzer ausgegeben. 
+Am Ende wird die Anfrage entweder angenommen oder abgelehnt. Eine angenommene Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden abschließend über die Oberfläche an den Benutzer ausgegeben. 
 
 \section{Einarbeitung}
 
-Um die Aufgabe besser zu strukturieren definieren wir zunächst einige Domänenbegriffe und 
+Um die Aufgabe besser zu strukturieren, definieren wir zunächst einige Domänenbegriffe und 
 beschreiben dann den Ablauf des Vermietungsprozesses mithilfe eines Flussdiagramms.
 
 \subsection{Domänenbegriffe}
@@ -70,7 +70,7 @@ festgelegt werden.
 		\end{description}
 	\item[Tagespreis:] Der Tagespreis ist der Preis für eine Mietdauer von einem Tag. Einheit: Euro
 	\item[Basispreis:] Der Basispreis ist die Summe der Tagespreise über die gesamte Dauer. Einheit: Euro
-	\item[Rabatt:] Der Rabatt ist ein Nachlass, der auf Kundenbasis ermittelt wird. Einheit: Euro
+	\item[Rabatt:] Der Rabatt ist ein Nachlass, der auf Basis der spezifischen Kundendaten ermittelt wird. Einheit: Euro
 	\item[Automatikgebühr:] Eine zusätzliche Gebühr, falls ein Automatikwagen gemietet wird. Einheit: Euro
 	\item[Endpreis:] Der Endpreis wird aus dem Basispreis, dem Rabatt und der Automatikgebühr berechnet. Einheit: Euro
 	\item[Zuschlag:] Ein prozentualer Zuschlag auf den Endpreis. Einheit: Prozent
@@ -83,6 +83,7 @@ festgelegt werden.
 
 Anhand des Flussdiagramms beschreiben wir den gesamten Vermietungsprozess. Dabei gehen wir auf
 die einzelnen Aussagen aus der Aufgabenstellung ein.
+\todo{Anhang mit Aufgabenstellung}
 
 \subsubsection{Gesamter Prozess}
 
@@ -118,7 +119,7 @@ durch Fahranfängern gemietet werden dürfen.
 In Aussage 12 wird beschrieben, was passieren soll, wenn kein Fahrzeug der angefragten Klasse
 verfügbar ist. Dann wird nach Genehmigung durch den Filialleiter ein kostenloses Upgrade 
 auf die nächsthöhere Klasse durchgeführt. 
-Aussage 13 erläutert den Fall, wenn kein Oberklassewagen verfügbar ist. In dem Fall wird
+Aussage 13 erläutert den Fall, wenn kein Oberklassewagen verfügbar ist. In diesem Fall wird
 ein Downgrade auf die Mittelklasse durchgeführt mit zusätzlichem Nachlass auf den Endpreis (siehe Abbildung \ref{fig:Verfuegbarkeit_pruefen}).
 
 \begin{figure}[p]
@@ -362,6 +363,7 @@ rule "Daily price: Weekend discount"
 end
 \end{lstlisting}
 
+\newpage
 Regel: Jeder siebte Tag ist kostenlos \\
 Kategorie: Ableitungsregel
 
@@ -509,7 +511,7 @@ Die Umsetzung des Prototypen haben wir in sechs Schritte eingeteilt:
 
 Die zu modellierenden Daten umfassen Kunden- und Anfragedaten. Diese beiden Datensätze
 werden als Java-Klassen modelliert (\texttt{Customer} und \texttt{RentalRequest}). Zusätzlich werden die
-Informationen über die zur Verfügung stehenden Autos in die Klasse \texttt{Garage} gespeichert.
+Informationen über die zur Verfügung stehenden Autos in der Klasse \texttt{Garage} gespeichert.
 Die einzelnen Miettage werden als \texttt{RentalDay} modelliert. Das Klassendiagramm in
 Abbildung \ref{fig:Class_All} zeigt alle Klassen.
 
@@ -528,7 +530,7 @@ Das heißt, dass Regeln und Prozesse ggf. schreibend auf die aktuelle Instanz zu
 Nachdem wir das Datenmodell festgelegt haben, konnten wir Unit-Tests für die 
 Anwendungssituationen aus der Aufgabenstellung schreiben. Dabei ist uns aufgefallen,
 dass bei sequentieller Abarbeitung der Kunden A bis G die Wagen der Mittel- und
-Oberklasse schnell ausgehen. Dies führt dazu dass die Anfragen der Kunden E und F
+Oberklasse schnell ausgehen. Dies führt dazu, dass die Anfragen der Kunden E und F
 direkt abgelehnt werden. Für die Unit-Tests haben wir zusätzlich die Fälle betrachtet,
 wenn es genügend Wagen in der angeforderten Klasse gibt.
 
@@ -550,7 +552,7 @@ jBPM als Prozess definiert.
 
 Die Integration der Geschäftsregeln haben wir durch die Zuordnung zu Ruleflow-Groups
 in der Regeldatei und das Einbinden von Business-Rule-Tasks in den Prozess erreicht.
-Um die Genehmigung durch den Filialleiter zu ermöglichen haben wir User- bzw.
+Um die Genehmigung durch den Filialleiter zu ermöglichen, haben wir User- bzw.
 Human-Tasks eingebunden.
 
 Der gesamte Prozess wird in Abbildung \ref{fig:Process_BPMN} dargestellt.
@@ -561,12 +563,13 @@ Der gesamte Prozess wird in Abbildung \ref{fig:Process_BPMN} dargestellt.
 \caption{Geschäftsprozess in jBPM}
 \label{fig:Process_BPMN}
 \end{figure}
+\todo{Hochauflösend?}
 
 \subsection{Normale Regelsprache}
 
 Um mögliche Fehlerquellen zu vermeiden, haben wir die Geschäftsregeln zuerst
 in der normalen Rule-Language implementiert. Durch die ausführlichen Unit-Tests
-konnten wir so Fehler schnell finden und korrigieren. Die so erstellte Regelbasis
+konnten wir Fehler schnell finden und korrigieren. Die so erstellte Regelbasis
 dient als Grundlage zur Erstellung der DSL. Anhang \ref{anh:normal-rules} enthält
 die entsprechende Regeldatei.
 
@@ -575,8 +578,8 @@ die entsprechende Regeldatei.
 Wir haben uns entschieden unsere DSL in Englisch zu implementieren, um eine Mischung
 von Englisch und Deutsch zu vermeiden. Bei der Definition haben wir uns an der
 einfachen Regeldatei orientiert. Nachdem alle Regeln übersetzt waren, haben wir
-die Unit-Tests auf die in der DSL definierten Regeln umgestellt. Das hat uns erlaubt
-Fehler bei der Transformation schnell zu finden und auch zu beheben. Die so erstellten
+die Unit-Tests auf die in der DSL definierten Regeln umgestellt. Dadurch haben wir
+Fehler bei der Transformation schnell finden und beheben können. Die so erstellten
 Regeln wurden bereits in Abschnitt \ref{sec:rules} vorgestellt.
 
 \subsection{Oberfläche}
@@ -587,7 +590,7 @@ Zur einfachen Eingabe von Testfällen habe wir eine GUI in Swing programmiert.
 Diese besteht aus einer Haupt-Eingabemaske (s. Abb. \ref{fig:Autovermietung}),
 über die ein Mietgesuch eingegeben werden kann, einem Fahrer-Verwaltungsdialog  (s. Abb. \ref{fig:kunde})
 und einem Garagen-Konfigurationsdialog (s. Abb. \ref{fig:Garage}).
-Der Dialog zum Verwalten der Fahrer ermöglicht Eingaben über den Name des Fahrers,
+Der Dialog zum Verwalten der Fahrer ermöglicht Eingaben über den Namen des Fahrers,
 das Alter des Fahrers, wie lange der Fahrer schon einen Führerschein besitzt, 
 ob er ein Neukunde ist, eine Reklamation vorweisen kann und ob er ein Sicherheitstraining absolviert hat.
 Über den Garagen-Konfigurationsdialog kann die Anzahl der zu Verfügung stehenden Fahrzeuge in den einzelnen Fahrzeugklassen eingestellt werden. 
@@ -598,16 +601,18 @@ Das Hauptfenster bietet die Möglichkeit zum Einstellen des Mietstartdatums, der
 Nachdem alle Eingaben gemacht wurden, kann eine Mietanfrage an das System gesendet werden. Abhängig von den Eingabewerten muss ein Fahranfänger  (s. Abb. \ref{fig:Fahränfanger}) oder ein Fahrzeugupgrade  (s. Abb. \ref{fig:Upgrade}) genehmigt werden. Wird eine Genehmigung nicht erteilt oder steht kein Fahrzeug mehr zur Verfügung, wird die Anfrage abgelehnt  (s. Abb. \ref{fig:ergebnisabgelehnt}).
 Wurde die Anfrage angenommen, wird in einem abschließendem Dialog die Fahrzeugklasse und die zu zahlenden Kosten angezeigt  (s. Abb. \ref{fig:ergebnis}).
 
+\todo{Screenshots hier einfügen?}
+
 
 \newpage
 \section{Fazit}
-Am Anfang dieses Projektes haben wir zunächst die groben Strukturen aus der Aufgabenstellung extrahiert. Dabei nutzten wir die dreizehn Aussagen, um daraus die Geschäftsregeln zu definieren. Die Regeln wurden von uns zunächst als normale Regelsprache implementiert. Der letzte Schritt bestand darin die Regelsprache in eine DSL zu überführen. Der zusätzliche Schritt über die normale Regelsprache half dabei Fehlerquellen zu vermeiden. Durch die Vorlesung und die ausführliche Onlinedokumentation gab es wenige Probleme bei der Ausführung der einzelnen Arbeitsschritte.
+Am Anfang dieses Projektes haben wir zunächst die groben Strukturen aus der Aufgabenstellung extrahiert. Um daraus die Geschäftsregeln zu definieren, nutzten wir die dreizehn Aussagen. Die Regeln wurden von uns zunächst als normale Regelsprache implementiert. Der letzte Schritt bestand darin die Regelsprache in eine DSL zu überführen. Der zusätzliche Schritt über die normale Regelsprache half dabei Fehlerquellen zu vermeiden. Durch die Vorlesung und die ausführliche Onlinedokumentation gab es wenige Probleme bei der Ausführung der einzelnen Arbeitsschritte.
 
-Es hat sich gezeigt, das die Verwendung einer DSL für ein Projekt dieser Größe eine gute alternative zur normalen Regelsprache ist. Sowohl Programmierer als auch Fachpersonal ohne Programmiererfahrung kann die DSL lesen und kleinere Änderungen machen. Das hilft gerade Personen ohne eine Affinität fürs Programmieren, da diese Fehler in der DSL finden können und entweder selbst ausbessern oder einem Programmieren darauf aufmerksam machen können. Leider sind größere Änderungen an der DSL nicht ohne Programmieraufwand zu bewerkstelligen. Eine DSL muss trotz ihrer Umgangssprache noch eine feste Struktur aufweisen.
+Es hat sich gezeigt, dass die Verwendung einer DSL für ein Projekt dieser Größe eine gute Alternative zur normalen Regelsprache ist. Sowohl Programmierer als auch Fachkundige ohne Programmiererfahrung können die DSL lesen und kleinere Änderungen machen. Das hilft besonders Personen ohne eine Affinität fürs Programmieren, da diese Fehler in der DSL finden und einem entsprechenden Programmierer melden können. Leider sind größere Änderungen an der DSL nicht ohne Programmieraufwand zu bewerkstelligen. Eine DSL muss trotz ihrer Umgangssprache noch eine feste Struktur aufweisen.
 
-Die Integration von Drools und jBPM in Eclipse ist sehr gut gelungen. Dadurch war es sehr einfach die Prozesse und Regeln zu implementieren. Des Weiteren war es schnell möglich, Unit-Tests zu definieren um die Regeln zu testen. Der letzte Schritt war die Integration der Prozess-Engine in die grafische Benutzeroberfläche. Auch dabei gab es keine nennenswerte Probleme.
+Die Integration von Drools und jBPM in Eclipse gefiel uns sehr gut. Dadurch war es einfach die Prozesse und Regeln zu implementieren. Des Weiteren war es schnell möglich, Unit-Tests zu definieren, um die Regeln zu testen. Der letzte Schritt war die Integration der Prozess-Engine in die grafische Benutzeroberfläche, wobei es keine nennenswerte Probleme gab.
 
-Als endgültiges Fazit können wir sagen, dass das Arbeiten mit jBPM und Drools eine gute Erfahrung war, auch wenn einige Arbeitsschritte auf dem ersten Blick eher komplex erscheinen. Bei kleineren Projekten scheint für uns eine reine Programmierlösung einfacher. Für größere Projekte mit ausführlichen Geschäftsregeln, die in Prozesse
+Als endgültiges Fazit können wir sagen, dass das Arbeiten mit jBPM und Drools eine gute Erfahrung war, auch wenn einige Arbeitsschritte auf den ersten Blick eher komplex erscheinen. Bei kleineren Projekten halten wir eine reine Programmierlösung für den besseren Ansatz. Für größere Projekte mit umfangreichen Geschäftsregeln, die in Prozesse
 integriert werden müssen, kann jBPM eine akzeptable Lösung sein. 
 
 %\appendix
