@@ -1,6 +1,6 @@
 [condition][Customer]there is a customer with that request=$c : Customer( ) from $customers
 [consequence][]the customer is a driving novice=insert( new Novice($c) );
-[condition][Customer]- age is less than {age} or has driving license for less than {years}=age < {age} || drivingLicense < {years}
+[condition][Customer]- age is less than {age} years or has driving license for less than {years} years=age < {age} || drivingLicense < {years}
 [condition][RentalRequest]there is a request=$r : RentalRequest( $customers : customers, $days : days )
 [condition][]there exists a customer who is driving novice=exists( Novice( customer memberOf $customers ) )
 [consequence][]treat the request as novice=$r.setNovice(true);
@@ -17,7 +17,7 @@
 [condition][]there exists no upgrade=not (exists Upgrade( ))
 [consequence][]upgrade to {class} is possible=insert( new Upgrade({class}) );
 [condition][]there is a possible upgrade=Upgrade( $upgradeClass : carClass )
-[consequence][]upgrade the car class=$r.setUpgradeClass($upgradeClass); 
+[consequence][]upgrade the car class=$r.setUpgradeClass($upgradeClass);
 [condition][]there is a rental day from that request=$d : RentalDay( ) from $days
 [consequence][]set the daily price to {price}=$d.setPrice((int)Math.round(100 * {price}));
 [condition][RentalDay]- is weekend or holiday=isWeekend(day) || isHoliday(day)

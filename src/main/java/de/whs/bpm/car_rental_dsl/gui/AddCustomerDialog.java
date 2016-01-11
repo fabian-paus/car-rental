@@ -18,10 +18,10 @@ import de.whs.bpm.car_rental_dsl.Customer;
 
 public class AddCustomerDialog extends JDialog {
 
-	private static final String CANCEL = "Cancel";
+	private static final String CANCEL = "Abbrechen";
 	private static final String OK = "OK";
 	private static final String ALTER = "Alter:";
-	private static final String FÜHRERSCHEIN = "F\u00FChrerschein:";
+	private static final String FUEHRERSCHEIN = "F\u00FChrerschein:";
 	private static final String HAT_SICHERHEITSTRAINING = "Hat Sicherheitstraining";
 	private static final String HAT_REKLAMATION = "Hat Reklamation";
 	private static final String NEUER_KUNDE = "Neuer Kunde";
@@ -94,7 +94,7 @@ public class AddCustomerDialog extends JDialog {
 		
 		
 		
-		JLabel lblFhrerschein = new JLabel(FÜHRERSCHEIN);
+		JLabel lblFhrerschein = new JLabel(FUEHRERSCHEIN);
 		lblFhrerschein.setBounds(12, 136, 88, 16);
 		contentPanel.add(lblFhrerschein);
 		

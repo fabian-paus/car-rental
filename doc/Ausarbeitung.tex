@@ -82,8 +82,7 @@ festgelegt werden.
 \subsection{Flussdiagramm}
 
 Anhand des Flussdiagramms beschreiben wir den gesamten Vermietungsprozess. Dabei gehen wir auf
-die einzelnen Aussagen aus der Aufgabenstellung ein.
-\todo{Anhang mit Aufgabenstellung}
+die einzelnen Aussagen aus der Aufgabenstellung ein (siehe Anhang \ref{anh:Aufgabe}).
 
 \subsubsection{Gesamter Prozess}
 
@@ -238,7 +237,7 @@ rule "Is driving novice"
 	when
 		there is a request
 		there is a customer with that request
-		- age is less than 21 or has driving license for less than 2	
+		- age is less than 21 years or has driving license for less than 2 years	
 	then
 		the customer is a driving novice	
 end
@@ -1068,10 +1067,15 @@ Zustand nach Vermietung:\\
 
 \newpage
 \section{Aufgabenstellung: Autovermietung – Domain Specific Language}
+\label{anh:Aufgabe}
+
+Der folgende Text wurde wörtlich aus der Aufgabenstellung für dieses Projekt übernommen.
+
+\subsection*{Aussagen}
 
 \begin{enumerate}
 	\item Die Autovermietung bietet folgende Fahrzeugklassen zu den genannten Tagesmietpreisen an:
-	\begin{enumerate}[\alph{enumi}]
+	\begin{enumerate}
 		\item Kleinwagen, 40 Euro/Tag
 		\item Kompaktklasse, 50 Euro/Tag
 		\item Mittelkasse, 70 Euro/Tag
@@ -1122,7 +1126,7 @@ wird, sondern alle Kundendaten immer eingegeben werden.] Der Prototyp darf eine 
 textbasierte Benutzungsoberfläche (Konsole) haben. \textbf{Die Regeln sollen unter Verwendung einer
 Domain Specific Language (DSL) in Drools abgebildet werden. Für die eventuelle Workflows verwenden Sie bitte jBPM.}
 
-\subsection{Anwendungsituation:}
+\subsection*{Anwendungsituation}
 Am 21. März 2016 stehen in Ihrer Autovermietungsstation jeweils 2 Fahrzeuge jeder Fahrzeugklasse
 bereit. Nacheinander kommen die folgenden Kunden. Ihr Programm soll jeweils angeben, aus
 welcher Klasse der Kunde ein Fahrzeug bekommt und welchen Gesamtpreis er bezahlen muss.
