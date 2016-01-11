@@ -56,7 +56,7 @@ public class AddCustomerDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AddCustomerDialog(JFrame owner,Customer c) {
+	public AddCustomerDialog(final JFrame owner,final Customer c) {
 		super(owner, true);
 		setBounds(100, 100, 331, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -136,7 +136,17 @@ public class AddCustomerDialog extends JDialog {
 				JButton okButton = new JButton(OK);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						if(tfName.getText() == "" || tfAge.getText() == "" || tfDriving.getText()== ""){
+							JOptionPane.showMessageDialog(owner, "Bitte alle Felder ausfüllen.");
+							return;
+						}
 						save = true;
+						c.setName(tfName.getText());
+						c.setAge(Integer.parseInt(tfAge.getText()));
+						c.setDrivingLicense(Integer.parseInt(tfDriving.getText()));
+						c.setHasReclamation(cbxReclamation.isSelected());
+						c.setHasSecurityTraining(cbxSaftytraining.isSelected());
+						c.setNew(cbxNew.isSelected());
 						self.setVisible(false);
 					}
 				});
