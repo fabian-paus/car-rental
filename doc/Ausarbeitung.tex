@@ -25,7 +25,7 @@ Im Laufe dieser Projektdokumentation werden die einzelnen Arbeitsschritte strukt
 
 Als Ergebnis haben wir eine grafische Benutzeroberfläche entworfen, über die eine Mietanfrage an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und nutzt die Regel-Engine zur Ausführung von Geschäftsregeln.
 Unter gewissen Bedingungen muss der Filialleiter Genehmigungen erteilen.
-Am Ende wird die Anfrage entweder angenommen oder abgelehnt. Eine angenommene Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden dann über die Oberfläche an den Benutzer ausgegeben. 
+Am Ende wird die Anfrage entweder angenommen oder abgelehnt. Eine angenommene Anfrage enthält dann eine Fahrzeugklasse und einen Gesamtpreis. Diese Daten werden abschließend über die Oberfläche an den Benutzer ausgegeben. 
 
 \section{Einarbeitung}
 
@@ -1065,6 +1065,92 @@ Zustand nach Vermietung:\\
 	\label{fig:ergebnis}
 \end{figure}
 
+\newpage
+\section{Aufgabenstellung: Autovermietung – Domain Specific Language}
+
+\begin{enumerate}
+	\item Die Autovermietung bietet folgende Fahrzeugklassen zu den genannten Tagesmietpreisen an:
+	\begin{enumerate}[\alph{enumi}]
+		\item Kleinwagen, 40 Euro/Tag
+		\item Kompaktklasse, 50 Euro/Tag
+		\item Mittelkasse, 70 Euro/Tag
+		\item Oberklasse, 90 Euro/Tag
+	\end{enumerate}
+	\item Die Tagesmietpreise reduzieren sich an Wochenendtagen (Samstag und Sonntag) sowie an
+	bundesweiten Feiertagen um 25\%.
+	\item Die Mietpreise sind zeitlich gestaffelt. Bei einer Mietdauer von 1-6 Tagen ist pro Tag 100\% des
+	Tagesmietpreises zu zahlen. Bei einer Mietdauer 7 Tagen ist der siebte Tag frei, entsprechendes
+	gilt für den 14, 21 und 28 Tag. Eine Vermietung für mehr als 28 Tage ist nicht möglich.
+	\item Neukunden erhalten bei der ersten Vermietung einen einmaligen Rabatt von 10 Euro
+	(unabhängig von der Mietdauer).
+	\item Mieter, die eine berechtigte Reklamation vorbringen, erhalten bei der nächsten Buchung einen
+	Rabatt von 20\%, maximal jedoch 100 Euro.
+	\item Fahrer, die ein Sicherheitstraining absolviert haben, erhalten einen Rabatt von 5\%.
+	\item Wird ein Fahrzeug von mehreren Fahrern genutzt, so gelten die jeweils schlechteren Konditionen
+	(also wird z.B. kein Rabatt für ein Sicherheitstraining gewährt, wenn nur einer der beiden Fahrer
+	ein Sicherheitstraining absolviert hat).
+	\item Wird ein Fahrzeug mit Automatik verlangt, erhöht sich der Mietpreis um 5\%.
+	\item Der Gesamtrabatt kann unabhängig von der Mietdauer 100 Euro nicht überschreiten. Gratistage
+	und reduzierte Preise an Wochenenden und Feiertagen zählen nicht als Rabatt.
+	\item Fahranfänger, die erst seit weniger als 2 Jahren einen Führerschein besitzen oder die jünger als
+	21 Jahre sind, zahlen einen Aufschlag von 10\% auf alle Mietendpreise.
+	\item Fahranfänger, wie zuvor beschrieben, können nur einen Kleinwagen oder ein Modell aus der
+	Kompaktklasse mieten. . Nach einer expliziten Genehmigung durch den Filialleiter können im
+	Einzelfall jedoch auch Fahrzeuge aus anderen Klassen gemietet werden.
+	\item Bucht ein Kunde ein Auto aus einer Klasse, in der kein Wagen mehr zur Verfügung steht, so erhält
+	er nach Genehmigung durch den Filialleiter ein kostenloses Upgrade für die nächsthöhere Klasse.
+	Steht auch dort kein Fahrzeug zur Verfügung oder lehnt der Filialleiter das Upgrade ab, so ist das
+	Mietgesuch abzulehnen.
+	\item Möchte ein Kunde ein Oberklasse-Auto buchen und es steht kein Fahrzeug mehr zur Verfügung,
+	so erhält er ein Fahrzeug der Mittelklasse mit einem zusätzlichen Nachlass auf den Mietendpreis
+	von 10\%. Regel 9 ist dabei nicht anzuwenden. Ist kein Mittelklasse-Fahrzeug verfügbar, so ist das
+	Mietgesuch abzulehnen.
+\end{enumerate}
+
+Extrahieren Sie die Regeln und mögliche Workflows aus den vorgenannten 13 Aussagen. Erstellen Sie
+ein Flussdiagramm, das den Preisfindungsprozess zeigt. Falls sich Regeln widersprechen oder Regeln
+fehlen, ergänzen oder verändern Sie das Beispiel sinnvoll.
+
+Ordnen Sie die Regeln in die in der Veranstaltung genannten Regelklassen ein.
+
+
+Bauen Sie den Prototyp einer Anwendung, die Mietpreis berechnet und die gemietete Wagenklasse
+ausgibt, wenn gewünschte Fahrzeugklasse, Mietdauer, Mietbeginn und andere erforderliche Daten
+eingegeben werden. [Sie können vereinfachend davon ausgehen, dass keine Datenbank verwendet
+wird, sondern alle Kundendaten immer eingegeben werden.] Der Prototyp darf eine einfache
+textbasierte Benutzungsoberfläche (Konsole) haben. \textbf{Die Regeln sollen unter Verwendung einer
+Domain Specific Language (DSL) in Drools abgebildet werden. Für die eventuelle Workflows verwenden Sie bitte jBPM.}
+
+\subsection{Anwendungsituation:}
+Am 21. März 2016 stehen in Ihrer Autovermietungsstation jeweils 2 Fahrzeuge jeder Fahrzeugklasse
+bereit. Nacheinander kommen die folgenden Kunden. Ihr Programm soll jeweils angeben, aus
+welcher Klasse der Kunde ein Fahrzeug bekommt und welchen Gesamtpreis er bezahlen muss.
+
+Spielen Sie die Situationen zunächst manuell durch, um die Ergebnisse für das Testszenario zu
+erhalten. Erstellen Sie anschließend einen automatisierten Test.
+
+\begin{enumerate}[\alph{enumi}]
+\item Kunde A möchte (Umsatz laufendes Jahr 3000 Euro) ein Mittelkasse-Modell für einen
+Zeitraum von 5 Tagen mieten. Der Fahrer hat ein Sicherheitstraining absolviert und besitzt
+seit 20 Jahren einen Führerschein.
+\item Der 20-jährige Neukunde B, der seit drei Jahren einen Führerschein besitzt, will einen
+Mittelklasse-Wagen für einen Zeitraum von einem Tag mieten.
+\item Kunde C (30 Jahre, Führerschein seit 12 Jahren, kein Neukunde) möchte ein MittelklasseModell
+für 7 Tage mieten.
+\item Kunde D (35 Jahre, Führerschein seit 10 Jahren, Neukunde) möchte ein Mittelklasse-Modell
+für einen Tag mieten.
+\item Ein 46-jähriger Neukunde E (Führerschein seit 20 Jahren) will einen Oberklasse-Wagen für
+einen Zeitraum von 6 Tagen mieten.
+\item Kunde F (32, der seit 10 Jahren einen Führerschein besitzt und ein Fahrsicherheitstraining
+absolviert hat), hat bei der letzten Vermietung eine berechtige Beschwerde vorgebracht und
+möchte einen Oberklasse-Wagen für 4 Tage mieten.
+\item Kunde G, der das letzte Mal in 2010 ein Fahrzeug gemietet hat und ein Sicherheitstraining
+absolviert hat, möchte einen Kompaktklasse-Wagen für einen Tag mieten. Seine Frau
+(Führerscheinneuling) soll ebenfalls als Fahrerin eingetragen werden.
+\end{enumerate}
+
+\textbf{Anmerkung:} Sie können bei der Gestaltung der Dialog-Anwendung mit anderen Gruppen, die
+ebenfalls eine Dialoganwendung benötigen, zusammenarbeiten.
 %\newpage
 %\printbibliography
 
