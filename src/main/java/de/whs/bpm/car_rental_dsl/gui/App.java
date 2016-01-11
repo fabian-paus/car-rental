@@ -197,6 +197,17 @@ public class App {
 				dialog.setAlwaysOnTop(true);
 				dialog.setModal(true);
 				
+				if(dialog.save){
+					Customer customer = dialog.getCustomer();
+					Customer c = listModel.getElementAt(list.getSelectedIndex());
+					c.setName(customer.getName());
+					c.setAge(customer.getAge());
+					c.setDrivingLicense(customer.getDrivingLicense());
+					c.setHasReclamation(customer.isHasReclamation());
+					c.setHasSecurityTraining(customer.isHasSecurityTraining());
+					c.setNew(customer.isNewCustomer());
+				}
+				
 			}
 		});
 		btnBearbeiten.setBounds(229, 197, 97, 25);

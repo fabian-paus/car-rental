@@ -10,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -136,17 +137,14 @@ public class AddCustomerDialog extends JDialog {
 				JButton okButton = new JButton(OK);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(tfName.getText() == "" || tfAge.getText() == "" || tfDriving.getText()== ""){
+						String text = tfDriving.getText();
+						String text2 = tfAge.getText();
+						String text3 = tfName.getText();
+						if(text3.equals("") || text2.equals("") || text.equals("")){
 							JOptionPane.showMessageDialog(owner, "Bitte alle Felder ausfüllen.");
 							return;
 						}
 						save = true;
-						c.setName(tfName.getText());
-						c.setAge(Integer.parseInt(tfAge.getText()));
-						c.setDrivingLicense(Integer.parseInt(tfDriving.getText()));
-						c.setHasReclamation(cbxReclamation.isSelected());
-						c.setHasSecurityTraining(cbxSaftytraining.isSelected());
-						c.setNew(cbxNew.isSelected());
 						self.setVisible(false);
 					}
 				});
