@@ -34,12 +34,12 @@ import de.whs.bpm.car_rental_dsl.RentalRequest;
 
 public class App {
 
-	private static final String GARAGE_BEARBEITEN = "Garage Bearbeiten";
+	private static final String GARAGE_BEARBEITEN = "Garage bearbeiten";
 	private static final String ANFRAGEN = "Anfragen";
 	private static final String SOLL_AUTOMATK_HABEN = "Soll Automatk haben";
 	private static final String FARZEUGKLASSE = "Farzeugklasse";
 	private static final String DAUER = "Dauer";
-	private static final String START_DATUM = "Start Datum";
+	private static final String START_DATUM = "Startdatum";
 	private static final String BEARBEITEN = "Bearbeiten";
 	private static final String LÖSCHEN = "L\u00F6schen";
 	private static final String HINZUFÜGEN = "Hinzuf\u00FCgen";
@@ -50,7 +50,7 @@ public class App {
 
 	
 	public final static String SMALL = "Kleinwagen";
-	public final static String COMPACT = "Kompactwagen";
+	public final static String COMPACT = "Kompaktwagen";
 	public final static String MIDDLE = "Mittelklasse Wagen";
 	public final static String UPPER = "Oberklasse Wagen";
 	
@@ -106,7 +106,7 @@ public class App {
                 "Ablehnen"};
 				int n = JOptionPane.showOptionDialog(
 				    frame,
-				    "Es steht kein Auto in der angeforderten Klasse zur Verfügung. Genemigen Sie ein kostenloses Upgrade?",
+				    "Es steht kein Auto in der angeforderten Klasse zur Verfügung. Genehmigen Sie ein kostenloses Upgrade?",
 				    "Upgrade?",
 				    JOptionPane.YES_NO_OPTION,
 				    JOptionPane.QUESTION_MESSAGE,
@@ -141,12 +141,6 @@ public class App {
 
         // start a new process instance
     	kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workhandler);
-    	
-    	
-    	
-       // kSession.startProcess("de.whs.bpm.car_rental_dsl.hello");
-		
-		
 	}
 
 	/**
@@ -315,7 +309,7 @@ public class App {
         JButton btnGerageBearbeiten = new JButton(GARAGE_BEARBEITEN);
         btnGerageBearbeiten.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		EditgarageDialog dialog = new EditgarageDialog(self,garage);
+        		EditGarageDialog dialog = new EditGarageDialog(self,garage);
     			
 				dialog.setVisible(true);
 				dialog.setAlwaysOnTop(true);

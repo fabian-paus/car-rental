@@ -16,10 +16,9 @@ import de.whs.bpm.car_rental_dsl.Garage;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class EditgarageDialog extends JDialog {
+public class EditGarageDialog extends JDialog {
 
-	private static final String CANCEL = "Cancel";
-
+	private static final String CANCEL = "Abbrechen";
 	private static final String OK = "OK";
 
 	private static final long serialVersionUID = -7670790502555107368L;
@@ -36,7 +35,7 @@ public class EditgarageDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public EditgarageDialog(JFrame owner, Garage garage) {
+	public EditGarageDialog(JFrame owner, Garage garage) {
 		super(owner, true);
 		this.garage = garage;
 		final JDialog self = this;
