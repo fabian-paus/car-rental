@@ -21,7 +21,7 @@
 
 Aufgabe dieses Projekts war es eine Autovermietung mithilfe von jBPM und Drools zu erstellen. Die Geschäftsregeln sollen am Ende über eine Domain-Specific-Language (DSL) verwaltet werden. Zur Definition der Regeln wurden die dreizehn Aussagen aus der Aufgabenstellung analysiert und ausgewertet. 
 
-Im Laufe dieser Projektdokumentation werden die einzelnen Arbeitsschritte strukturiert und detailliert beschrieben. Der Quellcode und die Projektdokumentation kann über ein öffentliches Git-Repository (\url{https://github.com/fabian-paus/car-rental}) auf GitHub.com eingesehen werden. 
+Im Laufe dieser Projektdokumentation werden die einzelnen Arbeitsschritte strukturiert und detailliert beschrieben. Der Quellcode und die Projektdokumentation können über ein öffentliches Git-Repository (\url{https://github.com/fabian-paus/car-rental}) auf GitHub.com eingesehen werden. 
 
 Als Ergebnis haben wir eine grafische Benutzeroberfläche entworfen, über die eine Miet\-anfrage an die Prozess-Engine gesendet werden kann. Die Prozess-Engine verarbeitet die Anfrage und nutzt die Regel-Engine zur Ausführung von Geschäftsregeln.
 Unter gewissen Bedingungen muss der Filialleiter Genehmigungen erteilen.
@@ -51,7 +51,7 @@ festgelegt werden.
 	\item[Fahranfänger:] Ein Kunde ist ein Fahranfänger, wenn er jünger als ein bestimmtes Alter ist oder
 		seinen Führerschein noch nicht sehr lange besitzt. Die genaue Definition erfolgt anhand einer
 		Geschäftsregel.	
-	\item[Filialleiter:] Gewisse Entscheidung beim Vermietungsprozess bedürfen der Genehmigung durch
+	\item[Filialleiter:] Gewisse Entscheidungen beim Vermietungsprozess bedürfen der Genehmigung durch
 		den Filialleiter.
 	\item[Klasse:] Ein zu mietender Wagen wird in vier Klassen eingeteilt:
 		\begin{description}
@@ -104,7 +104,7 @@ Wir haben den gesamten Prozess in drei Teilprozesse unterteilt:
 
 In Aussage 10 wird definiert, wer als Fahranfänger eingestuft wird, und welcher Aufschlag in dem 
 Fall zu zahlen ist. Aussage 11 bestimmt die Fahrzeugklassen, die nur mit Genehmigung vom Filialleiter
-durch Fahranfängern gemietet werden dürfen.
+durch Fahranfänger gemietet werden dürfen.
 
 \begin{figure}[H]
 \centering
@@ -149,7 +149,7 @@ dargestellt.
 \end{figure}
 
 \newpage 
-\paragraph{Basispreis}
+\paragraph{Basispreis:}
 
 Der Basispreis entspricht der Summe aller Tagespreise.
 
@@ -160,7 +160,7 @@ Der Basispreis entspricht der Summe aller Tagespreise.
 	\label{fig:Basispreis_berechnen}
 \end{figure}
 
-\paragraph{Tagespreis}
+\paragraph{Tagespreis:}
 
 Bei der Tagespreisberechnung werden die Aussagen 1, 2 und 3 berücksichtigt.
 
@@ -176,7 +176,7 @@ reduziert. Außerdem ist jeder siebte Tag nach Aussage 3 kostenlos (siehe Abbild
 	\label{fig:Tagespreis_berechnen}
 \end{figure}
 
-\paragraph{Rabatt}
+\paragraph{Rabatt:}
 
 Bei der Rabattberechnung werden laut Aussagen 4, 5 und 6 die Eigenschaften Neukunde, alte Reklamation
 und Sicherheitstraining berücksichtigt. Dabei ist zu beachten, dass bei mehreren Fahrern die
@@ -222,7 +222,7 @@ eindeutig ist, sind wir nach folgendem Schema vorgegangen:
 \begin{description}
 	\item[Definitionsregel:] Ein neuer Begriff wird eingeführt (z.~B. Fahranfänger)
 	\item[Ableitungsregel:] Aus bestehenden Fakten werden neue Fakten abgeleitet (z.~B. Berechnung von Preisen)
-	\item[Prozessregel:] Beschreiben das Vorgehen im Geschäftsprozess (z.~B. Genehmigung durch Filialleiter)
+	\item[Prozessregel:] Beschreibt das Vorgehen im Geschäftsprozess (z.~B. Genehmigung durch Filialleiter)
 	\item[Einschränkungsregel:] Schränken ein, was möglich ist (z.~B. maximaler Rabatt)
 \end{description}
 
@@ -496,7 +496,7 @@ end
 \newpage
 \section{Prototyp}
 
-Die Umsetzung des Prototypen haben wir in sechs Schritte eingeteilt:
+Die Umsetzung des Prototyps haben wir in sechs Schritte eingeteilt:
 \begin{enumerate}
 	\item Festlegung des Datenmodells
 	\item Schreiben von Unit-Tests
@@ -528,7 +528,7 @@ Das heißt, dass Regeln und Prozesse ggf. schreibend auf die aktuelle Instanz zu
 
 Nachdem wir das Datenmodell festgelegt haben, konnten wir Unit-Tests für die 
 Anwendungssituationen aus der Aufgabenstellung schreiben. Diese haben wir mithilfe von JUnit erstellt. Dabei ist uns aufgefallen,
-dass bei sequentieller Abarbeitung der Kunden A bis G die Wagen der Mittel- und
+dass bei sequenzieller Abarbeitung der Kunden A bis G die Wagen der Mittel- und
 Oberklasse schnell ausgehen. Dies führt dazu, dass die Anfragen der Kunden E und F
 direkt abgelehnt werden. Für die Unit-Tests haben wir zusätzlich die Fälle betrachtet,
 wenn es genügend Wagen in der angeforderten Klasse gibt.
@@ -540,7 +540,7 @@ manuellen Auswertung befinden sich in Anhang \ref{sec:Anwendungssituation}.
 In der Java-Klasse \texttt{SituationTest} werden die vorgegebenen Situationen getestet.
 Zusätzlich haben wir in der Klasse \texttt{ExtraTest} versucht, bisher noch nicht
 getestete Szenarien abzubilden. Dazu zählen z.~B. die Automatikgebühr und verschiedene
-Genehmigungszenarien.
+Genehmigungsszenarien.
 
 \subsection{Definition des Geschäftsprozesses}
 
@@ -597,15 +597,15 @@ Alle Fahrer einer Mietanfrage werden im Hauptfenster angezeigt.
 Das Hauptfenster bietet die Möglichkeit zum Einstellen des Mietstartdatums, der Mietdauer, der Fahrzeugklasse des Mietwagens und, ob der Mietwagen eine Automatikschaltung haben soll. 
 
 Nachdem alle Eingaben gemacht wurden, kann eine Mietanfrage an das System gesendet werden. Abhängig von den Eingabewerten muss ein Fahranfänger  (s. Abb. \ref{fig:Fahränfanger}) oder ein Fahrzeugupgrade  (s. Abb. \ref{fig:Upgrade}) genehmigt werden. Wird eine Genehmigung nicht erteilt oder steht kein Fahrzeug mehr zur Verfügung, wird die Anfrage abgelehnt  (s. Abb. \ref{fig:ergebnisabgelehnt}).
-Wurde die Anfrage angenommen, wird in einem abschließendem Dialog die Fahrzeugklasse und die zu zahlenden Kosten angezeigt  (s. Abb. \ref{fig:ergebnis}).
+Wurde die Anfrage angenommen, werden in einem abschließenden Dialog die Fahrzeugklasse und die zu zahlenden Kosten angezeigt  (s. Abb. \ref{fig:ergebnis}).
 
 \newpage
 \section{Fazit}
-Am Anfang dieses Projektes haben wir zunächst die groben Strukturen aus der Aufgabenstellung extrahiert. Um daraus die Geschäftsregeln zu definieren, nutzten wir die dreizehn Aussagen. Die Regeln wurden von uns zunächst als normale Regelsprache implementiert. Der letzte Schritt bestand darin die Regelsprache in eine DSL zu überführen. Der zusätzliche Schritt über die normale Regelsprache half dabei Fehlerquellen zu vermeiden. Durch die Vorlesung und die ausführliche Onlinedokumentation gab es wenige Probleme bei der Ausführung der einzelnen Arbeitsschritte.
+Am Anfang dieses Projektes haben wir zunächst die groben Strukturen aus der Aufgabenstellung extrahiert. Um daraus die Geschäftsregeln zu definieren, nutzten wir die dreizehn Aussagen. Die Regeln wurden von uns zunächst als normale Regelsprache implementiert. Der letzte Schritt bestand darin die Regelsprache in eine DSL zu überführen. Der zusätzliche Schritt über die normale Regelsprache half dabei, Fehlerquellen zu vermeiden. Durch die Vorlesung und die ausführliche Onlinedokumentation gab es wenige Probleme bei der Ausführung der einzelnen Arbeitsschritte.
 
 Es hat sich gezeigt, dass die Verwendung einer DSL für ein Projekt dieser Größe eine gute Alternative zur normalen Regelsprache ist. Sowohl Programmierer als auch Fachkundige ohne Programmiererfahrung können die DSL lesen und kleinere Änderungen machen. Das hilft besonders Personen ohne eine Affinität fürs Programmieren, da diese Fehler in der DSL finden und einem entsprechenden Programmierer melden können. Leider sind größere Änderungen an der DSL nicht ohne Programmieraufwand zu bewerkstelligen. Eine DSL muss trotz ihrer Umgangssprache noch eine feste Struktur aufweisen.
 
-Die Integration von Drools und jBPM in Eclipse gefiel uns sehr gut. Dadurch war es einfach die Prozesse und Regeln zu implementieren. Des Weiteren war es schnell möglich, Unit-Tests zu definieren, um die Regeln zu testen. Der letzte Schritt war die Integration der Prozess-Engine in die grafische Benutzeroberfläche, wobei es keine nennenswerte Probleme gab.
+Die Integration von Drools und jBPM in Eclipse gefiel uns sehr gut. Dadurch war es einfach die Prozesse und Regeln zu implementieren. Des Weiteren war es schnell möglich, Unit-Tests zu definieren, um die Regeln zu testen. Der letzte Schritt war die Integration der Prozess-Engine in die grafische Benutzeroberfläche, wobei es keine nennenswerten Probleme gab.
 
 Als endgültiges Fazit können wir sagen, dass das Arbeiten mit jBPM und Drools eine gute Erfahrung war, auch wenn einige Arbeitsschritte auf den ersten Blick eher komplex erscheinen. Bei kleineren Projekten halten wir eine reine Programmierlösung für den besseren Ansatz. Für größere Projekte mit umfangreichen Geschäftsregeln, die in Prozesse
 integriert werden müssen, kann jBPM eine akzeptable Lösung sein. 
