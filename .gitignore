@@ -19,3 +19,6 @@ hs_err_pid*
 /doc/Ausarbeitung.log
 /doc/Ausarbeitung.bcf
 /target
+/.settings/org.eclipse.bpmn2.modeler.core.prefs
+/doc/DSL-Ausarbeitung.pdf
+/doc/src/texput.log
